@@ -1,0 +1,25 @@
+FROM mysql:8.4.0
+
+# para cambiar permisos del directorio
+USER root 
+
+ENV MYSQL_ROOT_PASSWORD=root_password \
+    MYSQL_DATABASE=guacamole_db \
+    MYSQL_USER=guacamole_user \
+    MYSQL_PASSWORD=guacamole_password
+
+#VOLUME /var/lib/mysql
+#Aqui se copia el script de inicialización de la base de datos que se genero con los siguientes comandos:
+#docker run --rm guacamole/guacamole:1.5.5 /opt/guacamole/bin/initdb.sh --mysql > initdb.sql
+#docker exec -i mysql-db mysql -u root -proot_password guacamole_db < initdb.sql
+COPY initdb.sql /docker-entrypoint-initdb.d/
+
+# Cambiar permisos del directorio
+RUN chown -R mysql:mysql /var/lib/mysql
+
+USER mysql
+
+
+#PENDIENTES PARA MAÑANA:
+#1. actualizar las imaganes de docker con este nuevo dockerfile
+#2. probar reiniciar un contenedor con la base de datos de guacamole sin VOLÚMENES  

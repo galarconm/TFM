@@ -1,0 +1,50 @@
+# Use an official Ubuntu base image OK
+# docker build -t spider-vnc -f Dockerfile.spider-vnc .
+# docker run -d -p 5901:5901 --name spidervnc spider-vnc:latest
+FROM python:3.9-slim
+
+# Avoid warnings by switching to noninteractive for the build process
+ENV DEBIAN_FRONTEND=noninteractive
+ENV USER=root
+# Install XFCE, VNC server, dbus-x11, xfonts-base, xinit, pyqt5.qtsvg, y spyder
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    xfce4 \ 
+    xfce4-goodies \ 
+    tightvncserver \ 
+    dbus-x11 \ 
+    xfonts-base \ 
+    python3-pyqt5 \
+    python3-dev \
+    build-essential \
+    python3-pyqt5.qtwebkit \
+    xvfb \ 
+    libnss3 \
+    libasound2 \
+    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Install Spyder
+RUN pip3 install spyder
+
+# Setup VNC server
+RUN mkdir /root/.vnc \
+    && echo "password" | vncpasswd -f > /root/.vnc/passwd \
+    && chmod 600 /root/.vnc/passwd
+
+# Create an .Xauthority file
+RUN touch /root/.Xauthority
+
+# Set display resolution (change as needed)
+ENV RESOLUTION=1024x768
+
+# Expose VNC port
+EXPOSE 5901
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy a script to start the VNC server and Spyder
+COPY start-vnc-spyder.sh start-vnc-spyder.sh
+RUN chmod +x start-vnc-spyder.sh
+
+# Start VNC server and Spyder
+CMD ["./start-vnc-spyder.sh"]
