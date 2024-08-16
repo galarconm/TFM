@@ -1,0 +1,31 @@
+FROM jenkins/jenkins:2.464 
+
+USER root
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    nano \
+    bc \
+    git \
+    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Clone the ACTaaS repository from GitHub to the desired directory
+RUN git clone https://github.com/grycap/ACTaaS /var/tmp/education/ACTaaS
+
+# Set permissions for the unittest scripts directory
+RUN chmod -R 0777 /var/tmp/education/ACTaaS/practices/P1/Face/unittests
+# Correct the permissions for the unittest directory to 0755
+RUN chmod 0755 /var/tmp/education/ACTaaS/practices/P1/Face/unittests
+
+RUN mv /var/tmp/education/ACTaaS/scripts_jenkins/jenkins-cli.jar /var/tmp/education/ACTaaS/
+
+WORKDIR /var/tmp/education/ACTaaS
+# Declare the volume
+VOLUME /var/jenkins_home
+
+EXPOSE 8081
+
+# Run the Docker container with a named volume
+#docker run -d -v jenkins_home:/var/jenkins_home -p 8081:8081 --name front:jenkins
+
+

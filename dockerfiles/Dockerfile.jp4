@@ -1,0 +1,60 @@
+# Use an official Python Docker image as the base
+FROM python:3.9-slim
+
+# Avoid warnings by switching to noninteractive for the build process
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Add a new user
+RUN adduser --disabled-password --gecos '' usuario
+
+# Install XFCE, VNC server, dbus-x11, and xfonts-base
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    mate-desktop-environment-core \
+    tightvncserver \
+    dbus-x11 \
+    xfonts-base \
+    xvfb \
+    firefox-esr \
+    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Install JupyterLab
+RUN pip3 install jupyterlab
+
+# Switch to the new user
+USER usuario
+
+# Setup VNC
+RUN mkdir -p /home/usuario/.vnc \
+    && echo "password" | vncpasswd -f > /home/usuario/.vnc/passwd \
+    && chmod 600 /home/usuario/.vnc/passwd
+
+# Create an .Xauthority file
+RUN touch /home/usuario/.Xauthority
+
+# Set display resolution (change as needed)
+ENV RESOLUTION=1024x768
+
+# Expose VNC port
+EXPOSE 5903
+
+# Set the working directory in the container
+WORKDIR /home/usuario
+
+# Switch to root user
+USER root
+# Create a desktop entry for JupyterLab
+RUN echo "[Desktop Entry]\nVersion=1.0\nType=Application\nName=JupyterLab\nExec=jupyter lab --ip=0.0.0.0 --allow-root\nIcon=jupyter\nCategories=Development;" > /usr/share/applications/jupyterlab.desktop
+
+# Switch back to the original user if necessary
+USER usuario
+
+# Copy the start script
+COPY start-vnc2.sh /usr/local/bin/start-vnc2.sh
+# Switch to root user
+USER root
+RUN chmod +x /usr/local/bin/start-vnc2.sh
+# Switch back to the original user if necessary
+USER usuario
+
+# Start VNC server and XFCE
+CMD ["/usr/local/bin/start-vnc2.sh"]
