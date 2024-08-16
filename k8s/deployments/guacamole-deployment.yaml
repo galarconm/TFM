@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guacamole-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: guacamole-dep-pod
+  template:
+    metadata:
+      labels:
+        app: guacamole-dep-pod
+    spec:
+      containers:
+        - name: guacamole-dep
+          image: guacamole/guacamole:1.5.5
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MYSQL_DATABASE
+              value: guacamole_db
+            - name: MYSQL_USER
+              value: guacamole_user
+            - name: MYSQL_PASSWORD
+              value: guacamole_password
+            - name: GUACD_HOSTNAME
+              value: guacd-svc
+            - name: MYSQL_HOSTNAME
+              value: mysql-svc
+

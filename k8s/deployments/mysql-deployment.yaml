@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-dep-pod
+  template:
+    metadata:
+      labels:
+        app: mysql-dep-pod
+    spec:
+      containers:
+      - name: mysql-db
+        image: galarconm/tfm:mysql-db-v2
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root_password
+        - name: MYSQL_DATABASE
+          value: guacamole_db
+        - name: MYSQL_USER
+          value: guacamole_user
+        - name: MYSQL_PASSWORD
+          value: guacamole_password
+        volumeMounts:
+        - name: mysql-data
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-data
+        persistentVolumeClaim:
+          claimName: mysql-pvc
