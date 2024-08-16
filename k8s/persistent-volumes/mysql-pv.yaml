@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-pv
+  annotations:
+    description: "Persistent volume for MySQL"
+spec:
+  storageClassName: nfs-subdir
+  persistentVolumeReclaimPolicy: Retain #La política por defecto es “Retain” lo que impide reutilizar un volumen una vez asociado a un “Claim”.
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce #solo un nodo puede montar el volumen en modo lectura/escritura
+  nfs:
+    server: 172.18.161.238
+    path: /var/nfs_share/mysql
+    readOnly: false
+    

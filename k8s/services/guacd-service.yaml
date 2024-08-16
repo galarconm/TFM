@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: guacd-svc
+spec:
+  ports:
+  - port: 4822
+    protocol: TCP
+    targetPort: 4822
+  selector:
+    app: guacd-dep-pod
+  type: ClusterIP
