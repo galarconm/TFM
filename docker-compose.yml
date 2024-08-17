@@ -1,0 +1,74 @@
+version: '3'
+services:
+
+  mysql:
+    image: mysql-db:v2 # Imagen ya configurada con la base de datos de guacamole
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: guacamole_db
+      MYSQL_USER: guacamole_user
+      MYSQL_PASSWORD: guacamole_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  guacd:
+    image: guacamole/guacd:1.5.5
+    container_name: guacd-proxy
+
+  guacamole:
+    image: guacamole/guacamole:1.5.5
+    container_name: guacamole-container
+    ports:
+      - "8080:8080"
+    environment:
+      MYSQL_DATABASE: guacamole_db
+      MYSQL_USER: guacamole_user
+      MYSQL_PASSWORD: guacamole_password
+      GUACD_HOSTNAME: guacd # Nombre del servicio guacd
+      MYSQL_HOSTNAME: mysql  # Nombre del servicio mysql
+    depends_on:
+      - guacd
+      - mysql
+    #links:
+    #  - guacd:guacd
+    #  - mysql:mysql
+  spyder:
+    image: spyder-vnc:v1
+    container_name: spyder
+    ports:
+      - "5901:5901"
+  
+  geany:
+    image: geany:v1
+    container_name: geany
+    ports:
+      - "5902:5902"
+
+  jupyter:
+    image: jupyter-vnc:v1
+    container_name: jupyter
+    ports:
+      - "5903:5903"
+  
+  frontend-jenkins:
+    image: frontend/jenkins:v1 # Jenkins frontend
+    container_name: frontend-jenkins
+    ports:
+      - "8090:8080" # port 8090 is mapped to port 8080 of the container
+    volumes:
+      - jenkins_home:/var/jenkins_home # Mount the volume to the container
+  
+volumes:
+  mysql_data:  # Name of the volume
+    driver: local  # Use the local driver (default)
+  jenkins_home:  # Name of the volume
+    driver: local  # Use the local driver (default)
+
+    # command to run docker-compose: docker-compose up -d
+
+  #remove container_name when the service is scaled
+
+
+    
+
