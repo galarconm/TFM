@@ -1,0 +1,12 @@
+apiVersion: v1 
+kind: Service
+metadata:
+  name: geany-svc
+spec:
+  ports:
+  - port: 5902
+    protocol: TCP
+    targetPort: 5902
+  selector:
+    app: geany-dep-pod
+  type: ClusterIP
