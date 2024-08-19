@@ -12,7 +12,7 @@ spec:
   accessModes:
     - ReadWriteOnce #solo un nodo puede montar el volumen en modo lectura/escritura
   nfs:
-    server: 172.18.161.238
+    server: 192.168.1.17 #172.18.161.238 -> es la de WSL2
     path: /var/nfs_share/mysql
     readOnly: false
     

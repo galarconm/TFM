@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spyder-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spyder-dep-pod
+  template:
+    metadata:
+      labels:
+        app: spyder-dep-pod
+    spec:
+      containers:
+      - name: spyder
+        image: galarconm/tfm:spyder-vnc-v1
+        ports:
+        - containerPort: 5901
