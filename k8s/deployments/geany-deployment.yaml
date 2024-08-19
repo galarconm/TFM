@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: geany-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: geany-dep-pod
+  template:
+    metadata:
+      labels:
+        app: geany-dep-pod
+    spec:
+      containers:
+      - name: geany
+        image: galarconm/tfm:geany-v1
+        ports:
+        - containerPort: 5902

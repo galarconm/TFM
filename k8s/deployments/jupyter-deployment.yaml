@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jupyter-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jupyter-dep-pod
+  template:
+    metadata:
+      labels:
+        app: jupyter-dep-pod
+    spec:
+      containers:
+      - name: jupyter
+        image: galarconm/tfm:jupyter-vnc-v1
+        ports:
+        - containerPort: 5903

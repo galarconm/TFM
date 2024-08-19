@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jenkins-dep-pod
+  template:
+    metadata:
+      labels:
+        app: jenkins-dep-pod
+    spec:
+      containers:
+        - name: jenkins-container
+          image: galarconm/tfm:frontend-jenkins-v1
+          ports:
+            - containerPort: 8080
+          # volumeMounts:
+          #   - name: jenkins-home
+          #     mountPath: /var/jenkins_home
