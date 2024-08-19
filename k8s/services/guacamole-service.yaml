@@ -1,3 +1,4 @@
+#CLUSTERIP
 apiVersion: v1
 kind: Service
 metadata:
@@ -10,3 +11,47 @@ spec:
   selector:
     app: guacamole-dep-pod
   type: ClusterIP
+
+#LOADBALANCER
+#este funciona con minikube tunnel
+#http://127.0.0.1:8080/guacamole/#/
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: guacamole-svc
+# spec:
+#   ports:
+#   - port: 8080
+#     protocol: TCP
+#     targetPort: 8080
+#   selector:
+#     app: guacamole-dep-pod
+#   type: LoadBalancer #ClusterIP
+
+#NODEPORT
+# funciona con minikube service guacamole-svc 
+# http://127.0.0.1:37179
+# El comando minikube service guacamole-svc te proporciona dos URLs para acceder al servicio guacamole-svc:
+
+# URL con la IP de Minikube (192.168.49.2:30000):
+
+# Esta URL es accesible directamente desde el entorno de Minikube y, en algunos casos, desde tu navegador en Windows si la red está correctamente configurada.
+# Si no puedes acceder a esta URL desde tu navegador de Windows, podría deberse a restricciones de red entre WSL2 y Windows, lo cual es común en algunos entornos.
+# URL con localhost (127.0.0.1:37179):
+
+# Esta URL es resultado del túnel que minikube crea automáticamente.
+# Puedes acceder a esta URL directamente desde tu navegador en Windows, ya que redirige el tráfico a través de localhost hacia el servicio en Minikube.
+
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: guacamole-svc
+# spec:
+#   ports:
+#   - port: 8080
+#     protocol: TCP
+#     targetPort: 8080
+#     nodePort : 30000
+#   selector:
+#     app: guacamole-dep-pod
+#   type: NodePort #ClusterIP
