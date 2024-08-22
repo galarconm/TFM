@@ -17,3 +17,11 @@ spec:
         image: galarconm/tfm:geany-v1
         ports:
         - containerPort: 5902
+        volumeMounts:
+        - name: geany-data
+          mountPath: /home/geany
+      volumes:
+      - name: geany-data
+        persistentVolumeClaim:
+          claimName: home-pvc
+

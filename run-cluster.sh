@@ -54,11 +54,23 @@ process_all_resources() {
   local operation=$1
   local func=$2
 
+  # home aun en pruebas
+  echo "${operation} PersistentVolumeClaims..."
+  $func "${pvcpath}" "home" "${PVC_FILE}"
+  echo "${operation} PersistentVolumes..."
+  func "${pvpath}" "home" "${PV_FILE}"
+
   echo "${operation} PersistentVolumeClaims..."
   $func "${pvcpath}" "mysql" "${PVC_FILE}"
 
   echo "${operation} PersistentVolumes..."
   $func "${pvpath}" "mysql" "${PV_FILE}"
+
+  echo "${operation} PersistentVolumeClaims..."
+  $func "${pvcpath}" "jenkins" "${PVC_FILE}"
+
+  echo "${operation} PersistentVolumes..."
+  $func "${pvpath}" "jenkins" "${PV_FILE}"
 
   echo "${operation} Deployments..."
   for resource in "${resources[@]}"; do
