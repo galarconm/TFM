@@ -1,0 +1,103 @@
+network publica (outbound = 'yes')
+network privada ()
+
+system front (
+cpu.count>=1 and
+memory.size>=4g and
+net_interface.1.connection = 'publica' and
+net_interface.0.connection = 'privada' and
+net_interface.0.dns_name = 'jenkinserver' and
+disk.0.os.name='linux' and
+disk.0.os.flavour='ubuntu' and
+disk.0.image.url = 'one://your.machine/id' and
+)
+
+configure front (
+@begin
+- tasks:
+  #Install java 8
+  - name: Add java repository to ub14
+    apt_repository:
+      repo: 'ppa:openjdk-r/ppa'
+    when: ansible_os_family == "Debian" and ansible_distribution_major_version == "14"
+
+  - name: Ensure Java is installed
+    apt: name=openjdk-8-jre-headless state=present update_cache=yes
+
+  - name: Select java version 8 (Problems with java 9,10 and 12 in jenkins)
+    alternatives:
+      name: java
+      path: /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
+
+  #Install Jenkins (https://jenkins.io/doc/book/installing/)
+  #wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
+  - name: Add Jenkins apt repository key.
+    apt_key:
+      url: "https://pkg.jenkins.io/debian/jenkins.io.key"
+      state: present
+
+  # sudo sh -c 'echo deb deb https://pkg.jenkins.io/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
+  - name: Add Jenkins apt repository.
+    apt_repository:
+      repo: "deb https://pkg.jenkins.io/debian-stable binary/"
+      state: present
+      update_cache: true
+    when: ansible_os_family == "Debian"
+
+  - name: apt update
+    shell: apt-get update
+    args:
+      warn: false
+    when: ansible_os_family == "Debian"
+
+
+  - name: solve error installing Jenkins
+    shell: add-apt-repository universe
+    when: ansible_os_family == "Debian"
+
+  - name: Install Jenkins
+    shell: apt-get install -y --allow-unauthenticated --no-upgrade jenkins
+    args:
+      warn: false
+    when: ansible_os_family == "Debian"
+
+
+  - name: Install gcc
+    shell: apt-get install -y build-essential
+    args:
+      warn: false
+    when: ansible_os_family == "Debian"
+
+  - name: Install bc calculator
+    shell: apt-get install -y bc
+    args:
+      warn: false
+    when: ansible_os_family == "Debian"
+
+
+  # Install Autoasssesment scrips from Github
+  - name: Install Autoasssesment scrips from Github
+    git:
+      repo: https://github.com/grycap/ACTaaS
+      dest: /var/tmp/education/ACTaaS
+      version: master
+
+  - name: Set permisions for unittest scripts
+    file:
+      path: /var/tmp/education/ACTaaS/practices/P1/Face/unittests
+      state: directory
+      recurse: yes
+      owner: root
+      group: root
+      mode: '0777'
+
+  - name: Set permisions for unittest directory
+    file:
+      path: /var/tmp/education/ACTaaS/practices/P1/Face/unittests
+      state: directory
+      mode: '0755'
+
+@end
+)
+
+deploy front 1
