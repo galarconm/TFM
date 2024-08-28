@@ -1,0 +1,27 @@
+Pasos para configurar Jenkins
+
+1) Copiar clave  cat /var/jenkins_home/secrets/initialAdminPassword y pegar
+
+2) Instalar plugins recomendados
+
+3) Instalar los siguientes plugins: GitHub Integration, Generic Webhook Trigger
+
+4) Configurar API TOKEN :
+	-Click your name (upper-right corner).
+	-Click Configure (left-side menu).
+	-Use "Add new Token" button to generate a new one then name it.
+	-You must copy the token when you generate it as you cannot view the 	token afterwards.
+	11aac49f19649915bde047584e0e15ca37
+
+5)Register Students:
+	-./registerStudents.sh -f usuarios.txt -j http://localhost:8080/ -u galarconm -p 11aac49f19649915bde047584e0e15ca37
+	- ./registerStudents2024v2.sh -f usuarios.txt -a 5 -j http://localhost:8080/ -u galarconm -p 11aac49f19649915bde047584e0e15ca37 -c f
+
+7)Generate Repos
+	./gneraterepos.sh -f usuarios.txt -p 1 -c f
+
+
+6)Create test
+	-./createTests.sh -s galarconm -g https://github.com/galarconm/pr1-gary -j hhttp://localhost:8080/ -a 1 -n ejercicio_test -t test_template.xml -u galarconm -p 11aac49f19649915bde047584e0e15ca37 -i Naruto2024! -c f
+	
+	-./createTests.sh -f lista_repos.txt -j http://localhost:8080/ -a 1 -n 1 -t test_template.xml -u galarconm -p 11aac49f19649915bde047584e0e15ca37 -i Naruto2024! -c f 

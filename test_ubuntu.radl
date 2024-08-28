@@ -1,0 +1,125 @@
+#crear una VM de ubuntu 
+network publica (outbound = 'yes')
+network privada ()
+
+system front (
+   cpu.count >= 1 and
+   memory.size >= 2G and
+   net_interface.1.connection = 'publica' and
+   net_interface.0.connection = 'privada' and
+   net_interface.0.dns_name = 'jenkinserver' and
+   disk.0.os.name='linux' and
+   disk.0.os.flavour='ubuntu' and
+   disk.0.image.url = 'one://ramses.i3m.upv.es/1593'
+)
+
+configure front (
+@begin
+- tasks:
+  #Install java 17
+  - name: Update package lists
+    apt:
+      update_cache: yes
+
+  - name: Install OpenJDK 17
+    apt:
+      name: openjdk-17-jre
+      state: present
+
+  - name: Verify Java 17 installation
+    command: java -version
+    register: java_version_output
+    ignore_errors: no
+  
+  - name: Check Java 17 installation
+    assert:
+      that:
+        - "'17' in java_version_output.stderr"
+      fail_msg: "Java 17 is not installed correctly"
+      success_msg: "Java 17 is installed correctly"
+ 
+  # Install Jenkins
+  - name: Download Jenkins repository key
+    get_url:
+      url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+      dest: /usr/share/keyrings/jenkins-keyring.asc
+      mode: '0644'
+
+  - name: Add Jenkins repository
+    ansible.builtin.shell: echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/" | tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+  - name: Update package lists after adding Jenkins repository
+    apt:
+      update_cache: yes
+
+  - name: Install Jenkins
+    apt:
+      name: jenkins
+      state: present
+  
+  #Linea nueva
+  # Wait for Jenkins to start
+  - name: Wait for Jenkins to start
+    wait_for:
+      port: 8080
+      delay: 15
+      timeout: 300
+
+  # Ensure Jenkins is up and running
+  - name: Check Jenkins status
+    uri:
+      url: http://localhost:8080/login
+      status_code: 200
+    register: jenkins_status
+    until: jenkins_status.status == 200
+    retries: 5
+    delay: 15
+
+  #Linea Nueva
+  # Download jenkins-cli.jar
+  - name: Download jenkins-cli.jar
+    get_url:
+      url: http://localhost:8080/jnlpJars/jenkins-cli.jar
+      dest: /var/tmp/education/ACTaaS/jenkins-cli.jar
+      mode: '0755'
+    when: ansible_distribution in ["Debian", "Ubuntu"]
+
+#Install gcc
+  - name: Install gcc
+    shell: apt-get install -y build-essential
+    args:
+      warn: false
+    when: ansible_os_family == "Debian"
+
+  - name: Install bc calculator
+    shell: apt-get install -y bc
+    args:
+      warn: false
+    when: ansible_os_family == "Debian"
+
+# Install Autoasssesment scrips from Github
+  - name: Install Autoasssesment scrips from Github
+    git:
+      repo: https://github.com/grycap/ACTaaS
+      dest: /var/tmp/education/ACTaaS
+      version: master
+
+  - name: Set permisions for unittest scripts
+    file:
+      path: /var/tmp/education/ACTaaS/practices/P1/Face/unittests
+      state: directory
+      recurse: yes
+      owner: root
+      group: root
+      mode: '0777'
+
+  - name: Set permisions for unittest directory
+    file:
+      path: /var/tmp/education/ACTaaS/practices/P1/Face/unittests
+      state: directory
+      mode: '0755'
+
+
+@end
+)
+deploy front 1
