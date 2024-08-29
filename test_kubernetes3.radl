@@ -67,13 +67,13 @@ configure front (
       nfs_mode: 'front'
       nfs_exports: 
         - path: "/var/nfs_share"
-          export: "wn-*.localdomain(fsid=0,rw,async,no_root_squash,no_subtree_check,insecure)"
+          export: "wn-*.localdomain(rw,sync,no_subtree_check,no_root_squash)"
         - path: "/var/nfs_share/mysql"
-          export: "wn-*.localdomain(fsid=0,rw,async,no_root_squash,no_subtree_check,insecure)"
+          export: "wn-*.localdomain(rw,sync,no_subtree_check,no_root_squash)"
         - path: "/var/nfs_share/jenkins" 
-          export: "wn-*.localdomain(fsid=0,rw,async,no_root_squash,no_subtree_check,insecure)"
+          export: "wn-*.localdomain(rw,sync,no_subtree_check,no_root_squash)"
         - path: "/var/nfs_share/home"
-          export: "wn-*.localdomain(fsid=0,rw,async,no_root_squash,no_subtree_check,insecure)"
+          export: "wn-*.localdomain(rw,sync,no_subtree_check,no_root_squash)"
       
 
     - role: 'grycap.kubernetes'

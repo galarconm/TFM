@@ -57,8 +57,9 @@ process_all_resources() {
   # home aun en pruebas
   echo "${operation} PersistentVolumeClaims..."
   $func "${pvcpath}" "home" "${PVC_FILE}"
+  
   echo "${operation} PersistentVolumes..."
-  func "${pvpath}" "home" "${PV_FILE}"
+  $func "${pvpath}" "home" "${PV_FILE}"
 
   echo "${operation} PersistentVolumeClaims..."
   $func "${pvcpath}" "mysql" "${PVC_FILE}"
@@ -82,11 +83,11 @@ process_all_resources() {
     $func "${servicepath}" "${resource}" "${SERVICE_FILE}"
   done
 
-  echo "${operation} Ingress..."
-  if [ "$operation" == "Aplicando" ]; then
-    minikube addons enable ingress
-  fi
-  $func "${ingresspath}" "" "${INGRESS_FILE}"
+  # echo "${operation} Ingress..."
+  # if [ "$operation" == "Aplicando" ]; then
+  #   minikube addons enable ingress
+  # fi
+  # $func "${ingresspath}" "" "${INGRESS_FILE}"
 }
 
 # Función para procesar un recurso específico
