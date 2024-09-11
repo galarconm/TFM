@@ -1,0 +1,22 @@
+Mejoras al TFM
+
+1. **Montar volúmenes en los IDEs:** Los volúmenes persistentes se utilizarán para que los usuarios puedan guardar sus trabajos. Todos los usuarios compartirán un volumen persistente, donde cada uno tendrá su propio directorio para almacenar sus archivos. Estos datos persistirán incluso si el entorno es destruido y luego desplegado nuevamente. (Esto parece que no me corresponde)
+
+2. **Pod por usuario:** Decidir si se utilizará un pod individual por usuario o un solo pod compartido para todos los usuarios.
+
+3. **Automatizar la creación de usuarios:** Implementar un sistema automatizado para crear usuarios en los IDEs a partir de una lista predefinida de alumnos (usuario/contraseña).
+
+4. **Jobs para destruir pods automáticamente:** Configurar jobs que eliminen automáticamente los pods una vez que los usuarios dejen de utilizarlos, para optimizar el uso de recursos.
+
+5. **Configurar Guacamole con DNS/Ingress:** Utilizar DNS o Ingress para configurar las conexiones de Guacamole a los pods de los usuarios, permitiendo una integración más fluida.(Sirve usando el nombre del servicio "geany-svc" en el hostname de la configuracion de conexion de guacamole)✅
+
+6. **Automatizar la creación de usuarios en Guacamole:** Implementar un proceso automatizado para la creación de usuarios en Guacamole a partir de la lista de alumnos.
+
+7. **Agregar al script de despliegue la configuracion el servidor NFS.
+
+
+Otras Notas
+Los comandos de Jenkins se pueden ejecutar desde el front del cluster(maquina que tiene minikube) direccionandolo a la url puesta en el ingress. No es necesario acceder al pod de Jenkins y desde ahi lanzar los comandos.
+
+
+
