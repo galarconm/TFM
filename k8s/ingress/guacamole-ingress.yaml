@@ -16,3 +16,12 @@ spec:
             name: guacamole-svc
             port:
               number: 8080
+  - host: jenkins.local
+    http:
+      paths: /
+        pathType: Prefix
+        backend:
+          service:
+            name: jenkins-svc
+            port:
+              number: 8080
