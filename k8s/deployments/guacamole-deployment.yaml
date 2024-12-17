@@ -28,4 +28,25 @@ spec:
               value: guacd-svc
             - name: MYSQL_HOSTNAME
               value: mysql-svc
-
+            - name: OPENID_CLIENT_ID
+              value: guacamole
+            - name: OPENID_REDIRECT_URI
+              value: http://192.168.49.2:30000/guacamole
+            - name: OPENID_ISSUER
+              value: http://192.168.49.2:31001/realms/guacamole
+            - name: OPENID_AUTHORIZATION_ENDPOINT
+              value: http://192.168.49.2:31001/realms/guacamole/protocol/openid-connect/auth
+            - name: OPENID_JWKS_ENDPOINT
+              value: http://192.168.49.2:31001/realms/guacamole/protocol/openid-connect/certs
+            - name: OPENID_TOKEN_ENDPOINT
+              value: http://192.168.49.2:31001/realms/guacamole/protocol/openid-connect/token
+            - name: OPENID_USERINFO_ENDPOINT
+              value: http://192.168.49.2:31001/realms/guacamole/protocol/openid-connect/userinfo
+            - name: OPENID_LOGOUT_ENDPOINT
+              value: http://192.168.49.2:31001/realms/guacamole/protocol/openid-connect/logout
+            - name: extension-priority
+              value: "*, openid"
+            - name: OPENID_CLAIM_USERNAME
+              value: preferred_username
+            - name: OPENID_CLAIM_GROUPS
+              value: groups
