@@ -12,6 +12,7 @@ Pasos para configurar Jenkins
 	-Use "Add new Token" button to generate a new one then name it.
 	-You must copy the token when you generate it as you cannot view the 	token afterwards.
 	11aac49f19649915bde047584e0e15ca37
+	113bd79b1df1e9268666fabbba26e9e8c7
 
 5)Register Students:
 	-./registerStudents.sh -f usuarios.txt -j http://localhost:8080/ -u galarconm -p 11aac49f19649915bde047584e0e15ca37

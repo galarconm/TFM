@@ -1,0 +1,3 @@
+keycloak:latest
+role-strategy:latest
+oic-auth:latest
