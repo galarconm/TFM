@@ -14,6 +14,13 @@ spec:
     spec:
       containers:
       - name: jupyter
-        image: galarconm/tfm:jupyter-vnc-v1
+        image: galarconm/tfm:jupyter-rdp-v1
         ports:
-        - containerPort: 5903
+        - containerPort: 3389
+        volumeMounts:
+        - name: jupyter-data
+          mountPath: /home
+      volumes:
+      - name: jupyter-data
+        persistentVolumeClaim:
+          claimName: home-pvc

@@ -14,6 +14,13 @@ spec:
     spec:
       containers:
       - name: spyder
-        image: galarconm/tfm:spyder-vnc-v1
+        image: galarconm/tfm:spyder-rdp-v1
         ports:
-        - containerPort: 5901
+        - containerPort: 3389
+        volumeMounts:
+        - name: spyder-data
+          mountPath: /home
+      volumes:
+      - name: spyder-data
+        persistentVolumeClaim:
+          claimName: home-pvc

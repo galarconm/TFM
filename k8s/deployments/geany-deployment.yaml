@@ -14,12 +14,15 @@ spec:
     spec:
       containers:
       - name: geany
-        image: galarconm/tfm:geany-v1
+        image: galarconm/tfm:geany-rdp-v2
         ports:
-        - containerPort: 5902
+        - containerPort: 3389
+        securityContext:
+          runAsUser: 0  # Run container as root
         volumeMounts:
         - name: geany-data
-          mountPath: /home/geany
+          # Path to the folder where the data will be stored for all users
+          mountPath: /home/userdata 
       volumes:
       - name: geany-data
         persistentVolumeClaim:
