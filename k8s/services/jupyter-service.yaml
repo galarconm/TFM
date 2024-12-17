@@ -4,9 +4,9 @@ metadata:
   name: jupyter-svc
 spec:
   ports:
-  - port: 5903
+  - port: 3389
     protocol: TCP
-    targetPort: 5903
+    targetPort: 3389
   selector:
     app: jupyter-dep-pod
   type: ClusterIP

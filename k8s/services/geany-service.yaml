@@ -4,9 +4,9 @@ metadata:
   name: geany-svc
 spec:
   ports:
-  - port: 5902
+  - port: 3389
     protocol: TCP
-    targetPort: 5902
+    targetPort: 3389
   selector:
     app: geany-dep-pod
   type: ClusterIP

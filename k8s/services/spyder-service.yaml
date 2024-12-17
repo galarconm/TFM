@@ -4,9 +4,9 @@ metadata:
   name: spyder-svc
 spec:
   ports:
-  - port: 5901
+  - port: 3389
     protocol: TCP
-    targetPort: 5901
+    targetPort: 3389
   selector:
     app: spyder-dep-pod
   type: ClusterIP
