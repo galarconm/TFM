@@ -1,0 +1,40 @@
+# Dockerfile for JupyterLab Desktop with RDP support
+# funciona bien, nada de mensajes de error
+FROM python:3.9-slim
+
+# Avoid warnings by switching to noninteractive for the build process
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install dependencies
+RUN apt-get update && \
+    apt-get install -y \
+    build-essential \
+    xvfb \
+    xrdp \
+    xfce4 \
+    dbus-x11 \
+    firefox-esr \
+    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    
+# Install JupyterLab
+RUN pip3 install jupyterlab
+
+# Set up xfce4 as the desktop environment for xrdp
+RUN echo xfce4-session > /root/.xsession
+
+# Create a user account
+RUN useradd -m myuser && echo "myuser:mypassword" | chpasswd
+
+# Expose ports for RDP (3389)
+EXPOSE 3389
+
+# Copy startup script
+COPY start_rdp.sh /usr/local/bin/start_rdp.sh
+RUN chmod +x /usr/local/bin/start_rdp.sh
+
+# Copy add_users.sh script
+COPY add_users.sh /usr/local/bin/add_users.sh
+RUN chmod +x /usr/local/bin/add_users.sh
+
+# Command to start xrdp and JupyterLab Desktop
+CMD service xrdp start && /usr/local/bin/start_rdp.sh
