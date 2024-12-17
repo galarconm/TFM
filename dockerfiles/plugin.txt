@@ -1,3 +1,5 @@
 keycloak:latest
 role-strategy:latest
 oic-auth:latest
+github-pullrequest:latest
+generic-webhook-trigger:latest
