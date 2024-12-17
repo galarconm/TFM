@@ -17,6 +17,10 @@ RUN chmod -R 0777 /var/tmp/education/ACTaaS/practices/P1/Face/unittests
 # Correct the permissions for the unittest directory to 0755
 RUN chmod 0755 /var/tmp/education/ACTaaS/practices/P1/Face/unittests
 
+COPY plugin.txt /usr/share/jenkins/ref/plugin.txt
+
+RUN jenkins-plugin-cli --plugin-file /usr/share/jenkins/ref/plugin.txt
+
 RUN mv /var/tmp/education/ACTaaS/scripts_jenkins/jenkins-cli.jar /var/tmp/education/ACTaaS/
 
 WORKDIR /var/tmp/education/ACTaaS
