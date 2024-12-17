@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: jenkins-container
-          image: galarconm/tfm:frontend-jenkins-v1
+          image: galarconm/tfm:frontend-jenkins-v2
           ports:
           - containerPort: 8080
           volumeMounts:
