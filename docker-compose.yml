@@ -59,6 +59,12 @@ services:
     volumes:
       - jenkins_home:/var/jenkins_home # Mount the volume to the container
   
+  keycloak:
+    image: keycloak:v1
+    container_name: keycloak
+    ports:
+      - "8081:8080"
+  
 volumes:
   mysql_data:  # Name of the volume
     driver: local  # Use the local driver (default)
