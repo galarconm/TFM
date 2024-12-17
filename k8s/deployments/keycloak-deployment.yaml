@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak-dep-pod
+  template:
+    metadata:
+      labels:
+        app: keycloak-dep-pod
+    spec:
+      containers:
+        - name: keycloak-container
+          image: galarconm/tfm:keycloak-v1
+          ports:
+          - containerPort: 8080
+          env:
+          - name: KEYCLOAK_ADMIN
+            value: admin
+          - name: KEYCLOAK_ADMIN_PASSWORD
+            value: admin
+          # - name: DB_VENDOR
+          #   value: POSTGRES
+          # - name: DB_ADDR
+          #   value: postgres-svc
+          # - name: DB_PORT
+          #   value: "5432"
+          # - name: DB_DATABASE
+          #   value: keycloak_db
+          # - name: DB_USER
+          #   value: keycloak_user
+          # - name: DB_PASSWORD
+          #   value: keycloak_password
+          - name: KC_DB
+            value: postgres
+          - name: KC_DB_URL
+            value: jdbc:postgresql://postgres-svc:5432/keycloak_db
+          - name: KC_DB_USERNAME
+            value: keycloak_user
+          - name: KC_DB_PASSWORD
+            value: keycloak_password
+          - name: KC_HOSTNAME
+            value: "192.168.49.2" # minikube ip
+
+#           ENV KC_DB=postgres
+# ENV KC_DB_URL=<DBURL>
+# ENV KC_DB_USERNAME=<DBUSERNAME>
+# ENV KC_DB_PASSWORD=<DBPASSWORD>
+# ENV KC_HOSTNAME=localhost

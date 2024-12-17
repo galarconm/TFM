@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-dep-pod
+  template:
+    metadata:
+      labels:
+        app: postgres-dep-pod
+    spec:
+      containers:
+      - name: postgres-db
+        image: 'postgres:17.2'
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: keycloak_db
+        - name: POSTGRES_USER
+          value: keycloak_user
+        - name: POSTGRES_PASSWORD
+          value: keycloak_password
+        volumeMounts:
+        - name: postgres-data
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: postgres-data
+        persistentVolumeClaim:
+          claimName: postgres-pvc 
