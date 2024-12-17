@@ -1,0 +1,15 @@
+#Dockerfile for keycloak
+
+FROM keycloak/keycloak:26.0
+
+# Set the environment variables
+ENV KC_BOOTSTRAP_ADMIN_USERNAME=admin \
+    KC_BOOTSTRAP_ADMIN_PASSWORD=admin
+# ENV KC_BOOTSTRAP_ADMIN_PASSWORD=admin
+
+# Expose the ports
+EXPOSE 8081
+#EXPOSE 8443
+
+# Start the keycloak server
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start-dev"]
