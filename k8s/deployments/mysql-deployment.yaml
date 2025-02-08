@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: mysql-db
-        image: galarconm/tfm:mysql-db-v2
+        image: galarconm/tfm:mysql-db-v3
         ports:
         - containerPort: 3306
         env:

@@ -1,72 +1,52 @@
 #!/bin/bash
-# Script para automatizar el despliegue de un cluster de Kubernetes en local
+# Script para desplegar un clúster de Kubernetes en local
 
-#Configurar IP para el NFS
+set -e  # Detener en caso de error
+
+# Configurar IP para el NFS
 IP_NFS=$(ip route get 1 | awk '{print $7; exit}')
-echo "Dirección IP de la máquina NFS: $IP_NFS"
+echo "IP de la máquina NFS: $IP_NFS"
 
-#Modificación de PV YAML
-sed -i "s/server: .*/server: $IP_NFS/" k8s/persistent-volumes/mysql-pv.yaml
-sed -i "s/server: .*/server: $IP_NFS/" k8s/persistent-volumes/jenkins-pv.yaml
-sed -i "s/server: .*/server: $IP_NFS/" k8s/persistent-volumes/home-pv.yaml
+# Actualizar archivos de Persistent Volumes (PV)
+for pv in mysql jenkins home postgres; do
+  sed -i "s/server: .*/server: $IP_NFS/" "k8s/persistent-volumes/${pv}-pv.yaml"
+done
+
+# Modificación de Keycloak Deployment YAML
+sed -i "s/value: \".*\" # minikube ip/value: \"$IP_NFS\" # minikube ip/" k8s/deployments/keycloak-deployment.yaml
 
 
-# Definir la ruta de los manifiestos de Kubernetes
-DEPLOYMENT_FILE="-deployment.yaml"
-SERVICE_FILE="-service.yaml"
-PVC_FILE="-pvc.yaml"
-PV_FILE="-pv.yaml"
-INGRESS_FILE="actaas-ingress.yaml"
+echo "IPs actualizadas en los Persistent Volumes."
 
-# Definir los nombres de los recursos
+# Definir recursos y rutas
 resources=("geany" "jupyter" "spyder" "guacamole" "guacd" "mysql" "jenkins" "keycloak" "postgres")
-
-# Definir las rutas de los manifiestos
-deploymentpath="k8s/deployments/"
-servicepath="k8s/services/"
-pvcpath="k8s/persistent-volume-claims/"
-pvpath="k8s/persistent-volumes/"
-ingresspath="k8s/ingress/"
-
-# Capturar errores y limpiar en caso de falla
-trap 'echo "Se ha producido un error. Saliendo..."; exit 1' ERR
-
-# Función para aplicar manifiestos de Kubernetes
-apply_manifest() {
-  local path=$1
-  local resource=$2
-  local file=$3
-
-  if [ -f "${path}${resource}${file}" ]; then
-    kubectl apply -f "${path}${resource}${file}"
-    echo "Aplicado: ${path}${resource}${file}"
-  else
-    echo "Archivo no encontrado: ${path}${resource}${file}"
-  fi
-}
+paths=(
+  [pv]="k8s/persistent-volumes/"
+  [pvc]="k8s/persistent-volume-claims/"
+  [deploy]="k8s/deployments/"
+  [service]="k8s/services/"
+  [ingress]="k8s/ingress/"
+)
 
 # Aplicar manifiestos
-echo "Aplicando PersistentVolumeClaims..."
-apply_manifest "${pvcpath}" "home" "${PVC_FILE}"
-apply_manifest "${pvcpath}" "mysql" "${PVC_FILE}"
-apply_manifest "${pvcpath}" "postgres" "${PVC_FILE}"
-apply_manifest "${pvcpath}" "jenkins" "${PVC_FILE}"
+apply_manifest() {
+  local type=$1 resource=$2 ext=$3
+  local file="${paths[$type]}${resource}${ext}.yaml"
+  [[ -f "$file" ]] && kubectl apply -f "$file" && echo "Aplicado: $file"
+}
 
-echo "Aplicando PersistentVolumes..."
-apply_manifest "${pvpath}" "home" "${PV_FILE}"
-apply_manifest "${pvpath}" "mysql" "${PV_FILE}"
-apply_manifest "${pvpath}" "postgres" "${PV_FILE}"
-apply_manifest "${pvpath}" "jenkins" "${PV_FILE}"
-
-echo "Aplicando Deployments..."
-for resource in "${resources[@]}"; do
-  apply_manifest "${deploymentpath}" "${resource}" "${DEPLOYMENT_FILE}"
+# Aplicar PV y PVC
+echo "Aplicando PersistentVolumes y PersistentVolumeClaims..."
+for pv in home mysql postgres jenkins; do
+  apply_manifest pv "$pv" "-pv"
+  apply_manifest pvc "$pv" "-pvc"
 done
 
-echo "Aplicando Services..."
+# Aplicar Deployments y Services
+echo "Aplicando Deployments y Services..."
 for resource in "${resources[@]}"; do
-  apply_manifest "${servicepath}" "${resource}" "${SERVICE_FILE}"
+  apply_manifest deploy "$resource" "-deployment"
+  apply_manifest service "$resource" "-service"
 done
 
-#echo "Aplicando Ingress..."
-#apply_manifest "${ingresspath}" "" "${INGRESS_FILE}"
+echo "Despliegue completado."
