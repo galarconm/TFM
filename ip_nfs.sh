@@ -8,4 +8,7 @@ echo "Dirección IP de la máquina NFS: $IP_NFS"
 sed -i "s/server: .*/server: $IP_NFS/" k8s/persistent-volumes/mysql-pv.yaml
 sed -i "s/server: .*/server: $IP_NFS/" k8s/persistent-volumes/jenkins-pv.yaml
 sed -i "s/server: .*/server: $IP_NFS/" k8s/persistent-volumes/home-pv.yaml
+sed -i "s/server: .*/server: $IP_NFS/" k8s/persistent-volumes/postgres-pv.yaml
 
+# Modificación de Keycloak Deployment YAML
+sed -i "s/value: \".*\" # minikube ip/value: \"$IP_NFS\" # minikube ip/" k8s/deployments/keycloak-deployment.yaml
