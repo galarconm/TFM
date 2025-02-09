@@ -33,21 +33,28 @@ configure front (
  - pre_tasks:
     - name: Create dir for the NFS PV
       file: path=/var/nfs_share state=directory mode=755
+    
     - name: Create dir for the NFS PV mysql
       file: path=/var/nfs_share/mysql state=directory mode=755
+    
     - name: Create dir for the NFS PV jenkins
       file: path=/var/nfs_share/jenkins state=directory mode=755
+    
     - name: Create dir for the NFS PV home
       file: path=/var/nfs_share/home state=directory mode=755  
+    
     - name: Create auth file dir
       file: path=/etc/kubernetes/pki state=directory mode=755 recurse=yes
+    
     - name: Create auth data file with an admin user
       copy: content='sometoken,kubeuser,100,"users,system:masters"' dest=/etc/kubernetes/pki/auth mode=600
+    
     - name: Set KUBECONFIG environment variable
       lineinfile:
         path: /etc/environment
         line: 'KUBECONFIG=/etc/kubernetes/admin.conf'
         create: yes
+    
     - name: Install Project from Github
       git:
         repo: https://github.com/galarconm/TFM
@@ -70,7 +77,7 @@ configure front (
 
     - role: 'grycap.kubernetes'
       kube_server: 'kubeserver'
-      kube_apiserver_options: []
+      kube_apiserver_options: [{option: "--secure-port", value: "6443"}, {option: "--advertise-address", value: "158.42.105.63"}, {option: "--token-auth-file", value: "/etc/kubernetes/pki/auth"}]
       kube_deploy_dashboard: true
       kube_install_helm: true
 

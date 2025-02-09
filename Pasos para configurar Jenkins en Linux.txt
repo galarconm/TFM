@@ -1,10 +1,10 @@
 Pasos para configurar Jenkins
 
-1) Copiar clave  cat /var/jenkins_home/secrets/initialAdminPassword y pegar
+1) Copiar clave  cat /var/jenkins_home/secrets/initialAdminPassword y pegar ✅
 
-2) Instalar plugins recomendados
+2) Instalar plugins recomendados ✅
 
-3) Instalar los siguientes plugins: GitHub Integration, Generic Webhook Trigger
+3) Instalar los siguientes plugins: GitHub Integration, Generic Webhook Trigger ✅
 
 4) Configurar API TOKEN :
 	-Click your name (upper-right corner).
@@ -16,7 +16,7 @@ Pasos para configurar Jenkins
 
 5)Register Students:
 	-./registerStudents.sh -f usuarios.txt -j http://localhost:8080/ -u galarconm -p 11aac49f19649915bde047584e0e15ca37
-	- ./registerStudents2024v2.sh -f usuarios.txt -a 5 -j http://localhost:8080/ -u galarconm -p 11aac49f19649915bde047584e0e15ca37 -c f
+	-./registerStudents2024v2.sh -f usuarios.txt -a 5 -j http://localhost:8080/ -u galarconm -p 11aac49f19649915bde047584e0e15ca37 -c f
 
 7)Generate Repos
 	./gneraterepos.sh -f usuarios.txt -p 1 -c f

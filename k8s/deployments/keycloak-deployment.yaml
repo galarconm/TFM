@@ -43,7 +43,7 @@ spec:
           - name: KC_DB_PASSWORD
             value: keycloak_password
           - name: KC_HOSTNAME
-            value: "192.168.49.2" # minikube ip
+            value: "192.168.1.23" # minikube ip
 
 #           ENV KC_DB=postgres
 # ENV KC_DB_URL=<DBURL>
