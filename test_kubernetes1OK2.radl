@@ -89,7 +89,7 @@ configure front (
         - path: "/var/nfs_share/postgres"
           export: "wn-*.localdomain(rw,sync,no_subtree_check,no_root_squash)"
         - path: "/var/nfs_share/jenkins" 
-          export: "wn-*.localdomain(rw,sync,no_subtree_check)"
+          export: "wn-*.localdomain(rw,sync,no_subtree_check,no_root_squash)"
         - path: "/var/nfs_share/home"
           export: "wn-*.localdomain(rw,sync,no_subtree_check,no_root_squash)"
 
