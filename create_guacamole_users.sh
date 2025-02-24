@@ -1,7 +1,6 @@
 #!/bin/bash
 
-#this script creates users and add them to the group "students" successfully,
-# but can't login with the password "password" for unknown reason
+# This script creates users in Guacamole using the API (for password handling) and adds them to the "students" group using direct MySQL queries.
 
 # Check if a file is passed as argument
 if [ "$#" -ne 1 ]; then
@@ -12,91 +11,109 @@ fi
 USER_LIST=$1
 
 # Configuration
+GUACAMOLE_URL="http://158.42.104.43:30000/guacamole"
+GUAC_ADMIN_USER="guacadmin"
+GUAC_ADMIN_PASSWORD="guacadmin"
+DATA_SOURCE="mysql"
+PASSWORD="password"
+GROUP_NAME="students"
+
+# MySQL Configuration
 MYSQL_LABEL="app=mysql-dep-pod"
 MYSQL_USER="root"
 MYSQL_PASSWORD="root_password"
 MYSQL_DATABASE="guacamole_db"
-PASSWORD="password"
-GROUP_NAME="students"
 
-# Get the name of the first pod associated with the MySQL deployment
+# Get MySQL pod name
 MYSQL_POD=$(kubectl get pods -l "$MYSQL_LABEL" -o jsonpath='{.items[0].metadata.name}')
-
-# Check if the MYSQL_POD variable is empty
 if [ -z "$MYSQL_POD" ]; then
     echo "Error: No MySQL pod found with the label $MYSQL_LABEL"
+    mysql_exec "INSERT INTO guacamole_entity (name, type) VALUES ('$GROUP_NAME', 'USER_GROUP');"
+fi
+
+# Function to execute MySQL command via kubectl
+mysql_exec() {
+    kubectl exec "$MYSQL_POD" -- bash -c "mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -D $MYSQL_DATABASE -sse \"$1\""
+}
+
+# Get an authentication token
+TOKEN=$(curl -s -X POST -d "username=$GUAC_ADMIN_USER&password=$GUAC_ADMIN_PASSWORD" "$GUACAMOLE_URL/api/tokens")
+TOKEN=$(echo "$TOKEN" | jq -r '.authToken')
+
+if [ -z "$TOKEN" ]; then
+    echo "Failed to authenticate with Guacamole"
     exit 1
 fi
 
-# Check if the students group exists
-GROUP_EXISTS=$(kubectl exec -i $MYSQL_POD -- mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -D $MYSQL_DATABASE -sse "SELECT COUNT(*) FROM guacamole_entity WHERE name='$GROUP_NAME' AND type='USER_GROUP';")
+echo "Token obtained: $TOKEN"
+
+# Check if the "students" group exists
+GROUP_EXISTS=$(mysql_exec "SELECT COUNT(*) FROM guacamole_entity WHERE name='$GROUP_NAME' AND type='USER_GROUP';")
 if [ "$GROUP_EXISTS" -eq 0 ]; then
     echo "Error: Group $GROUP_NAME does not exist."
     exit 1
 fi
 
-# Get the entity_id of the students group
-GROUP_ENTITY_ID=$(kubectl exec -i $MYSQL_POD -- mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -D $MYSQL_DATABASE -sse "SELECT entity_id FROM guacamole_entity WHERE name='$GROUP_NAME' AND type='USER_GROUP';")
+# Get group entity and user_group IDs
+GROUP_ENTITY_ID=$(mysql_exec "SELECT entity_id FROM guacamole_entity WHERE name='$GROUP_NAME' AND type='USER_GROUP';")
+GROUP_USER_ID=$(mysql_exec "SELECT user_group_id FROM guacamole_user_group WHERE entity_id=$GROUP_ENTITY_ID;")
 
-# Get the user_group_id of the students group
-GROUP_USER_ID=$(kubectl exec -i $MYSQL_POD -- mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -D $MYSQL_DATABASE -sse "SELECT user_group_id FROM guacamole_user_group WHERE entity_id=$GROUP_ENTITY_ID;")
-
-# Verify the group exists in guacamole_user_group
-GROUP_USER_EXISTS=$(kubectl exec -i $MYSQL_POD -- mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -D $MYSQL_DATABASE -sse "SELECT COUNT(*) FROM guacamole_user_group WHERE entity_id=$GROUP_ENTITY_ID;")
-if [ "$GROUP_USER_EXISTS" -eq 0 ]; then
+# Insert into guacamole_user_group if missing
+if [ -z "$GROUP_USER_ID" ]; then
     echo "Inserting group $GROUP_NAME into guacamole_user_group."
-    kubectl exec -i $MYSQL_POD -- mysql -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE -e "INSERT INTO guacamole_user_group (entity_id) VALUES ($GROUP_ENTITY_ID);"
+    kubectl exec "$MYSQL_POD" -- bash -c "mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -D $MYSQL_DATABASE -e \
+        \"INSERT INTO guacamole_user_group (entity_id) VALUES ($GROUP_ENTITY_ID);\""
+    GROUP_USER_ID=$(mysql_exec "SELECT user_group_id FROM guacamole_user_group WHERE entity_id=$GROUP_ENTITY_ID;")
 fi
 
-# Loop through usernames and insert into the MySQL database
+# Process each user in the list
 while IFS= read -r username || [ -n "$username" ]; do
-    # Check if the user already exists in guacamole_entity
-    USER_ENTITY_EXISTS=$(kubectl exec -i $MYSQL_POD -- mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -D $MYSQL_DATABASE -sse "SELECT COUNT(*) FROM guacamole_entity WHERE name='$username' AND type='USER';")
-    if [ "$USER_ENTITY_EXISTS" -gt 0 ]; then
-        echo "User $username already exists in guacamole_entity. Checking guacamole_user..."
-        
-        # Check if the user already exists in guacamole_user
-        USER_EXISTS=$(kubectl exec -i $MYSQL_POD -- mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -D $MYSQL_DATABASE -sse "SELECT COUNT(*) FROM guacamole_user WHERE entity_id=(SELECT entity_id FROM guacamole_entity WHERE name='$username');")
-        if [ "$USER_EXISTS" -gt 0 ]; then
-            echo "User $username already exists in guacamole_user. Skipping."
-            continue
-        fi
+    [ -z "$username" ] && continue  # Skip empty lines
+
+    echo "🔄 Processing user: $username"
+
+    # Create user using the Guacamole API
+    echo "Creating user: $username"
+    CREATE_USER_RESPONSE=$(curl -s -X POST "$GUACAMOLE_URL/api/session/data/$DATA_SOURCE/users?token=$TOKEN" \
+        -H "Content-Type: application/json" \
+        -d '{
+              "username": "'$username'",
+              "password": "'$PASSWORD'",
+              "attributes": {
+                "disabled": "",
+                "expired": "",
+                "access-window-start": "",
+                "access-window-end": "",
+                "valid-from": "",
+                "valid-until": "",
+                "timezone": ""
+              }
+            }')
+
+    if [[ "$CREATE_USER_RESPONSE" == *"error"* ]]; then
+        echo "❌ Failed to create user $username: $CREATE_USER_RESPONSE"
+        continue
+    else
+        echo "✅ Created user $username."
     fi
 
-    PASSWORD_HASH=$(echo -n "$PASSWORD" | sha256sum | awk '{print $1}')
-    CURRENT_DATE=$(date '+%Y-%m-%d %H:%M:%S')
-    SQL_ENTITY="INSERT INTO guacamole_entity (name, type) VALUES ('$username', 'USER');"
-    SQL_USER="INSERT INTO guacamole_user (entity_id, password_hash, password_salt, password_date, disabled) VALUES ((SELECT entity_id FROM guacamole_entity WHERE name='$username'), UNHEX('$PASSWORD_HASH'), '', '$CURRENT_DATE', 0);"
-    
-    # Insert into guacamole_entity if not exists
-    if [ "$USER_ENTITY_EXISTS" -eq 0 ]; then
-        echo "Executing: $SQL_ENTITY"
-        kubectl exec -i $MYSQL_POD -- mysql -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE -e "$SQL_ENTITY"
-        if [ $? -ne 0 ]; then
-            echo "Failed to insert entity for user $username into MySQL."
-            continue
-        fi
-    fi
-    
-    # Insert into guacamole_user
-    echo "Executing: $SQL_USER"
-    kubectl exec -i $MYSQL_POD -- mysql -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE -e "$SQL_USER"
-    if [ $? -ne 0 ]; then
-        echo "Failed to insert user $username into MySQL."
-    else
-        echo "Inserted user: $username"
+    # Get user entity_id from the database
+    USER_ENTITY_ID=$(mysql_exec "SELECT entity_id FROM guacamole_entity WHERE name='$username' AND type='USER';")
+
+    if [ -z "$USER_ENTITY_ID" ]; then
+        echo "❌ Failed to retrieve entity_id for user $username."
+        continue
     fi
 
-    # Add user to students group
-    USER_ID=$(kubectl exec -i $MYSQL_POD -- mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -D $MYSQL_DATABASE -sse "SELECT entity_id FROM guacamole_entity WHERE name='$username' AND type='USER';")
-    SQL_GROUP="INSERT INTO guacamole_user_group_member (user_group_id, member_entity_id) VALUES ($GROUP_USER_ID, $USER_ID);"
-    echo "Executing: $SQL_GROUP"
-    kubectl exec -i $MYSQL_POD -- mysql -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE -e "$SQL_GROUP"
-    if [ $? -ne 0 ]; then
-        echo "Failed to add user $username to group $GROUP_NAME."
+    # Add user to "students" group if not already a member
+    USER_IN_GROUP=$(mysql_exec "SELECT COUNT(*) FROM guacamole_user_group_member WHERE user_group_id=$GROUP_USER_ID AND member_entity_id=$USER_ENTITY_ID;")
+    if [ "$USER_IN_GROUP" -eq 0 ]; then
+        mysql_exec "INSERT INTO guacamole_user_group_member (user_group_id, member_entity_id) VALUES ($GROUP_USER_ID, $USER_ENTITY_ID);"
+        echo "👥 Added user $username to group $GROUP_NAME."
     else
-        echo "Added user $username to group $GROUP_NAME."
+        echo "👥 User $username is already in group $GROUP_NAME."
     fi
+
 done < "$USER_LIST"
 
-echo "Bulk user import completed."
+echo "✅ Bulk user import completed."

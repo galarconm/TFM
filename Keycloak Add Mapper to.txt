@@ -11,7 +11,7 @@ SAVE
 3) Click on Configure a new mapper
 4) Select Group Membership
 Name: groups
-Token Claim Name : groups
+Token Claim Name : groups ***me falto hacer esto**
 Full group path OFF
 SAVE
 

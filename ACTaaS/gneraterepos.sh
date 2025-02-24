@@ -61,8 +61,8 @@ if [ ! -f "${FILE}" ]; then
     exit
 fi
 
-
-url="https://github.com/ARAGroupGIA/arapractice0${PRACTICE}${TYPE}-"
+url="https://github.com/test-actaas/practice0${PRACTICE}${TYPE}-"
+#url="https://github.com/ARAGroupGIA/arapractice0${PRACTICE}${TYPE}-"
 while IFS= read -r usuario
 do
   linea="$usuario,$url$usuario"

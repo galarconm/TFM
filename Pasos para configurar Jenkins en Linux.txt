@@ -8,7 +8,7 @@ Pasos para configurar Jenkins
 
 4) Configurar API TOKEN :
 	-Click your name (upper-right corner).
-	-Click Configure (left-side menu).
+	-Click Security (left-side menu). antes era Configure
 	-Use "Add new Token" button to generate a new one then name it.
 	-You must copy the token when you generate it as you cannot view the 	token afterwards.
 	11aac49f19649915bde047584e0e15ca37
@@ -17,6 +17,8 @@ Pasos para configurar Jenkins
 5)Register Students:
 	-./registerStudents.sh -f usuarios.txt -j http://localhost:8080/ -u galarconm -p 11aac49f19649915bde047584e0e15ca37
 	-./registerStudents2024v2.sh -f usuarios.txt -a 5 -j http://localhost:8080/ -u galarconm -p 11aac49f19649915bde047584e0e15ca37 -c f
+	
+	root@kubeserver:~/projects/ACTaaS# ./registerStudent2024v2.sh -f users.txt -a 5 -j http://158.42.104.43:31000/ -u admin -p 11df3fe07b36ff5ded6b6ed2e4afe59773 -c f
 
 7)Generate Repos
 	./gneraterepos.sh -f usuarios.txt -p 1 -c f
@@ -26,3 +28,18 @@ Pasos para configurar Jenkins
 	-./createTests.sh -s galarconm -g https://github.com/galarconm/pr1-gary -j hhttp://localhost:8080/ -a 1 -n ejercicio_test -t test_template.xml -u galarconm -p 11aac49f19649915bde047584e0e15ca37 -i Naruto2024! -c f
 	
 	-./createTests.sh -f lista_repos.txt -j http://localhost:8080/ -a 1 -n 1 -t test_template.xml -u galarconm -p 11aac49f19649915bde047584e0e15ca37 -i Naruto2024! -c f 
+	
+	
+	-./createTests.sh -f lista_repos.txt -j http://158.42.104.43:31000/ -a 1 -n 1 -t test_template.xml -u admin -p 11df3fe07b36ff5ded6b6ed2e4afe59773 -i admin -c f 
+	
+	
+	
+gcc ./exercise1/exercise1.c -Wall -lm -o exercise1_bin
+sh /var/tmp/education/ACTaaS/practices/P1/Face/unittests/run_test_exercise1.sh
+if [ $? -eq 1 ]   
+then
+  exit 1
+else
+  exit 0 
+fi
+

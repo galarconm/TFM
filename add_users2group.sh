@@ -27,7 +27,7 @@ fi
 GROUP_EXISTS=$(kubectl exec -i $MYSQL_POD -- mysql -u $MYSQL_USER -p$MYSQL_PASSWORD -D $MYSQL_DATABASE -sse "SELECT COUNT(*) FROM guacamole_entity WHERE name='$GROUP_NAME' AND type='USER_GROUP';")
 if [ "$GROUP_EXISTS" -eq 0 ]; then
     echo "Error: Group $GROUP_NAME does not exist."
-    exit 1
+    kubectl exec -i $MYSQL_POD -- mysql -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE -e "INSERT INTO guacamole_entity (name, type) VALUES ('$GROUP_NAME', 'USER_GROUP');"
 fi
 
 # Get the entity_id of the students group

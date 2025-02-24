@@ -10,7 +10,7 @@ fi
 USER_LIST=$1
 
 # Get token
-TOKEN=$(curl -X POST -d "username=guacadmin&password=guacadmin" "http://192.168.49.2:30000/guacamole/api/tokens")
+TOKEN=$(curl -X POST -d "username=guacadmin&password=guacadmin" "http://158.42.104.43:30000/guacamole/api/tokens")
 
 # Extract token from JSON response
 TOKEN=$(echo $TOKEN | jq -r '.authToken')
@@ -19,7 +19,7 @@ echo "Token is: $TOKEN  "
 # Get user name from file and create user
 while IFS= read -r username || [ -n "$username" ]; do
     # Create user
-    curl -X POST "http://192.168.49.2:30000/guacamole/api/session/data/mysql/users?token=$TOKEN" \
+    curl -X POST "http://158.42.104.43:30000/guacamole/api/session/data/mysql/users?token=$TOKEN" \
      -H "Content-Type: application/json" \
      -d '{
            "username": "'$username'",
@@ -35,12 +35,4 @@ while IFS= read -r username || [ -n "$username" ]; do
            }
          }'
 done < $USER_LIST
-
-# Assign users to the 'students' group
-while IFS= read -r username || [ -n "$username" ]; do
-    # Add user to the 'students' group
-    curl -X PUT "http://192.168.49.2:30000/guacamole/api/session/data/mysql/userGroup/students/memberUsers/$username?token=$TOKEN" \
-        -H "Content-Type: application/json" \
-        -d '{}'
-done < "$USER_LIST"
 

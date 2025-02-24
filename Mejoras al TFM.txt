@@ -19,7 +19,7 @@ pendientes
 2. Que la receta de despliegue monte todo el entorno automatico✅
 3. Que la receta automatice la creacion de usuarios en jenkins, keycloak, guacamole. Automatice la configuracion del entorno jenkins y guacamole.(esto ultimo ver si es posible)
 3. Acesso a Jenkins para los alumnos ✅
-
+4. agregar eso a la receta> sudo apt-get update && sudo apt-get install jq -y
 
 Otras Notas
 Los comandos de Jenkins se pueden ejecutar desde el front del cluster(maquina que tiene minikube) direccionandolo a la url puesta en el ingress. No es necesario acceder al pod de Jenkins y desde ahi lanzar los comandos.

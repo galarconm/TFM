@@ -8,7 +8,7 @@ fi
 USER_LIST=$1
 
 # Keycloak configuration
-KEYCLOAK_URL="http://192.168.49.2:31001"
+KEYCLOAK_URL="http://158.42.104.43:31001"
 KEYCLOAK_USER="admin"
 KEYCLOAK_PASSWORD="admin"
 REALM="guacamole"
