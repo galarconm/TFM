@@ -1,19 +1,10 @@
 #!/bin/bash
 # Script para desplegar recursos de Kubernetes
 
-# Variables
-IP_NFS=$(ip route get 1 | awk '{print $7; exit}')
-echo "Dirección IP de la máquina NFS: $IP_NFS"
 
-#Modificación de PV YAML
-sed -i "s/server: .*/server: $IP_NFS/" k8s/persistent-volumes/mysql-pv.yaml
-sed -i "s/server: .*/server: $IP_NFS/" k8s/persistent-volumes/jenkins-pv.yaml
-sed -i "s/server: .*/server: $IP_NFS/" k8s/persistent-volumes/home-pv.yaml
-sed -i "s/server: .*/server: $IP_NFS/" k8s/persistent-volumes/postgres-pv.yaml
-
-# Modificación de Keycloak Deployment YAML
-sed -i "s/value: \".*\" # minikube ip/value: \"$IP_NFS\" # minikube ip/" k8s/deployments/keycloak-deployment.yaml
-
+#ejecutar el script ip_nfs.sh
+#./ip_nfs.sh
+./ip_nfs.sh
 
 # Definir la ruta de los manifiestos de Kubernetes
 DEPLOYMENT_FILE="-deployment.yaml"
