@@ -31,6 +31,10 @@ configure front (
 @begin
 ---
  - pre_tasks:
+    - name: Install jq
+      apt:
+        name: jq
+        state: present
     - name: Create dir for the NFS PV
       file: path=/var/nfs_share state=directory mode=777
     - name: Set ownership for NFS PV  

@@ -1,7 +1,7 @@
 #! /bin/bash
 
 # Configuración de Keycloak
-KEYCLOAK_URL="http://158.42.104.43:31001"
+KEYCLOAK_URL="http://158.42.104.51:31001"
 KEYCLOAK_USER="admin"
 KEYCLOAK_PASSWORD="admin"
 
@@ -20,41 +20,41 @@ if [ -z "$TOKEN" ] || [ "$TOKEN" == "null" ]; then
 fi
 echo "✅ Token de acceso obtenido correctamente."
 
-# Crear Realm guacamole2
-echo "🛠️ Creando Realm 'guacamole2'..."
+# Crear Realm guacamole
+echo "🛠️ Creando Realm 'guacamole'..."
 curl -s -X POST "$KEYCLOAK_URL/admin/realms" \
     -H "Authorization: Bearer $TOKEN" \
     -H "Content-Type: application/json" \
     -d '{
-        "realm": "guacamole2",
+        "realm": "guacamole",
         "enabled": true
     }'
-echo "✅ Realm 'guacamole2' creado."
+echo "✅ Realm 'guacamole' creado."
 
-# Crear Client guacamole2
-echo "🛠️ Creando Client 'guacamole2'..."
-curl -s -X POST "$KEYCLOAK_URL/admin/realms/guacamole2/clients" \
+# Crear Client guacamole
+echo "🛠️ Creando Client 'guacamole'..."
+curl -s -X POST "$KEYCLOAK_URL/admin/realms/guacamole/clients" \
     -H "Authorization: Bearer $TOKEN" \
     -H "Content-Type: application/json" \
     -d '{
-        "clientId": "guacamole2",
+        "clientId": "guacamole",
         "enabled": true,
         "standardFlowEnabled": true,
         "implicitFlowEnabled": true,
         "directAccessGrantsEnabled": true,
-        "rootUrl": "http://158.42.104.43:30000",
-        "redirectUris": ["http://158.42.104.43:30000/*"],
-        "webOrigins": ["http://158.42.104.43:30000"],
-        "adminUrl": "http://158.42.104.43:30000/"
+        "rootUrl": "http://158.42.104.51:30000",
+        "redirectUris": ["http://158.42.104.51:30000/*"],
+        "webOrigins": ["http://158.42.104.51:30000"],
+        "adminUrl": "http://158.42.104.51:30000/"
     }'
-echo "✅ Client 'guacamole2' creado."
+echo "✅ Client 'guacamole' creado."
 
-# Configurar Mapper para ID de Grupo en el Realm de guacamole2
-echo "🛠️ Configurando Mapper para ID de Grupo en el Realm 'guacamole2'..."
+# Configurar Mapper para ID de Grupo en el Realm de guacamole
+echo "🛠️ Configurando Mapper para ID de Grupo en el Realm 'guacamole'..."
 
 # Crear Client Scope 'groups'
 echo "🔧 Creando Client Scope 'groups'..."
-curl -s -X POST "$KEYCLOAK_URL/admin/realms/guacamole2/client-scopes" \
+curl -s -X POST "$KEYCLOAK_URL/admin/realms/guacamole/client-scopes" \
     -H "Authorization: Bearer $TOKEN" \
     -H "Content-Type: application/json" \
     -d '{
@@ -68,12 +68,12 @@ curl -s -X POST "$KEYCLOAK_URL/admin/realms/guacamole2/client-scopes" \
 echo "✅ Client Scope 'groups' creado."
 
 # Obtener ID del Client Scope 'groups'
-SCOPE_ID=$(curl -s -X GET "$KEYCLOAK_URL/admin/realms/guacamole2/client-scopes" \
+SCOPE_ID=$(curl -s -X GET "$KEYCLOAK_URL/admin/realms/guacamole/client-scopes" \
     -H "Authorization: Bearer $TOKEN" | jq -r '.[] | select(.name=="groups") | .id')
 
 # Crear Mapper 'groups'
 echo "🔧 Creando Mapper 'groups'..."
-curl -s -X POST "$KEYCLOAK_URL/admin/realms/guacamole2/client-scopes/$SCOPE_ID/protocol-mappers/models" \
+curl -s -X POST "$KEYCLOAK_URL/admin/realms/guacamole/client-scopes/$SCOPE_ID/protocol-mappers/models" \
     -H "Authorization: Bearer $TOKEN" \
     -H "Content-Type: application/json" \
     -d '{
@@ -90,48 +90,48 @@ curl -s -X POST "$KEYCLOAK_URL/admin/realms/guacamole2/client-scopes/$SCOPE_ID/p
     }'
 echo "✅ Mapper 'groups' creado."
 
-# Asignar Client Scope 'groups' al Client 'guacamole2'
-echo "🔧 Asignando Client Scope 'groups' al Client 'guacamole2'..."
-CLIENT_ID=$(curl -s -X GET "$KEYCLOAK_URL/admin/realms/guacamole2/clients" \
-    -H "Authorization: Bearer $TOKEN" | jq -r '.[] | select(.clientId=="guacamole2") | .id')
+# Asignar Client Scope 'groups' al Client 'guacamole'
+echo "🔧 Asignando Client Scope 'groups' al Client 'guacamole'..."
+CLIENT_ID=$(curl -s -X GET "$KEYCLOAK_URL/admin/realms/guacamole/clients" \
+    -H "Authorization: Bearer $TOKEN" | jq -r '.[] | select(.clientId=="guacamole") | .id')
 
-curl -s -X POST "$KEYCLOAK_URL/admin/realms/guacamole2/clients/$CLIENT_ID/default-client-scopes/$SCOPE_ID" \
+curl -s -X POST "$KEYCLOAK_URL/admin/realms/guacamole/clients/$CLIENT_ID/default-client-scopes/$SCOPE_ID" \
     -H "Authorization: Bearer $TOKEN" \
     -H "Content-Type: application/json"
-echo "✅ Client Scope 'groups' asignado al Client 'guacamole2'."
+echo "✅ Client Scope 'groups' asignado al Client 'guacamole'."
 
-# Crear Realm jenkins2
-echo "🛠️ Creando Realm 'jenkins2'..."
+# Crear Realm jenkins
+echo "🛠️ Creando Realm 'jenkins'..."
 curl -s -X POST "$KEYCLOAK_URL/admin/realms" \
     -H "Authorization: Bearer $TOKEN" \
     -H "Content-Type: application/json" \
     -d '{
-        "realm": "jenkins2",
+        "realm": "jenkins",
         "enabled": true
     }'
-echo "✅ Realm 'jenkins2' creado."
+echo "✅ Realm 'jenkins' creado."
 
 # Crear Cliente para Jenkins
-echo "🛠️ Creando Cliente 'jenkins2'..."
-curl -s -X POST "$KEYCLOAK_URL/admin/realms/jenkins2/clients" \
+echo "🛠️ Creando Cliente 'jenkins'..."
+curl -s -X POST "$KEYCLOAK_URL/admin/realms/jenkins/clients" \
     -H "Authorization: Bearer $TOKEN" \
     -H "Content-Type: application/json" \
     -d '{
-        "clientId": "jenkins2",
+        "clientId": "jenkins",
         "enabled": true,
-        "rootUrl": "http://158.42.104.43:31000",
-        "redirectUris": ["http://158.42.104.43:31000/*"],
-        "webOrigins": ["http://158.42.104.43:31000"],
-        "adminUrl": "http://158.42.104.43:31000/"
+        "rootUrl": "http://158.42.104.51:31000",
+        "redirectUris": ["http://158.42.104.51:31000/*"],
+        "webOrigins": ["http://158.42.104.51:31000"],
+        "adminUrl": "http://158.42.104.51:31000/"
     }'
-echo "✅ Cliente 'jenkins2' creado."
+echo "✅ Cliente 'jenkins' creado."
 
 # Obtener JSON de configuración del Cliente Jenkins
 echo "🔧 Generando JSON de configuración para Jenkins..."
-CLIENT_ID=$(curl -s -X GET "$KEYCLOAK_URL/admin/realms/jenkins2/clients" \
-    -H "Authorization: Bearer $TOKEN" | jq -r '.[] | select(.clientId=="jenkins2") | .id')
+CLIENT_ID=$(curl -s -X GET "$KEYCLOAK_URL/admin/realms/jenkins/clients" \
+    -H "Authorization: Bearer $TOKEN" | jq -r '.[] | select(.clientId=="jenkins") | .id')
 
-CONFIG_JSON=$(curl -s -X GET "$KEYCLOAK_URL/admin/realms/jenkins2/clients/$CLIENT_ID/installation/providers/keycloak-oidc-keycloak-json" \
+CONFIG_JSON=$(curl -s -X GET "$KEYCLOAK_URL/admin/realms/jenkins/clients/$CLIENT_ID/installation/providers/keycloak-oidc-keycloak-json" \
     -H "Authorization: Bearer $TOKEN")
 
 echo "🔑 JSON de configuración para Jenkins:"
@@ -140,12 +140,12 @@ echo "✅ JSON generado y copiado al portapapeles."
 
 # Crear Roles en Keycloak
 echo "🛠️ Creando Roles en Keycloak..."
-curl -s -X POST "$KEYCLOAK_URL/admin/realms/jenkins2/roles" \
+curl -s -X POST "$KEYCLOAK_URL/admin/realms/jenkins/roles" \
     -H "Authorization: Bearer $TOKEN" \
     -H "Content-Type: application/json" \
     -d '{"name": "jenkins_admin"}'
 
-curl -s -X POST "$KEYCLOAK_URL/admin/realms/jenkins2/roles" \
+curl -s -X POST "$KEYCLOAK_URL/admin/realms/jenkins/roles" \
     -H "Authorization: Bearer $TOKEN" \
     -H "Content-Type: application/json" \
     -d '{"name": "jenkins_students"}'
@@ -155,7 +155,7 @@ echo "✅ Roles 'jenkins_admin' y 'jenkins_students' creados."
 echo "🛠️ Creando Usuarios y Asignando Roles..."
 
 # Crear usuario admin
-curl -s -X POST "$KEYCLOAK_URL/admin/realms/jenkins2/users" \
+curl -s -X POST "$KEYCLOAK_URL/admin/realms/jenkins/users" \
     -H "Authorization: Bearer $TOKEN" \
     -H "Content-Type: application/json" \
     -d '{
@@ -171,21 +171,21 @@ curl -s -X POST "$KEYCLOAK_URL/admin/realms/jenkins2/users" \
     }'
 
 # Obtener ID del usuario admin
-ADMIN_ID=$(curl -s -X GET "$KEYCLOAK_URL/admin/realms/jenkins2/users" \
+ADMIN_ID=$(curl -s -X GET "$KEYCLOAK_URL/admin/realms/jenkins/users" \
     -H "Authorization: Bearer $TOKEN" | jq -r '.[] | select(.username=="admin") | .id')
 
 # Obtener ID del rol jenkins_admin
-ROLE_ADMIN_ID=$(curl -s -X GET "$KEYCLOAK_URL/admin/realms/jenkins2/roles" \
+ROLE_ADMIN_ID=$(curl -s -X GET "$KEYCLOAK_URL/admin/realms/jenkins/roles" \
     -H "Authorization: Bearer $TOKEN" | jq -r '.[] | select(.name=="jenkins_admin") | .id')
 
 # Asignar rol jenkins_admin al usuario admin
-curl -s -X POST "$KEYCLOAK_URL/admin/realms/jenkins2/users/$ADMIN_ID/role-mappings/realm" \
+curl -s -X POST "$KEYCLOAK_URL/admin/realms/jenkins/users/$ADMIN_ID/role-mappings/realm" \
     -H "Authorization: Bearer $TOKEN" \
     -H "Content-Type: application/json" \
     -d '[{"id":"'"$ROLE_ADMIN_ID"'","name":"jenkins_admin"}]'
 
 # Crear usuario estudiante
-curl -s -X POST "$KEYCLOAK_URL/admin/realms/jenkins2/users" \
+curl -s -X POST "$KEYCLOAK_URL/admin/realms/jenkins/users" \
     -H "Authorization: Bearer $TOKEN" \
     -H "Content-Type: application/json" \
     -d '{
@@ -201,15 +201,15 @@ curl -s -X POST "$KEYCLOAK_URL/admin/realms/jenkins2/users" \
     }'
 
 # Obtener ID del usuario estudiante
-USER_ID=$(curl -s -X GET "$KEYCLOAK_URL/admin/realms/jenkins2/users" \
+USER_ID=$(curl -s -X GET "$KEYCLOAK_URL/admin/realms/jenkins/users" \
     -H "Authorization: Bearer $TOKEN" | jq -r '.[] | select(.username=="usuario1") | .id')
 
 # Obtener ID del rol jenkins_students
-ROLE_STUDENTS_ID=$(curl -s -X GET "$KEYCLOAK_URL/admin/realms/jenkins2/roles" \
+ROLE_STUDENTS_ID=$(curl -s -X GET "$KEYCLOAK_URL/admin/realms/jenkins/roles" \
     -H "Authorization: Bearer $TOKEN" | jq -r '.[] | select(.name=="jenkins_students") | .id')
 
 # Asignar rol jenkins_students al usuario estudiante
-curl -s -X POST "$KEYCLOAK_URL/admin/realms/jenkins2/users/$USER_ID/role-mappings/realm" \
+curl -s -X POST "$KEYCLOAK_URL/admin/realms/jenkins/users/$USER_ID/role-mappings/realm" \
     -H "Authorization: Bearer $TOKEN" \
     -H "Content-Type: application/json" \
     -d '[{"id":"'"$ROLE_STUDENTS_ID"'","name":"jenkins_students"}]'
