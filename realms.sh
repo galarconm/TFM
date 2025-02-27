@@ -1,7 +1,7 @@
 #! /bin/bash
 
 # Configuración de Keycloak
-KEYCLOAK_URL="http://158.42.104.51:31001"
+KEYCLOAK_URL="http://158.42.104.43:31001"
 KEYCLOAK_USER="admin"
 KEYCLOAK_PASSWORD="admin"
 
@@ -42,10 +42,10 @@ curl -s -X POST "$KEYCLOAK_URL/admin/realms/guacamole/clients" \
         "standardFlowEnabled": true,
         "implicitFlowEnabled": true,
         "directAccessGrantsEnabled": true,
-        "rootUrl": "http://158.42.104.51:30000",
-        "redirectUris": ["http://158.42.104.51:30000/*"],
-        "webOrigins": ["http://158.42.104.51:30000"],
-        "adminUrl": "http://158.42.104.51:30000/"
+        "rootUrl": "http://158.42.104.43:30000",
+        "redirectUris": ["http://158.42.104.43:30000/*"],
+        "webOrigins": ["http://158.42.104.43:30000"],
+        "adminUrl": "http://158.42.104.43:30000/"
     }'
 echo "✅ Client 'guacamole' creado."
 
@@ -119,10 +119,10 @@ curl -s -X POST "$KEYCLOAK_URL/admin/realms/jenkins/clients" \
     -d '{
         "clientId": "jenkins",
         "enabled": true,
-        "rootUrl": "http://158.42.104.51:31000",
-        "redirectUris": ["http://158.42.104.51:31000/*"],
-        "webOrigins": ["http://158.42.104.51:31000"],
-        "adminUrl": "http://158.42.104.51:31000/"
+        "rootUrl": "http://158.42.104.43:31000",
+        "redirectUris": ["http://158.42.104.43:31000/*"],
+        "webOrigins": ["http://158.42.104.43:31000"],
+        "adminUrl": "http://158.42.104.43:31000/"
     }'
 echo "✅ Cliente 'jenkins' creado."
 
