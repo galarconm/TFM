@@ -39,10 +39,6 @@ Pasos para configurar Jenkins
 
 
 	
-./createTests.sh -f lista_repos.txt -j http://158.42.104.43:31000/ -a 1 -n 2 -t test_template.xml -u admin -p 11df3fe07b36ff5ded6b6ed2e4afe59773 -i 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 -c f 
-
-./createTests.sh -f lista_repos.txt -j http://158.42.104.43:31000/ -a 1 -n 3 -t test_template.xml -u admin -p 11df3fe07b36ff5ded6b6ed2e4afe59773 -i github-pat3 -c f
-	
 gcc ./exercise1/exercise1.c -Wall -lm -o exercise1_bin
 sh /var/tmp/education/ACTaaS/practices/P1/Face/unittests/run_test_exercise1.sh
 if [ $? -eq 1 ]   
