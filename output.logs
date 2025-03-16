@@ -1,0 +1,2976 @@
+Secure connection with: https://im.egi.eu/im
+Msg Contextualizator: 
+
+2025-02-18 22:32:58.115850: Select master VM
+2025-02-18 22:32:58.117739: Wait master VM to boot
+2025-02-18 22:33:28.222101: Wait master VM to have the SSH active.
+2025-02-18 22:34:38.484208: Creating and copying Ansible playbook files
+2025-02-18 22:34:41.824173: Galaxy role grycap.nfs detected setting to install.
+2025-02-18 22:34:41.824472: Galaxy role grycap.kubernetes detected setting to install.
+2025-02-18 22:34:41.824584: Performing preliminary steps to configure Ansible.
+2025-02-18 22:34:42.414483: Configure Ansible in the master VM.
+2025-02-18 22:36:53.584028: Ansible successfully configured in the master VM.
+2025-02-18 22:36:58.864199: Copying YAML, hosts and inventory files.
+VM 0:
+Contextualization agent output processed successfullyGenerate and copy the ssh key
+b''
+Sleeping 0 secs.
+Launch task: wait_all_ssh
+Waiting SSH access to VM: 158.42.104.43
+Testing SSH access to VM: 10.10.1.12:22
+Remote access to VM: 158.42.104.43 Open!
+Changing the IP 10.10.1.12 for 158.42.104.43 in config files.
+Waiting SSH access to VM: 10.10.1.19
+Testing SSH access to VM: 10.10.1.19:22
+Remote access to VM: 10.10.1.19 Open!
+Waiting SSH access to VM: 10.10.1.22
+Testing SSH access to VM: 10.10.1.22:22
+Remote access to VM: 10.10.1.22 Open!
+Task wait_all_ssh finished successfully
+Process finished
+Contextualization agent output processed successfullyGenerate and copy the ssh key
+Sleeping 0 secs.
+Launch task: basic
+Waiting SSH access to VM: 158.42.104.43
+Testing SSH access to VM: 10.10.1.12:22
+Remote access to VM: 158.42.104.43 Open!
+Requiretty successfully removed
+Install grycap.nfs with ansible-galaxy.
+Install grycap.kubernetes with ansible-galaxy.
+Galaxy depencies file: [{src: grycap.nfs}, {src: grycap.kubernetes}]
+
+Call Ansible
+
+PLAY [158.42.104.43_0] *********************************************************
+
+TASK [Avoid unattended upgrades] ***********************************************
+Tuesday 18 February 2025  22:37:21.147416 
+ok: [158.42.104.43_0]
+
+TASK [Wait for the VM to boot] *************************************************
+Tuesday 18 February 2025  22:37:21.204040 
+ok: [158.42.104.43_0]
+
+TASK [Check Python2 is installed] **********************************************
+Tuesday 18 February 2025  22:37:21.234887 
+fatal: [158.42.104.43_0]: FAILED! => {"changed": false, "msg": "non-zero return code", "rc": 127, "stderr": "/bin/sh: 1: python2: not found\n", "stderr_lines": ["/bin/sh: 1: python2: not found"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [Check Python3 is installed] **********************************************
+Tuesday 18 February 2025  22:37:21.263815 
+ok: [158.42.104.43_0]
+
+TASK [Bootstrap with python Debian/Ubuntu] *************************************
+Tuesday 18 February 2025  22:37:21.323448 
+skipping: [158.42.104.43_0]
+
+TASK [Link correct python version in Ubuntu 14] ********************************
+Tuesday 18 February 2025  22:37:21.400235 
+skipping: [158.42.104.43_0]
+
+TASK [Bootstrap with python RedHat/CentOS] *************************************
+Tuesday 18 February 2025  22:37:21.443679 
+skipping: [158.42.104.43_0]
+
+TASK [RedHat/CentOS install python3-dnf] ***************************************
+Tuesday 18 February 2025  22:37:21.475603 
+fatal: [158.42.104.43_0]: FAILED! => {"ansible_facts": {"discovered_interpreter_python": "/usr/bin/python3"}, "changed": true, "cmd": ["sudo", "yum", "install", "-y", "python3", "python3-dnf"], "delta": "0:00:00.011449", "end": "2025-02-18 22:37:21.934630", "msg": "non-zero return code", "rc": 1, "start": "2025-02-18 22:37:21.923181", "stderr": "sudo: yum: command not found", "stderr_lines": ["sudo: yum: command not found"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [Bootstrap with python SUSE] **********************************************
+Tuesday 18 February 2025  22:37:21.968130 
+skipping: [158.42.104.43_0]
+
+TASK [Link python 3 or 2 in case is needed] ************************************
+Tuesday 18 February 2025  22:37:21.998904 
+changed: [158.42.104.43_0]
+
+TASK [Install libselinux-python3 on RH systems] ********************************
+Tuesday 18 February 2025  22:37:22.035997 
+fatal: [158.42.104.43_0]: FAILED! => {"changed": true, "msg": "non-zero return code", "rc": 127, "stderr": "/bin/sh: 1: yum: not found\n", "stderr_lines": ["/bin/sh: 1: yum: not found"], "stdout": "/usr/bin/python3\n", "stdout_lines": ["/usr/bin/python3"]}
+...ignoring
+
+TASK [Install libselinux-python on RH systems] *********************************
+Tuesday 18 February 2025  22:37:22.078412 
+fatal: [158.42.104.43_0]: FAILED! => {"changed": true, "msg": "non-zero return code", "rc": 2, "stderr": "ls: cannot access '/usr/bin/python2': No such file or directory\n", "stderr_lines": ["ls: cannot access '/usr/bin/python2': No such file or directory"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [Set the hostname of the node] ********************************************
+Tuesday 18 February 2025  22:37:22.115223 
+changed: [158.42.104.43_0]
+
+TASK [Disable SELinux in REL systems] ******************************************
+Tuesday 18 February 2025  22:37:23.056918 
+An exception occurred during task execution. To see the full traceback, use -vvv. The error was: ModuleNotFoundError: No module named 'selinux'
+fatal: [158.42.104.43_0]: FAILED! => {"changed": false, "msg": "Failed to import the required Python library (libselinux-python) on kubeserver.localdomain's Python /usr/bin/python3. Please read the module documentation and install it in the appropriate location. If the required library is installed, but Ansible is using the wrong Python interpreter, please consult the documentation on ansible_python_interpreter"}
+...ignoring
+
+TASK [Add the authorized_key to the nodes] *************************************
+Tuesday 18 February 2025  22:37:23.853767 
+changed: [158.42.104.43_0]
+
+TASK [Add the authorized_key to the nodes again] *******************************
+Tuesday 18 February 2025  22:37:24.474219 
+fatal: [158.42.104.43_0]: FAILED! => {"changed": false, "msg": "Destination /home/root/.ssh/authorized_keys does not exist !", "rc": 257}
+...ignoring
+
+TASK [Gather Facts] ************************************************************
+Tuesday 18 February 2025  22:37:24.890654 
+ok: [158.42.104.43_0]
+
+TASK [Ubuntu apt update] *******************************************************
+Tuesday 18 February 2025  22:37:26.630709 
+ok: [158.42.104.43_0]
+
+TASK [Ubuntu force apt update (avoid apt lock)] ********************************
+Tuesday 18 February 2025  22:37:29.045098 
+skipping: [158.42.104.43_0]
+
+TASK [Create YAML file to install the roles with ansible-galaxy] ***************
+Tuesday 18 February 2025  22:37:29.092094 
+changed: [158.42.104.43_0]
+
+TASK [Install galaxy roles] ****************************************************
+Tuesday 18 February 2025  22:37:30.005522 
+changed: [158.42.104.43_0]
+
+PLAY RECAP *********************************************************************
+158.42.104.43_0            : ok=16   changed=8    unreachable=0    failed=0   
+158.42.104.43_0            : ok=16   changed=8    unreachable=0    failed=0   
+
+Task basic finished successfully
+Process finished
+Contextualization agent output processed successfullyGenerate and copy the ssh key
+Sleeping 0 secs.
+Launch task: main_front
+Call Ansible
+
+PLAY [allnowindows] ************************************************************
+
+TASK [Gathering Facts] *********************************************************
+Tuesday 18 February 2025  22:38:06.226993 
+ok: [158.42.104.43_0]
+ok: [10.10.1.22_2]
+ok: [10.10.1.19_1]
+
+PLAY [158.42.104.43_0] *********************************************************
+
+TASK [include_tasks] ***********************************************************
+Tuesday 18 February 2025  22:38:08.005867 
+ok: [158.42.104.43_0]
+included: /var/tmp/.im/43d10bda-ee48-11ef-8802-66dee9cd23fd/utils/tasks/main.yml for 158.42.104.43_0
+
+TASK [Copy the original /etc/hosts] ********************************************
+Tuesday 18 February 2025  22:38:08.052777 
+changed: [158.42.104.43_0]
+
+TASK [Copy the /etc/hosts] *****************************************************
+Tuesday 18 February 2025  22:38:08.512323 
+changed: [158.42.104.43_0]
+
+TASK [Merge /etc/hosts] ********************************************************
+Tuesday 18 February 2025  22:38:09.396164 
+changed: [158.42.104.43_0]
+
+TASK [Copy the /etc/hosts in windows native] ***********************************
+Tuesday 18 February 2025  22:38:09.726861 
+skipping: [158.42.104.43_0]
+
+TASK [Set BEARER_TOKEN environment variable] ***********************************
+Tuesday 18 February 2025  22:38:09.764026 
+skipping: [158.42.104.43_0]
+
+TASK [debug] *******************************************************************
+Tuesday 18 February 2025  22:38:09.838014 
+ok: [158.42.104.43_0] => {
+    "changed": false,
+    "msg": "Install user requested apps"
+}
+
+PLAY RECAP *********************************************************************
+10.10.1.19_1               : ok=1    changed=0    unreachable=0    failed=0   
+10.10.1.19_1               : ok=1    changed=0    unreachable=0    failed=0   
+10.10.1.22_2               : ok=1    changed=0    unreachable=0    failed=0   
+10.10.1.22_2               : ok=1    changed=0    unreachable=0    failed=0   
+158.42.104.43_0            : ok=6    changed=3    unreachable=0    failed=0   
+158.42.104.43_0            : ok=6    changed=3    unreachable=0    failed=0   
+
+Task main_front finished successfully
+Process finished
+Contextualization agent output processed successfullyGenerate and copy the ssh key
+Sleeping 0 secs.
+Launch task: front_front
+Call Ansible
+
+PLAY [allnowindows] ************************************************************
+
+PLAY [158.42.104.43_0] *********************************************************
+
+TASK [Create dir for the NFS PV] ***********************************************
+Tuesday 18 February 2025  22:38:22.039978 
+changed: [158.42.104.43_0]
+
+TASK [Set ownership for NFS PV] ************************************************
+Tuesday 18 February 2025  22:38:22.589356 
+changed: [158.42.104.43_0]
+
+TASK [Create dir for the NFS PV mysql] *****************************************
+Tuesday 18 February 2025  22:38:22.986662 
+changed: [158.42.104.43_0]
+
+TASK [Set ownership for NFS PV  mysql] *****************************************
+Tuesday 18 February 2025  22:38:23.305448 
+changed: [158.42.104.43_0]
+
+TASK [Create dir for the NFS PV postgres] **************************************
+Tuesday 18 February 2025  22:38:23.558570 
+changed: [158.42.104.43_0]
+
+TASK [Set ownership for NFS PV  postgres] **************************************
+Tuesday 18 February 2025  22:38:23.848697 
+changed: [158.42.104.43_0]
+
+TASK [Create dir for the NFS PV jenkins] ***************************************
+Tuesday 18 February 2025  22:38:24.156880 
+changed: [158.42.104.43_0]
+
+TASK [Set ownership for NFS PV jenkins] ****************************************
+Tuesday 18 February 2025  22:38:24.514958 
+changed: [158.42.104.43_0]
+
+TASK [Create dir for the NFS PV home] ******************************************
+Tuesday 18 February 2025  22:38:24.864591 
+changed: [158.42.104.43_0]
+
+TASK [Set ownership for NFS PV  home] ******************************************
+Tuesday 18 February 2025  22:38:25.186064 
+changed: [158.42.104.43_0]
+
+TASK [Create auth file dir] ****************************************************
+Tuesday 18 February 2025  22:38:25.542076 
+changed: [158.42.104.43_0]
+
+TASK [Create auth data file with an admin user] ********************************
+Tuesday 18 February 2025  22:38:25.897243 
+changed: [158.42.104.43_0]
+
+TASK [Set KUBECONFIG environment variable] *************************************
+Tuesday 18 February 2025  22:38:26.824296 
+changed: [158.42.104.43_0]
+
+TASK [Install Project from Github] *********************************************
+Tuesday 18 February 2025  22:38:27.312161 
+changed: [158.42.104.43_0]
+
+TASK [grycap.nfs : include_tasks] **********************************************
+Tuesday 18 February 2025  22:38:33.850095 
+ok: [158.42.104.43_0]
+included: /etc/ansible/roles/grycap.nfs/tasks/front.yaml for 158.42.104.43_0
+
+TASK [grycap.nfs : export the directories editing the file /etc/exports] *******
+Tuesday 18 February 2025  22:38:33.909881 
+changed: [158.42.104.43_0] => (item={'export': 'wn-*.localdomain(fsid=0,rw,async,no_root_squash,no_subtree_check,insecure)', 'path': '/var/nfs_share'})
+changed: [158.42.104.43_0] => (item={'export': 'wn-*.localdomain(rw,sync,no_subtree_check)', 'path': '/var/nfs_share/mysql'})
+changed: [158.42.104.43_0] => (item={'export': 'wn-*.localdomain(rw,sync,no_subtree_check,no_root_squash)', 'path': '/var/nfs_share/postgres'})
+changed: [158.42.104.43_0] => (item={'export': 'wn-*.localdomain(rw,sync,no_subtree_check)', 'path': '/var/nfs_share/jenkins'})
+changed: [158.42.104.43_0] => (item={'export': 'wn-*.localdomain(rw,sync,no_subtree_check,no_root_squash)', 'path': '/var/nfs_share/home'})
+
+TASK [grycap.nfs : include_tasks] **********************************************
+Tuesday 18 February 2025  22:38:35.361418 
+ok: [158.42.104.43_0]
+included: /etc/ansible/roles/grycap.nfs/tasks/front-Debian.yaml for 158.42.104.43_0
+
+TASK [grycap.nfs : update repositories cache and install NFS in Deb systems] ***
+Tuesday 18 February 2025  22:38:35.424763 
+changed: [158.42.104.43_0]
+
+TASK [grycap.nfs : set_fact] ***************************************************
+Tuesday 18 February 2025  22:39:01.416759 
+ok: [158.42.104.43_0]
+
+TASK [grycap.nfs : NFSv4 configure options] ************************************
+Tuesday 18 February 2025  22:39:01.474565 
+skipping: [158.42.104.43_0] => (item={'option': 'NEED_STATD', 'value': 'no'}) 
+skipping: [158.42.104.43_0] => (item={'option': 'NEED_IDMAPD', 'value': 'yes'}) 
+skipping: [158.42.104.43_0] => (item={'option': 'RPCNFSDOPTS', 'value': '-N 2 -N 3'}) 
+skipping: [158.42.104.43_0] => (item={'option': 'RPCMOUNTDOPTS', 'value': '--manage-gids -N 2 -N 3'}) 
+
+TASK [grycap.nfs : Ensure rpcbind is running] **********************************
+Tuesday 18 February 2025  22:39:01.551396 
+ok: [158.42.104.43_0]
+
+TASK [grycap.nfs : Ensure rpcbind is stopped] **********************************
+Tuesday 18 February 2025  22:39:02.487848 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.nfs : Restart NFS server service] *********************************
+Tuesday 18 February 2025  22:39:02.539685 
+changed: [158.42.104.43_0]
+
+TASK [grycap.nfs : Check if NFS server service is started] *********************
+Tuesday 18 February 2025  22:39:03.234392 
+ok: [158.42.104.43_0]
+
+TASK [grycap.nfs : Ensure rpcbind is running] **********************************
+Tuesday 18 February 2025  22:39:03.719339 
+ok: [158.42.104.43_0]
+
+TASK [grycap.nfs : Ensure rpcbind is stopped] **********************************
+Tuesday 18 February 2025  22:39:04.297943 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.nfs : Ensure rpcbind.socket is stopped] ***************************
+Tuesday 18 February 2025  22:39:04.354797 
+skipping: [158.42.104.43_0]
+
+TASK [geerlingguy.ntp : Include OS-specific variables.] ************************
+Tuesday 18 February 2025  22:39:04.427334 
+ok: [158.42.104.43_0] => (item=/etc/ansible/roles/geerlingguy.ntp/vars/Debian.yml)
+
+TASK [geerlingguy.ntp : Set the ntp_driftfile variable.] ***********************
+Tuesday 18 February 2025  22:39:04.502615 
+ok: [158.42.104.43_0]
+
+TASK [geerlingguy.ntp : Set the ntp_package variable.] *************************
+Tuesday 18 February 2025  22:39:04.565313 
+ok: [158.42.104.43_0]
+
+TASK [geerlingguy.ntp : Set the ntp_config_file variable.] *********************
+Tuesday 18 February 2025  22:39:04.632967 
+ok: [158.42.104.43_0]
+
+TASK [geerlingguy.ntp : Set the ntp_daemon variable.] **************************
+Tuesday 18 February 2025  22:39:04.698065 
+ok: [158.42.104.43_0]
+
+TASK [geerlingguy.ntp : Ensure NTP package is installed.] **********************
+Tuesday 18 February 2025  22:39:04.763247 
+changed: [158.42.104.43_0]
+
+TASK [geerlingguy.ntp : Ensure tzdata package is installed (Linux).] ***********
+Tuesday 18 February 2025  22:39:23.401853 
+ok: [158.42.104.43_0]
+
+TASK [geerlingguy.ntp : Set timezone.] *****************************************
+Tuesday 18 February 2025  22:39:24.706689 
+ok: [158.42.104.43_0]
+
+TASK [geerlingguy.ntp : Populate service facts.] *******************************
+Tuesday 18 February 2025  22:39:25.378642 
+ok: [158.42.104.43_0]
+
+TASK [geerlingguy.ntp : Disable systemd-timesyncd if it's running but ntp is enabled.] ***
+Tuesday 18 February 2025  22:39:32.514010 
+ok: [158.42.104.43_0]
+
+TASK [geerlingguy.ntp : Ensure NTP is running and enabled as configured.] ******
+Tuesday 18 February 2025  22:39:33.134907 
+ok: [158.42.104.43_0]
+
+TASK [geerlingguy.ntp : Ensure NTP is stopped and disabled as configured.] *****
+Tuesday 18 February 2025  22:39:33.756900 
+skipping: [158.42.104.43_0]
+
+TASK [geerlingguy.ntp : Generate ntp configuration file.] **********************
+Tuesday 18 February 2025  22:39:33.830175 
+skipping: [158.42.104.43_0]
+
+TASK [NVIDIA.nvidia_driver : unload nouveau] ***********************************
+Tuesday 18 February 2025  22:39:33.921667 
+skipping: [158.42.104.43_0]
+
+TASK [NVIDIA.nvidia_driver : ubuntu install tasks (canonical repos)] ***********
+Tuesday 18 February 2025  22:39:33.976308 
+skipping: [158.42.104.43_0]
+
+TASK [NVIDIA.nvidia_driver : ubuntu install tasks (CUDA repo)] *****************
+Tuesday 18 February 2025  22:39:34.027511 
+skipping: [158.42.104.43_0]
+
+TASK [NVIDIA.nvidia_driver : redhat family install tasks] **********************
+Tuesday 18 February 2025  22:39:34.077053 
+skipping: [158.42.104.43_0]
+
+TASK [NVIDIA.nvidia_driver : create persistenced override dir] *****************
+Tuesday 18 February 2025  22:39:34.127750 
+skipping: [158.42.104.43_0]
+
+TASK [NVIDIA.nvidia_driver : configure persistenced service to turn on persistence mode] ***
+Tuesday 18 February 2025  22:39:34.177266 
+skipping: [158.42.104.43_0]
+
+TASK [NVIDIA.nvidia_driver : remove persistenced service override] *************
+Tuesday 18 February 2025  22:39:34.226984 
+skipping: [158.42.104.43_0]
+
+TASK [NVIDIA.nvidia_driver : enable persistenced] ******************************
+Tuesday 18 February 2025  22:39:34.281989 
+skipping: [158.42.104.43_0]
+
+TASK [NVIDIA.nvidia_driver : set module parameters] ****************************
+Tuesday 18 February 2025  22:39:34.334212 
+skipping: [158.42.104.43_0]
+
+TASK [NVIDIA.nvidia_driver : reboot after driver install] **********************
+Tuesday 18 February 2025  22:39:34.385817 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Include Docker tasks] ************************************
+Tuesday 18 February 2025  22:39:34.454706 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Include Containerd tasks] ********************************
+Tuesday 18 February 2025  22:39:34.506721 
+skipping: [158.42.104.43_0]
+
+TASK [NVIDIA.nvidia_driver : unload nouveau] ***********************************
+Tuesday 18 February 2025  22:39:34.606422 
+skipping: [158.42.104.43_0]
+
+TASK [NVIDIA.nvidia_driver : ubuntu install tasks (canonical repos)] ***********
+Tuesday 18 February 2025  22:39:34.675661 
+skipping: [158.42.104.43_0]
+
+TASK [NVIDIA.nvidia_driver : ubuntu install tasks (CUDA repo)] *****************
+Tuesday 18 February 2025  22:39:34.750336 
+skipping: [158.42.104.43_0]
+
+TASK [NVIDIA.nvidia_driver : redhat family install tasks] **********************
+Tuesday 18 February 2025  22:39:34.820165 
+skipping: [158.42.104.43_0]
+
+TASK [NVIDIA.nvidia_driver : create persistenced override dir] *****************
+Tuesday 18 February 2025  22:39:34.894666 
+skipping: [158.42.104.43_0]
+
+TASK [NVIDIA.nvidia_driver : configure persistenced service to turn on persistence mode] ***
+Tuesday 18 February 2025  22:39:34.970590 
+skipping: [158.42.104.43_0]
+
+TASK [NVIDIA.nvidia_driver : remove persistenced service override] *************
+Tuesday 18 February 2025  22:39:35.047994 
+skipping: [158.42.104.43_0]
+
+TASK [NVIDIA.nvidia_driver : enable persistenced] ******************************
+Tuesday 18 February 2025  22:39:35.122007 
+skipping: [158.42.104.43_0]
+
+TASK [NVIDIA.nvidia_driver : set module parameters] ****************************
+Tuesday 18 February 2025  22:39:35.193750 
+skipping: [158.42.104.43_0]
+
+TASK [NVIDIA.nvidia_driver : reboot after driver install] **********************
+Tuesday 18 February 2025  22:39:35.266247 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Include Docker tasks] ************************************
+Tuesday 18 February 2025  22:39:35.358944 
+ok: [158.42.104.43_0]
+included: /etc/ansible/roles/grycap.docker/tasks/docker.yml for 158.42.104.43_0
+
+TASK [grycap.docker : Check docker version] ************************************
+Tuesday 18 February 2025  22:39:35.485500 
+ok: [158.42.104.43_0]
+
+TASK [grycap.docker : debug] ***************************************************
+Tuesday 18 February 2025  22:39:35.860341 
+ok: [158.42.104.43_0] => {
+    "changed": false,
+    "msg": "Docker version installed = "
+}
+
+TASK [grycap.docker : Set docker to be installed] ******************************
+Tuesday 18 February 2025  22:39:35.931641 
+ok: [158.42.104.43_0]
+
+TASK [grycap.docker : Chek docker compatible versions] *************************
+Tuesday 18 February 2025  22:39:36.000586 
+
+TASK [grycap.docker : Include "Debian" tasks] **********************************
+Tuesday 18 February 2025  22:39:36.052818 
+ok: [158.42.104.43_0]
+included: /etc/ansible/roles/grycap.docker/tasks/Debian.yml for 158.42.104.43_0
+
+TASK [grycap.docker : Install dependencies in Deb systems] *********************
+Tuesday 18 February 2025  22:39:36.175659 
+changed: [158.42.104.43_0]
+
+TASK [grycap.docker : Install dependencies in Deb systems] *********************
+Tuesday 18 February 2025  22:39:53.752548 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Install dependencies in Deb systems] *********************
+Tuesday 18 February 2025  22:39:53.842926 
+changed: [158.42.104.43_0]
+
+TASK [grycap.docker : Add Docker repo key] *************************************
+Tuesday 18 February 2025  22:40:05.491985 
+changed: [158.42.104.43_0]
+
+TASK [grycap.docker : Add docker-ce  repo] *************************************
+Tuesday 18 February 2025  22:40:06.235133 
+changed: [158.42.104.43_0]
+
+TASK [grycap.docker : Add docker repo] *****************************************
+Tuesday 18 February 2025  22:40:20.532929 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Install docker latest] ***********************************
+Tuesday 18 February 2025  22:40:20.611390 
+changed: [158.42.104.43_0]
+
+TASK [grycap.docker : Install docker latest] ***********************************
+Tuesday 18 February 2025  22:40:57.797450 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Install CRIU] ********************************************
+Tuesday 18 February 2025  22:40:57.858834 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Install containerd.io] ***********************************
+Tuesday 18 February 2025  22:40:57.935893 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Install containerd.io] ***********************************
+Tuesday 18 February 2025  22:40:57.984350 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Delete initial /etc/containerd/config.toml file] *********
+Tuesday 18 February 2025  22:40:58.036703 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : set_fact] ************************************************
+Tuesday 18 February 2025  22:40:58.083219 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : set_fact] ************************************************
+Tuesday 18 February 2025  22:40:58.139721 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Download nvidia repo apt list] ***************************
+Tuesday 18 February 2025  22:40:58.199044 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Add nvidia-docker repo key] ******************************
+Tuesday 18 February 2025  22:40:58.255123 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Ubuntu apt update] ***************************************
+Tuesday 18 February 2025  22:40:58.311878 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Install nvidia-docker2 package] **************************
+Tuesday 18 February 2025  22:40:58.374762 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Assure that /etc/default/docker exists] ******************
+Tuesday 18 February 2025  22:40:58.436729 
+ok: [158.42.104.43_0]
+
+TASK [grycap.docker : Set DOCKER_OPTS] *****************************************
+Tuesday 18 February 2025  22:40:59.596531 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : set_fact] ************************************************
+Tuesday 18 February 2025  22:40:59.654151 
+ok: [158.42.104.43_0]
+
+TASK [grycap.docker : set_fact] ************************************************
+Tuesday 18 February 2025  22:40:59.746281 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Create /etc/docker dir] **********************************
+Tuesday 18 February 2025  22:40:59.802415 
+ok: [158.42.104.43_0]
+
+TASK [grycap.docker : stat] ****************************************************
+Tuesday 18 February 2025  22:41:00.152175 
+ok: [158.42.104.43_0]
+
+TASK [grycap.docker : Load values from daemon.json file] ***********************
+Tuesday 18 February 2025  22:41:00.529020 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Append more key/values in daemon.json] *******************
+Tuesday 18 February 2025  22:41:00.597487 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Set key/values] ******************************************
+Tuesday 18 February 2025  22:41:00.654670 
+ok: [158.42.104.43_0]
+
+TASK [grycap.docker : Set new values in daemon.json] ***************************
+Tuesday 18 February 2025  22:41:00.749188 
+changed: [158.42.104.43_0]
+
+TASK [grycap.docker : stat] ****************************************************
+Tuesday 18 February 2025  22:41:01.372159 
+ok: [158.42.104.43_0]
+
+TASK [grycap.docker : lineinfile] **********************************************
+Tuesday 18 February 2025  22:41:01.762395 
+changed: [158.42.104.43_0]
+
+TASK [grycap.docker : lineinfile] **********************************************
+Tuesday 18 February 2025  22:41:02.112812 
+changed: [158.42.104.43_0]
+
+TASK [grycap.docker : force all notified handlers to run at this point, not waiting for normal sync points] ***
+Tuesday 18 February 2025  22:41:02.473791 
+
+RUNNING HANDLER [grycap.docker : reload systemctl] *****************************
+changed: [158.42.104.43_0]
+
+RUNNING HANDLER [grycap.docker : restart docker] *******************************
+changed: [158.42.104.43_0]
+
+TASK [grycap.docker : start docker] ********************************************
+Tuesday 18 February 2025  22:41:05.064398 
+ok: [158.42.104.43_0]
+
+TASK [grycap.docker : enable docker service] ***********************************
+Tuesday 18 February 2025  22:41:05.604767 
+ok: [158.42.104.43_0]
+
+TASK [grycap.docker : set_fact] ************************************************
+Tuesday 18 February 2025  22:41:06.227046 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Set extra_args var] **************************************
+Tuesday 18 February 2025  22:41:06.282388 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Set extra_args var in py3.11] ****************************
+Tuesday 18 February 2025  22:41:06.334757 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : set_fact] ************************************************
+Tuesday 18 February 2025  22:41:06.387733 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Install pip and setuptools Py3] **************************
+Tuesday 18 February 2025  22:41:06.476393 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Install pip and setuptools] ******************************
+Tuesday 18 February 2025  22:41:06.533187 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Link pip] ************************************************
+Tuesday 18 February 2025  22:41:06.589757 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Remove python3-yaml and jsonschema] **********************
+Tuesday 18 February 2025  22:41:06.642877 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Install dependencies for docker management pip3 (pyyaml 5.3.1)] ***
+Tuesday 18 February 2025  22:41:06.699076 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Install dependencies for docker management pip3] *********
+Tuesday 18 February 2025  22:41:06.754471 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Remove docker-compose v1 bin] ****************************
+Tuesday 18 February 2025  22:41:06.806895 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Install websocket-client version 0.59.0 for docker management pip2] ***
+Tuesday 18 February 2025  22:41:06.864172 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Install requests version <2.32.0 for docker management] ***
+Tuesday 18 February 2025  22:41:06.924182 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Install requests version 2.15.1 for docker management pip2] ***
+Tuesday 18 February 2025  22:41:06.978948 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Install {{docker_package}} for docker management pip2] ***
+Tuesday 18 February 2025  22:41:07.035070 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Install docker compose bin] ******************************
+Tuesday 18 February 2025  22:41:07.089237 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.docker : Include Containerd tasks] ********************************
+Tuesday 18 February 2025  22:41:07.139999 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.cri_o : Set OS var] ***********************************************
+Tuesday 18 February 2025  22:41:07.218302 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.cri_o : Update apt cache] *****************************************
+Tuesday 18 February 2025  22:41:07.269865 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.cri_o : Install dependencies for cri-o] ***************************
+Tuesday 18 February 2025  22:41:07.322886 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.cri_o : Create keyrings folder] ***********************************
+Tuesday 18 February 2025  22:41:07.371890 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.cri_o : Add kubic/libcontainers repository key] *******************
+Tuesday 18 February 2025  22:41:07.424567 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.cri_o : Add kubic/libcontainers repository] ***********************
+Tuesday 18 February 2025  22:41:07.475903 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.cri_o : Add cri-o repository key] *********************************
+Tuesday 18 February 2025  22:41:07.526225 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.cri_o : Add cri-o repository] *************************************
+Tuesday 18 February 2025  22:41:07.576608 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.cri_o : Install cri-o and cri-o-runc] *****************************
+Tuesday 18 February 2025  22:41:07.628617 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.cri_o : Start and enable cri-o service] ***************************
+Tuesday 18 February 2025  22:41:07.675549 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.cri_o : Install CNI plugins for cri-o] ****************************
+Tuesday 18 February 2025  22:41:07.767588 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.cri_o : Create crio.conf] *****************************************
+Tuesday 18 February 2025  22:41:07.823288 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.cri_o : Create 00-crio-bridge.conflist] ***************************
+Tuesday 18 February 2025  22:41:07.876201 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.cri_o : Install cri-tools] ****************************************
+Tuesday 18 February 2025  22:41:07.929807 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Disable swap] ****************************************
+Tuesday 18 February 2025  22:41:08.001198 
+changed: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Disable SWAP in fstab] *******************************
+Tuesday 18 February 2025  22:41:08.359206 
+changed: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Include "kubeadm" tasks] *****************************
+Tuesday 18 February 2025  22:41:08.841210 
+ok: [158.42.104.43_0]
+included: /etc/ansible/roles/grycap.kubernetes/tasks/kubeadm.yaml for 158.42.104.43_0
+
+TASK [grycap.kubernetes : Include cri-docker tasks] ****************************
+Tuesday 18 February 2025  22:41:08.926407 
+ok: [158.42.104.43_0]
+included: /etc/ansible/roles/grycap.kubernetes/tasks/cri-dockerd.yaml for 158.42.104.43_0
+
+TASK [grycap.kubernetes : Download cri-dockerd tarball] ************************
+Tuesday 18 February 2025  22:41:09.011105 
+changed: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Extract cri-dockerd tarball] *************************
+Tuesday 18 February 2025  22:41:10.296553 
+changed: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Copy cri-dockerd binary] *****************************
+Tuesday 18 February 2025  22:41:12.746050 
+changed: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Download cri-docker service and socket] **************
+Tuesday 18 February 2025  22:41:13.535514 
+changed: [158.42.104.43_0] => (item=cri-docker.service)
+changed: [158.42.104.43_0] => (item=cri-docker.socket)
+
+TASK [grycap.kubernetes : Enable cri-dockerd service] **************************
+Tuesday 18 February 2025  22:41:14.480852 
+changed: [158.42.104.43_0] => (item=cri-docker.service)
+changed: [158.42.104.43_0] => (item=cri-docker.socket)
+
+TASK [grycap.kubernetes : Check kube version] **********************************
+Tuesday 18 February 2025  22:41:17.196645 
+ok: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : debug] ***********************************************
+Tuesday 18 February 2025  22:41:17.587961 
+ok: [158.42.104.43_0] => {
+    "changed": false,
+    "msg": "Kubeadm version installed = "
+}
+
+TASK [grycap.kubernetes : Create /etc/modules-load.d/containerd.conf] **********
+Tuesday 18 February 2025  22:41:17.651457 
+changed: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Make modprobes] **************************************
+Tuesday 18 February 2025  22:41:18.211061 
+changed: [158.42.104.43_0] => (item=overlay)
+changed: [158.42.104.43_0] => (item=br_netfilter)
+
+TASK [grycap.kubernetes : Create /etc/sysctl.d/99-kubernetes-cri.conf] *********
+Tuesday 18 February 2025  22:41:18.916403 
+changed: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Apply sysctl params] *********************************
+Tuesday 18 February 2025  22:41:19.505563 
+changed: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Include "Debian" Kubernetes recipe] ******************
+Tuesday 18 February 2025  22:41:19.886051 
+ok: [158.42.104.43_0]
+included: /etc/ansible/roles/grycap.kubernetes/tasks/Debian.yaml for 158.42.104.43_0
+
+TASK [grycap.kubernetes : fail] ************************************************
+Tuesday 18 February 2025  22:41:19.968676 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Set kube_minor_version] ******************************
+Tuesday 18 February 2025  22:41:20.030302 
+ok: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Set kube_key_version] ********************************
+Tuesday 18 February 2025  22:41:20.105068 
+ok: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Set kube_key_version] ********************************
+Tuesday 18 February 2025  22:41:20.185446 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Add repo key] ****************************************
+Tuesday 18 February 2025  22:41:20.242730 
+changed: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Add kubernetes repo] *********************************
+Tuesday 18 February 2025  22:41:20.916211 
+changed: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Install kubernetes packages] *************************
+Tuesday 18 February 2025  22:41:35.360549 
+changed: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Install kubernetes packages] *************************
+Tuesday 18 February 2025  22:41:59.622406 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Hold "{{ item }}" package] ***************************
+Tuesday 18 February 2025  22:41:59.680150 
+changed: [158.42.104.43_0] => (item=kubeadm)
+changed: [158.42.104.43_0] => (item=kubelet)
+changed: [158.42.104.43_0] => (item=kubectl)
+
+TASK [grycap.kubernetes : force handlers] **************************************
+Tuesday 18 February 2025  22:42:00.921545 
+
+TASK [grycap.kubernetes : Include "front" tasks] *******************************
+Tuesday 18 February 2025  22:42:00.991933 
+ok: [158.42.104.43_0]
+included: /etc/ansible/roles/grycap.kubernetes/tasks/front.yaml for 158.42.104.43_0
+
+TASK [grycap.kubernetes : Copy 'is_cluster_ready' file] ************************
+Tuesday 18 February 2025  22:42:01.186150 
+changed: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Create kubeadm-config file] **************************
+Tuesday 18 February 2025  22:42:01.772392 
+changed: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Kubeadm init] ****************************************
+Tuesday 18 February 2025  22:42:02.440197 
+changed: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Set kube_wait_api_server_ip] *************************
+Tuesday 18 February 2025  22:43:18.155804 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : set_fact] ********************************************
+Tuesday 18 February 2025  22:43:18.224268 
+ok: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : set_fact] ********************************************
+Tuesday 18 February 2025  22:43:18.373055 
+
+TASK [grycap.kubernetes : Add Kube API server --service-node-port-range option] ***
+Tuesday 18 February 2025  22:43:18.420785 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Add Kube API server options] *************************
+Tuesday 18 February 2025  22:43:18.476783 
+
+TASK [grycap.kubernetes : kill kubeapi] ****************************************
+Tuesday 18 February 2025  22:43:18.590579 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : restart kubelet to restart kubeapi] ******************
+Tuesday 18 February 2025  22:43:18.650167 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Pause for 5 seconds to wait kubelet to restart] ******
+Tuesday 18 February 2025  22:43:18.728315 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : wait Kube to start on "127.0.0.1"] *******************
+Tuesday 18 February 2025  22:43:18.822559 
+ok: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : set_fact] ********************************************
+Tuesday 18 February 2025  22:43:21.263287 
+ok: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Set net.bridge.bridge-nf-call-iptables to 1] *********
+Tuesday 18 February 2025  22:43:21.341109 
+changed: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Create flannel-net.yaml] *****************************
+Tuesday 18 February 2025  22:43:21.720961 
+changed: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Apply flannel-net.yaml] ******************************
+Tuesday 18 February 2025  22:43:22.449797 
+changed: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Create calico-net.yaml] ******************************
+Tuesday 18 February 2025  22:43:23.552642 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Apply calico-net.yaml] *******************************
+Tuesday 18 February 2025  22:43:23.611335 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Create kuberouter-net.yaml] **************************
+Tuesday 18 February 2025  22:43:23.667168 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Apply kuberouter-net.yaml] ***************************
+Tuesday 18 February 2025  22:43:23.725222 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Create weave-net.yaml] *******************************
+Tuesday 18 February 2025  22:43:23.784676 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Apply weave-net.yaml] ********************************
+Tuesday 18 February 2025  22:43:23.837199 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : stat] ************************************************
+Tuesday 18 February 2025  22:43:23.904350 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Copy helm install script] ****************************
+Tuesday 18 February 2025  22:43:23.960844 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Execute helm install script] *************************
+Tuesday 18 February 2025  22:43:24.016574 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Add cert-manager CRDs] *******************************
+Tuesday 18 February 2025  22:43:24.072778 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Add cert-manager of Prometheus] **********************
+Tuesday 18 February 2025  22:43:24.129698 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Edit /etc/sysctl.d/99-override_cilium_rp_filter.conf] ***
+Tuesday 18 February 2025  22:43:24.191985 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Check if cilium-ipsec-keys secret exists] ************
+Tuesday 18 February 2025  22:43:24.249701 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Create cilium-ipsec-keys secret] *********************
+Tuesday 18 February 2025  22:43:24.304544 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Check if Cilium cli is installed] ********************
+Tuesday 18 February 2025  22:43:24.364128 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Download cilium cli] *********************************
+Tuesday 18 February 2025  22:43:24.418779 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Install cilium cli] **********************************
+Tuesday 18 February 2025  22:43:24.475175 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Check if Cilium is installed] ************************
+Tuesday 18 February 2025  22:43:24.527190 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Add Cilium Helm repo] ********************************
+Tuesday 18 February 2025  22:43:24.620827 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Helm update] *****************************************
+Tuesday 18 February 2025  22:43:24.680751 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : copy] ************************************************
+Tuesday 18 February 2025  22:43:24.738661 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Apply cillium-default-priorityclass.yaml] ************
+Tuesday 18 February 2025  22:43:24.794771 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Create file with Cilium values] **********************
+Tuesday 18 February 2025  22:43:24.881740 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Deploy cilium] ***************************************
+Tuesday 18 February 2025  22:43:24.936521 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Wait until cilium was deployed] **********************
+Tuesday 18 February 2025  22:43:25.000783 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : set_fact] ********************************************
+Tuesday 18 February 2025  22:43:25.058220 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Add Kube API server options to K3s] ******************
+Tuesday 18 February 2025  22:43:25.112151 
+
+TASK [grycap.kubernetes : set_fact] ********************************************
+Tuesday 18 February 2025  22:43:25.169560 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Install k3s server] **********************************
+Tuesday 18 February 2025  22:43:25.223424 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Link kubectl to /usr/bin/kubectl] ********************
+Tuesday 18 February 2025  22:43:25.282002 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Update master node label] ****************************
+Tuesday 18 February 2025  22:43:25.339905 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : set_fact] ********************************************
+Tuesday 18 February 2025  22:43:25.396273 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Set KUBECONFIG environment variable] *****************
+Tuesday 18 February 2025  22:43:25.454354 
+ok: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : stat] ************************************************
+Tuesday 18 February 2025  22:43:25.832627 
+ok: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Copy helm install script] ****************************
+Tuesday 18 February 2025  22:43:26.203277 
+changed: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Execute helm install script] *************************
+Tuesday 18 February 2025  22:43:26.898424 
+changed: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : include_tasks] ***************************************
+Tuesday 18 February 2025  22:43:29.834562 
+ok: [158.42.104.43_0]
+included: /etc/ansible/roles/grycap.kubernetes/tasks/cert-manager.yaml for 158.42.104.43_0
+
+TASK [grycap.kubernetes : pip] *************************************************
+Tuesday 18 February 2025  22:43:29.939318 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Try to get the DNS name of the node] *****************
+Tuesday 18 February 2025  22:43:29.992046 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : debug] ***********************************************
+Tuesday 18 February 2025  22:43:30.045968 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Disabling cert_manager] ******************************
+Tuesday 18 February 2025  22:43:30.106447 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : set_fact] ********************************************
+Tuesday 18 February 2025  22:43:30.174792 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : copy] ************************************************
+Tuesday 18 February 2025  22:43:30.276536 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Creating cert-manager] *******************************
+Tuesday 18 February 2025  22:43:30.337440 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Wait for cert-manager ready status] ******************
+Tuesday 18 February 2025  22:43:30.388362 
+skipping: [158.42.104.43_0] => (item=cert-manager) 
+skipping: [158.42.104.43_0] => (item=cert-manager-cainjector) 
+skipping: [158.42.104.43_0] => (item=cert-manager-webhook) 
+
+TASK [grycap.kubernetes : Pause for 5 seconds to wait cert-manager to fully start] ***
+Tuesday 18 February 2025  22:43:30.463886 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : template] ********************************************
+Tuesday 18 February 2025  22:43:30.521749 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Create DNS01 secret] *********************************
+Tuesday 18 February 2025  22:43:30.578138 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : template] ********************************************
+Tuesday 18 February 2025  22:43:30.633176 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Create Let's encrypt Certificate issuer] *************
+Tuesday 18 February 2025  22:43:30.692670 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : template] ********************************************
+Tuesday 18 February 2025  22:43:30.742466 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Create Let's encrypt Wildcard Certificate for ''] ****
+Tuesday 18 February 2025  22:43:30.797372 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Create kubernetes-dashboard.yaml] ********************
+Tuesday 18 February 2025  22:43:30.847020 
+changed: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Apply kubernetes-dashboard.yaml] *********************
+Tuesday 18 February 2025  22:43:31.515482 
+changed: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Create metrics-server.yaml] **************************
+Tuesday 18 February 2025  22:43:33.819531 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Apply metrics-server.yaml] ***************************
+Tuesday 18 February 2025  22:43:33.879290 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : template] ********************************************
+Tuesday 18 February 2025  22:43:33.934543 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : command] *********************************************
+Tuesday 18 February 2025  22:43:33.999960 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Install Git package] *********************************
+Tuesday 18 February 2025  22:43:34.071489 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Download git repo "{{ item.repo }}"] *****************
+Tuesday 18 February 2025  22:43:34.126755 
+
+TASK [grycap.kubernetes : apply path "{{ item.path }}"] ************************
+Tuesday 18 February 2025  22:43:34.178790 
+
+TASK [grycap.kubernetes : Create nfs-client.yaml] ******************************
+Tuesday 18 February 2025  22:43:34.223390 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Apply nfs-client.yaml] *******************************
+Tuesday 18 February 2025  22:43:34.278693 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Create longhorn.yaml] ********************************
+Tuesday 18 February 2025  22:43:34.326631 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Apply longhorn.yaml] *********************************
+Tuesday 18 February 2025  22:43:34.382481 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : copy] ************************************************
+Tuesday 18 February 2025  22:43:34.435870 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : command] *********************************************
+Tuesday 18 February 2025  22:43:34.471904 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : stat] ************************************************
+Tuesday 18 February 2025  22:43:34.521280 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : stat] ************************************************
+Tuesday 18 February 2025  22:43:34.571421 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : stat] ************************************************
+Tuesday 18 February 2025  22:43:34.621987 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Create certs dir] ************************************
+Tuesday 18 February 2025  22:43:34.672446 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Create certs] ****************************************
+Tuesday 18 February 2025  22:43:34.715830 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Check if certs secret is created] ********************
+Tuesday 18 February 2025  22:43:34.764106 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Create certs secret] *********************************
+Tuesday 18 February 2025  22:43:34.822690 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : copy] ************************************************
+Tuesday 18 February 2025  22:43:34.866423 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : command] *********************************************
+Tuesday 18 February 2025  22:43:34.913635 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : copy] ************************************************
+Tuesday 18 February 2025  22:43:34.986248 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : command] *********************************************
+Tuesday 18 February 2025  22:43:35.039578 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Wait ingress-nginx jobs] *****************************
+Tuesday 18 February 2025  22:43:35.091800 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Wait ingress-nginx deployment] ***********************
+Tuesday 18 February 2025  22:43:35.144058 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Create nvidia-device-plugin.yaml] ********************
+Tuesday 18 February 2025  22:43:35.198753 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Apply nvidia-device-plugin.yaml] *********************
+Tuesday 18 February 2025  22:43:35.251275 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Create kubernetes-dashboard-ingress.yaml] ************
+Tuesday 18 February 2025  22:43:35.314381 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Apply kubernetes-dashboard-ingress.yaml] *************
+Tuesday 18 February 2025  22:43:35.362319 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Add Bitnami Helm repo] *******************************
+Tuesday 18 February 2025  22:43:35.409435 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Check if kubeapps is installed] **********************
+Tuesday 18 February 2025  22:43:35.480908 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Install kubeapps 12.2.10] ****************************
+Tuesday 18 February 2025  22:43:35.540007 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Install kubeapps latest] *****************************
+Tuesday 18 February 2025  22:43:35.598345 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : template] ********************************************
+Tuesday 18 February 2025  22:43:35.649814 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : command] *********************************************
+Tuesday 18 February 2025  22:43:35.706699 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Add Kyverno Helm repo] *******************************
+Tuesday 18 February 2025  22:43:35.762089 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Check if kyverno is installed] ***********************
+Tuesday 18 February 2025  22:43:35.824512 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Check if kyverno-crds is installed] ******************
+Tuesday 18 February 2025  22:43:35.887787 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Helm update] *****************************************
+Tuesday 18 February 2025  22:43:35.939021 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Create namespace kyverno] ****************************
+Tuesday 18 February 2025  22:43:35.988631 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Install kyverno-crds 2.0.3] **************************
+Tuesday 18 February 2025  22:43:36.042630 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : template] ********************************************
+Tuesday 18 February 2025  22:43:36.090002 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Install kyverno 2.0.3] *******************************
+Tuesday 18 February 2025  22:43:36.163124 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Add Apache Yunikorn Helm repo] ***********************
+Tuesday 18 February 2025  22:43:36.216610 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Check if Apache Yunikorn is installed] ***************
+Tuesday 18 February 2025  22:43:36.281132 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Helm update] *****************************************
+Tuesday 18 February 2025  22:43:36.341201 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Create namespace] ************************************
+Tuesday 18 February 2025  22:43:36.439645 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Copy Yunikorn values] ********************************
+Tuesday 18 February 2025  22:43:36.500387 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Install Apache Yunikorn] *****************************
+Tuesday 18 February 2025  22:43:36.558327 
+skipping: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : set_fact] ********************************************
+Tuesday 18 February 2025  22:43:36.622772 
+ok: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Get the FQDN of all nodes] ***************************
+Tuesday 18 February 2025  22:43:36.700814 
+ok: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Get list of NotReady nodes] **************************
+Tuesday 18 February 2025  22:43:36.847512 
+ok: [158.42.104.43_0]
+
+TASK [grycap.kubernetes : Delete removed nodes] ********************************
+Tuesday 18 February 2025  22:43:37.412729 
+
+RUNNING HANDLER [grycap.kubernetes : sysctl-system] ****************************
+changed: [158.42.104.43_0]
+
+PLAY RECAP *********************************************************************
+158.42.104.43_0            : ok=100  changed=54   unreachable=0    failed=0   
+158.42.104.43_0            : ok=100  changed=54   unreachable=0    failed=0   
+
+Task front_front finished successfully
+Process finished
+
+***************************************************************************
+VM 1:
+Contextualization agent output processed successfullyGenerate and copy the ssh key
+Sleeping 0 secs.
+Launch task: basic
+Waiting SSH access to VM: 10.10.1.19
+Testing SSH access to VM: 10.10.1.19:22
+Remote access to VM: 10.10.1.19 Open!
+Removing requiretty to VM: 10.10.1.19
+OUT: 
+Requiretty successfully removed
+Call Ansible
+
+PLAY [10.10.1.19_1] ************************************************************
+
+TASK [Avoid unattended upgrades] ***********************************************
+Tuesday 18 February 2025  22:37:21.416761 
+ok: [10.10.1.19_1]
+
+TASK [Wait for the VM to boot] *************************************************
+Tuesday 18 February 2025  22:37:21.936945 
+ok: [10.10.1.19_1]
+
+TASK [Check Python2 is installed] **********************************************
+Tuesday 18 February 2025  22:37:22.000142 
+fatal: [10.10.1.19_1]: FAILED! => {"changed": false, "msg": "non-zero return code", "rc": 127, "stderr": "Shared connection to 10.10.1.19 closed.\r\n", "stderr_lines": ["Shared connection to 10.10.1.19 closed."], "stdout": "bash: line 1: python2: command not found\r\n", "stdout_lines": ["bash: line 1: python2: command not found"]}
+...ignoring
+
+TASK [Check Python3 is installed] **********************************************
+Tuesday 18 February 2025  22:37:22.057888 
+ok: [10.10.1.19_1]
+
+TASK [Bootstrap with python Debian/Ubuntu] *************************************
+Tuesday 18 February 2025  22:37:22.162908 
+skipping: [10.10.1.19_1]
+
+TASK [Link correct python version in Ubuntu 14] ********************************
+Tuesday 18 February 2025  22:37:22.222111 
+skipping: [10.10.1.19_1]
+
+TASK [Bootstrap with python RedHat/CentOS] *************************************
+Tuesday 18 February 2025  22:37:22.264884 
+skipping: [10.10.1.19_1]
+
+TASK [RedHat/CentOS install python3-dnf] ***************************************
+Tuesday 18 February 2025  22:37:22.313671 
+fatal: [10.10.1.19_1]: FAILED! => {"ansible_facts": {"discovered_interpreter_python": "/usr/bin/python3"}, "changed": true, "cmd": ["sudo", "yum", "install", "-y", "python3", "python3-dnf"], "delta": "0:00:00.014753", "end": "2025-02-18 22:37:23.131267", "msg": "non-zero return code", "rc": 1, "start": "2025-02-18 22:37:23.116514", "stderr": "sudo: yum: command not found", "stderr_lines": ["sudo: yum: command not found"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [Bootstrap with python SUSE] **********************************************
+Tuesday 18 February 2025  22:37:23.177452 
+skipping: [10.10.1.19_1]
+
+TASK [Link python 3 or 2 in case is needed] ************************************
+Tuesday 18 February 2025  22:37:23.218828 
+changed: [10.10.1.19_1]
+
+TASK [Install libselinux-python3 on RH systems] ********************************
+Tuesday 18 February 2025  22:37:23.291587 
+fatal: [10.10.1.19_1]: FAILED! => {"changed": true, "msg": "non-zero return code", "rc": 127, "stderr": "Shared connection to 10.10.1.19 closed.\r\n", "stderr_lines": ["Shared connection to 10.10.1.19 closed."], "stdout": "/usr/bin/python3\r\nbash: line 1: yum: command not found\r\n", "stdout_lines": ["/usr/bin/python3", "bash: line 1: yum: command not found"]}
+...ignoring
+
+TASK [Install libselinux-python on RH systems] *********************************
+Tuesday 18 February 2025  22:37:23.362989 
+fatal: [10.10.1.19_1]: FAILED! => {"changed": true, "msg": "non-zero return code", "rc": 2, "stderr": "Shared connection to 10.10.1.19 closed.\r\n", "stderr_lines": ["Shared connection to 10.10.1.19 closed."], "stdout": "ls: cannot access '/usr/bin/python2': No such file or directory\r\n", "stdout_lines": ["ls: cannot access '/usr/bin/python2': No such file or directory"]}
+...ignoring
+
+TASK [Set the hostname of the node] ********************************************
+Tuesday 18 February 2025  22:37:23.432408 
+changed: [10.10.1.19_1]
+
+TASK [Disable SELinux in REL systems] ******************************************
+Tuesday 18 February 2025  22:37:24.876969 
+An exception occurred during task execution. To see the full traceback, use -vvv. The error was: ModuleNotFoundError: No module named 'selinux'
+fatal: [10.10.1.19_1]: FAILED! => {"changed": false, "msg": "Failed to import the required Python library (libselinux-python) on wn-1.localdomain's Python /usr/bin/python3. Please read the module documentation and install it in the appropriate location. If the required library is installed, but Ansible is using the wrong Python interpreter, please consult the documentation on ansible_python_interpreter"}
+...ignoring
+
+TASK [Add the authorized_key to the nodes] *************************************
+Tuesday 18 February 2025  22:37:25.667068 
+changed: [10.10.1.19_1]
+
+TASK [Add the authorized_key to the nodes again] *******************************
+Tuesday 18 February 2025  22:37:26.277415 
+fatal: [10.10.1.19_1]: FAILED! => {"changed": false, "msg": "Destination /home/root/.ssh/authorized_keys does not exist !", "rc": 257}
+...ignoring
+
+TASK [Gather Facts] ************************************************************
+Tuesday 18 February 2025  22:37:26.715950 
+ok: [10.10.1.19_1]
+
+TASK [Ubuntu apt update] *******************************************************
+Tuesday 18 February 2025  22:37:29.410233 
+changed: [10.10.1.19_1]
+
+TASK [Ubuntu force apt update (avoid apt lock)] ********************************
+Tuesday 18 February 2025  22:37:57.607447 
+skipping: [10.10.1.19_1]
+
+PLAY RECAP *********************************************************************
+10.10.1.19_1               : ok=14   changed=7    unreachable=0    failed=0   
+10.10.1.19_1               : ok=14   changed=7    unreachable=0    failed=0   
+
+Task basic finished successfully
+Process finished
+Contextualization agent output processed successfullyGenerate and copy the ssh key
+Sleeping 0 secs.
+Launch task: main_wn
+Call Ansible
+
+PLAY [allnowindows] ************************************************************
+
+TASK [Gathering Facts] *********************************************************
+Tuesday 18 February 2025  22:38:06.364463 
+ok: [158.42.104.43_0]
+ok: [10.10.1.19_1]
+ok: [10.10.1.22_2]
+
+PLAY [10.10.1.19_1] ************************************************************
+
+TASK [include_tasks] ***********************************************************
+Tuesday 18 February 2025  22:38:08.130446 
+ok: [10.10.1.19_1]
+included: /var/tmp/.im/43d10bda-ee48-11ef-8802-66dee9cd23fd/utils/tasks/main.yml for 10.10.1.19_1
+
+TASK [Copy the original /etc/hosts] ********************************************
+Tuesday 18 February 2025  22:38:08.179067 
+changed: [10.10.1.19_1]
+
+TASK [Copy the /etc/hosts] *****************************************************
+Tuesday 18 February 2025  22:38:08.591318 
+changed: [10.10.1.19_1]
+
+TASK [Merge /etc/hosts] ********************************************************
+Tuesday 18 February 2025  22:38:09.575366 
+changed: [10.10.1.19_1]
+
+TASK [Copy the /etc/hosts in windows native] ***********************************
+Tuesday 18 February 2025  22:38:09.922054 
+skipping: [10.10.1.19_1]
+
+TASK [Set BEARER_TOKEN environment variable] ***********************************
+Tuesday 18 February 2025  22:38:09.956965 
+skipping: [10.10.1.19_1]
+
+TASK [debug] *******************************************************************
+Tuesday 18 February 2025  22:38:10.019898 
+ok: [10.10.1.19_1] => {
+    "changed": false,
+    "msg": "Install user requested apps"
+}
+
+PLAY RECAP *********************************************************************
+10.10.1.19_1               : ok=6    changed=3    unreachable=0    failed=0   
+10.10.1.19_1               : ok=6    changed=3    unreachable=0    failed=0   
+10.10.1.22_2               : ok=1    changed=0    unreachable=0    failed=0   
+10.10.1.22_2               : ok=1    changed=0    unreachable=0    failed=0   
+158.42.104.43_0            : ok=1    changed=0    unreachable=0    failed=0   
+158.42.104.43_0            : ok=1    changed=0    unreachable=0    failed=0   
+
+Task main_wn finished successfully
+Process finished
+Contextualization agent output processed successfullyGenerate and copy the ssh key
+Sleeping 0 secs.
+Launch task: wn_wn
+Call Ansible
+
+PLAY [allnowindows] ************************************************************
+
+PLAY [10.10.1.19_1] ************************************************************
+
+TASK [grycap.nfs : include_tasks] **********************************************
+Tuesday 18 February 2025  22:38:22.011922 
+ok: [10.10.1.19_1]
+included: /etc/ansible/roles/grycap.nfs/tasks/wn.yaml for 10.10.1.19_1
+
+TASK [grycap.nfs : update repositories cache and install NFS] ******************
+Tuesday 18 February 2025  22:38:22.064121 
+changed: [10.10.1.19_1]
+
+TASK [grycap.nfs : update repositories cache and install NFS] ******************
+Tuesday 18 February 2025  22:38:54.219740 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.nfs : Ensure rpcbind is running] **********************************
+Tuesday 18 February 2025  22:38:54.281129 
+ok: [10.10.1.19_1]
+
+TASK [grycap.nfs : Ensure rpcbind is stopped] **********************************
+Tuesday 18 February 2025  22:38:55.195990 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.nfs : Set FSTYPE to nfs] ******************************************
+Tuesday 18 February 2025  22:38:55.260633 
+ok: [10.10.1.19_1]
+
+TASK [grycap.nfs : Set FSTYPE to nfs4] *****************************************
+Tuesday 18 February 2025  22:38:55.341631 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.nfs : mount the shared directories] *******************************
+Tuesday 18 February 2025  22:38:55.400737 
+
+TASK [geerlingguy.ntp : Include OS-specific variables.] ************************
+Tuesday 18 February 2025  22:38:55.457229 
+ok: [10.10.1.19_1] => (item=/etc/ansible/roles/geerlingguy.ntp/vars/Debian.yml)
+
+TASK [geerlingguy.ntp : Set the ntp_driftfile variable.] ***********************
+Tuesday 18 February 2025  22:38:55.530619 
+ok: [10.10.1.19_1]
+
+TASK [geerlingguy.ntp : Set the ntp_package variable.] *************************
+Tuesday 18 February 2025  22:38:55.632162 
+ok: [10.10.1.19_1]
+
+TASK [geerlingguy.ntp : Set the ntp_config_file variable.] *********************
+Tuesday 18 February 2025  22:38:55.704639 
+ok: [10.10.1.19_1]
+
+TASK [geerlingguy.ntp : Set the ntp_daemon variable.] **************************
+Tuesday 18 February 2025  22:38:55.816433 
+ok: [10.10.1.19_1]
+
+TASK [geerlingguy.ntp : Ensure NTP package is installed.] **********************
+Tuesday 18 February 2025  22:38:55.906595 
+changed: [10.10.1.19_1]
+
+TASK [geerlingguy.ntp : Ensure tzdata package is installed (Linux).] ***********
+Tuesday 18 February 2025  22:39:12.403834 
+ok: [10.10.1.19_1]
+
+TASK [geerlingguy.ntp : Set timezone.] *****************************************
+Tuesday 18 February 2025  22:39:13.640704 
+ok: [10.10.1.19_1]
+
+TASK [geerlingguy.ntp : Populate service facts.] *******************************
+Tuesday 18 February 2025  22:39:14.280515 
+ok: [10.10.1.19_1]
+
+TASK [geerlingguy.ntp : Disable systemd-timesyncd if it's running but ntp is enabled.] ***
+Tuesday 18 February 2025  22:39:20.891875 
+ok: [10.10.1.19_1]
+
+TASK [geerlingguy.ntp : Ensure NTP is running and enabled as configured.] ******
+Tuesday 18 February 2025  22:39:21.565935 
+ok: [10.10.1.19_1]
+
+TASK [geerlingguy.ntp : Ensure NTP is stopped and disabled as configured.] *****
+Tuesday 18 February 2025  22:39:22.130424 
+skipping: [10.10.1.19_1]
+
+TASK [geerlingguy.ntp : Generate ntp configuration file.] **********************
+Tuesday 18 February 2025  22:39:22.205557 
+skipping: [10.10.1.19_1]
+
+TASK [NVIDIA.nvidia_driver : unload nouveau] ***********************************
+Tuesday 18 February 2025  22:39:22.302238 
+skipping: [10.10.1.19_1]
+
+TASK [NVIDIA.nvidia_driver : ubuntu install tasks (canonical repos)] ***********
+Tuesday 18 February 2025  22:39:22.356081 
+skipping: [10.10.1.19_1]
+
+TASK [NVIDIA.nvidia_driver : ubuntu install tasks (CUDA repo)] *****************
+Tuesday 18 February 2025  22:39:22.400342 
+skipping: [10.10.1.19_1]
+
+TASK [NVIDIA.nvidia_driver : redhat family install tasks] **********************
+Tuesday 18 February 2025  22:39:22.446720 
+skipping: [10.10.1.19_1]
+
+TASK [NVIDIA.nvidia_driver : create persistenced override dir] *****************
+Tuesday 18 February 2025  22:39:22.493801 
+skipping: [10.10.1.19_1]
+
+TASK [NVIDIA.nvidia_driver : configure persistenced service to turn on persistence mode] ***
+Tuesday 18 February 2025  22:39:22.542151 
+skipping: [10.10.1.19_1]
+
+TASK [NVIDIA.nvidia_driver : remove persistenced service override] *************
+Tuesday 18 February 2025  22:39:22.587875 
+skipping: [10.10.1.19_1]
+
+TASK [NVIDIA.nvidia_driver : enable persistenced] ******************************
+Tuesday 18 February 2025  22:39:22.625772 
+skipping: [10.10.1.19_1]
+
+TASK [NVIDIA.nvidia_driver : set module parameters] ****************************
+Tuesday 18 February 2025  22:39:22.663234 
+skipping: [10.10.1.19_1]
+
+TASK [NVIDIA.nvidia_driver : reboot after driver install] **********************
+Tuesday 18 February 2025  22:39:22.711274 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Include Docker tasks] ************************************
+Tuesday 18 February 2025  22:39:22.790185 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Include Containerd tasks] ********************************
+Tuesday 18 February 2025  22:39:22.839366 
+skipping: [10.10.1.19_1]
+
+TASK [NVIDIA.nvidia_driver : unload nouveau] ***********************************
+Tuesday 18 February 2025  22:39:22.911093 
+skipping: [10.10.1.19_1]
+
+TASK [NVIDIA.nvidia_driver : ubuntu install tasks (canonical repos)] ***********
+Tuesday 18 February 2025  22:39:22.992599 
+skipping: [10.10.1.19_1]
+
+TASK [NVIDIA.nvidia_driver : ubuntu install tasks (CUDA repo)] *****************
+Tuesday 18 February 2025  22:39:23.110971 
+skipping: [10.10.1.19_1]
+
+TASK [NVIDIA.nvidia_driver : redhat family install tasks] **********************
+Tuesday 18 February 2025  22:39:23.187210 
+skipping: [10.10.1.19_1]
+
+TASK [NVIDIA.nvidia_driver : create persistenced override dir] *****************
+Tuesday 18 February 2025  22:39:23.277764 
+skipping: [10.10.1.19_1]
+
+TASK [NVIDIA.nvidia_driver : configure persistenced service to turn on persistence mode] ***
+Tuesday 18 February 2025  22:39:23.363852 
+skipping: [10.10.1.19_1]
+
+TASK [NVIDIA.nvidia_driver : remove persistenced service override] *************
+Tuesday 18 February 2025  22:39:23.429735 
+skipping: [10.10.1.19_1]
+
+TASK [NVIDIA.nvidia_driver : enable persistenced] ******************************
+Tuesday 18 February 2025  22:39:23.477275 
+skipping: [10.10.1.19_1]
+
+TASK [NVIDIA.nvidia_driver : set module parameters] ****************************
+Tuesday 18 February 2025  22:39:23.538457 
+skipping: [10.10.1.19_1]
+
+TASK [NVIDIA.nvidia_driver : reboot after driver install] **********************
+Tuesday 18 February 2025  22:39:23.602114 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Include Docker tasks] ************************************
+Tuesday 18 February 2025  22:39:23.673644 
+ok: [10.10.1.19_1]
+included: /etc/ansible/roles/grycap.docker/tasks/docker.yml for 10.10.1.19_1
+
+TASK [grycap.docker : Check docker version] ************************************
+Tuesday 18 February 2025  22:39:23.773752 
+ok: [10.10.1.19_1]
+
+TASK [grycap.docker : debug] ***************************************************
+Tuesday 18 February 2025  22:39:24.346065 
+ok: [10.10.1.19_1] => {
+    "changed": false,
+    "msg": "Docker version installed = "
+}
+
+TASK [grycap.docker : Set docker to be installed] ******************************
+Tuesday 18 February 2025  22:39:24.425786 
+ok: [10.10.1.19_1]
+
+TASK [grycap.docker : Chek docker compatible versions] *************************
+Tuesday 18 February 2025  22:39:24.505136 
+
+TASK [grycap.docker : Include "Debian" tasks] **********************************
+Tuesday 18 February 2025  22:39:24.556059 
+ok: [10.10.1.19_1]
+included: /etc/ansible/roles/grycap.docker/tasks/Debian.yml for 10.10.1.19_1
+
+TASK [grycap.docker : Install dependencies in Deb systems] *********************
+Tuesday 18 February 2025  22:39:24.687517 
+changed: [10.10.1.19_1]
+
+TASK [grycap.docker : Install dependencies in Deb systems] *********************
+Tuesday 18 February 2025  22:39:41.767864 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Install dependencies in Deb systems] *********************
+Tuesday 18 February 2025  22:39:41.863755 
+changed: [10.10.1.19_1]
+
+TASK [grycap.docker : Add Docker repo key] *************************************
+Tuesday 18 February 2025  22:39:53.582789 
+changed: [10.10.1.19_1]
+
+TASK [grycap.docker : Add docker-ce  repo] *************************************
+Tuesday 18 February 2025  22:39:54.232125 
+changed: [10.10.1.19_1]
+
+TASK [grycap.docker : Add docker repo] *****************************************
+Tuesday 18 February 2025  22:40:08.140981 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Install docker latest] ***********************************
+Tuesday 18 February 2025  22:40:08.226964 
+changed: [10.10.1.19_1]
+
+TASK [grycap.docker : Install docker latest] ***********************************
+Tuesday 18 February 2025  22:40:43.796623 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Install CRIU] ********************************************
+Tuesday 18 February 2025  22:40:43.877197 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Install containerd.io] ***********************************
+Tuesday 18 February 2025  22:40:43.972097 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Install containerd.io] ***********************************
+Tuesday 18 February 2025  22:40:44.042708 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Delete initial /etc/containerd/config.toml file] *********
+Tuesday 18 February 2025  22:40:44.112975 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : set_fact] ************************************************
+Tuesday 18 February 2025  22:40:44.172908 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : set_fact] ************************************************
+Tuesday 18 February 2025  22:40:44.264297 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Download nvidia repo apt list] ***************************
+Tuesday 18 February 2025  22:40:44.333915 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Add nvidia-docker repo key] ******************************
+Tuesday 18 February 2025  22:40:44.410279 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Ubuntu apt update] ***************************************
+Tuesday 18 February 2025  22:40:44.478960 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Install nvidia-docker2 package] **************************
+Tuesday 18 February 2025  22:40:44.550864 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Assure that /etc/default/docker exists] ******************
+Tuesday 18 February 2025  22:40:44.624775 
+ok: [10.10.1.19_1]
+
+TASK [grycap.docker : Set DOCKER_OPTS] *****************************************
+Tuesday 18 February 2025  22:40:45.330001 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : set_fact] ************************************************
+Tuesday 18 February 2025  22:40:45.389008 
+ok: [10.10.1.19_1]
+
+TASK [grycap.docker : set_fact] ************************************************
+Tuesday 18 February 2025  22:40:45.487399 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Create /etc/docker dir] **********************************
+Tuesday 18 February 2025  22:40:45.557536 
+ok: [10.10.1.19_1]
+
+TASK [grycap.docker : stat] ****************************************************
+Tuesday 18 February 2025  22:40:46.137682 
+ok: [10.10.1.19_1]
+
+TASK [grycap.docker : Load values from daemon.json file] ***********************
+Tuesday 18 February 2025  22:40:46.436087 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Append more key/values in daemon.json] *******************
+Tuesday 18 February 2025  22:40:46.499973 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Set key/values] ******************************************
+Tuesday 18 February 2025  22:40:46.567295 
+ok: [10.10.1.19_1]
+
+TASK [grycap.docker : Set new values in daemon.json] ***************************
+Tuesday 18 February 2025  22:40:46.652575 
+changed: [10.10.1.19_1]
+
+TASK [grycap.docker : stat] ****************************************************
+Tuesday 18 February 2025  22:40:47.630101 
+ok: [10.10.1.19_1]
+
+TASK [grycap.docker : lineinfile] **********************************************
+Tuesday 18 February 2025  22:40:48.009014 
+changed: [10.10.1.19_1]
+
+TASK [grycap.docker : lineinfile] **********************************************
+Tuesday 18 February 2025  22:40:48.507095 
+changed: [10.10.1.19_1]
+
+TASK [grycap.docker : force all notified handlers to run at this point, not waiting for normal sync points] ***
+Tuesday 18 February 2025  22:40:48.815962 
+
+RUNNING HANDLER [grycap.docker : reload systemctl] *****************************
+changed: [10.10.1.19_1]
+
+RUNNING HANDLER [grycap.docker : restart docker] *******************************
+changed: [10.10.1.19_1]
+
+TASK [grycap.docker : start docker] ********************************************
+Tuesday 18 February 2025  22:40:51.168421 
+ok: [10.10.1.19_1]
+
+TASK [grycap.docker : enable docker service] ***********************************
+Tuesday 18 February 2025  22:40:51.721955 
+ok: [10.10.1.19_1]
+
+TASK [grycap.docker : set_fact] ************************************************
+Tuesday 18 February 2025  22:40:52.202322 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Set extra_args var] **************************************
+Tuesday 18 February 2025  22:40:52.273129 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Set extra_args var in py3.11] ****************************
+Tuesday 18 February 2025  22:40:52.329193 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : set_fact] ************************************************
+Tuesday 18 February 2025  22:40:52.385070 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Install pip and setuptools Py3] **************************
+Tuesday 18 February 2025  22:40:52.438147 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Install pip and setuptools] ******************************
+Tuesday 18 February 2025  22:40:52.493398 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Link pip] ************************************************
+Tuesday 18 February 2025  22:40:52.543321 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Remove python3-yaml and jsonschema] **********************
+Tuesday 18 February 2025  22:40:52.597743 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Install dependencies for docker management pip3 (pyyaml 5.3.1)] ***
+Tuesday 18 February 2025  22:40:52.648346 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Install dependencies for docker management pip3] *********
+Tuesday 18 February 2025  22:40:52.703125 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Remove docker-compose v1 bin] ****************************
+Tuesday 18 February 2025  22:40:52.758419 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Install websocket-client version 0.59.0 for docker management pip2] ***
+Tuesday 18 February 2025  22:40:52.806629 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Install requests version <2.32.0 for docker management] ***
+Tuesday 18 February 2025  22:40:52.893950 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Install requests version 2.15.1 for docker management pip2] ***
+Tuesday 18 February 2025  22:40:52.938506 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Install {{docker_package}} for docker management pip2] ***
+Tuesday 18 February 2025  22:40:52.986058 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Install docker compose bin] ******************************
+Tuesday 18 February 2025  22:40:53.033066 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.docker : Include Containerd tasks] ********************************
+Tuesday 18 February 2025  22:40:53.082459 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.cri_o : Set OS var] ***********************************************
+Tuesday 18 February 2025  22:40:53.155959 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.cri_o : Update apt cache] *****************************************
+Tuesday 18 February 2025  22:40:53.208022 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.cri_o : Install dependencies for cri-o] ***************************
+Tuesday 18 February 2025  22:40:53.262192 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.cri_o : Create keyrings folder] ***********************************
+Tuesday 18 February 2025  22:40:53.310161 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.cri_o : Add kubic/libcontainers repository key] *******************
+Tuesday 18 February 2025  22:40:53.357707 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.cri_o : Add kubic/libcontainers repository] ***********************
+Tuesday 18 February 2025  22:40:53.406257 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.cri_o : Add cri-o repository key] *********************************
+Tuesday 18 February 2025  22:40:53.454554 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.cri_o : Add cri-o repository] *************************************
+Tuesday 18 February 2025  22:40:53.502768 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.cri_o : Install cri-o and cri-o-runc] *****************************
+Tuesday 18 February 2025  22:40:53.548864 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.cri_o : Start and enable cri-o service] ***************************
+Tuesday 18 February 2025  22:40:53.600068 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.cri_o : Install CNI plugins for cri-o] ****************************
+Tuesday 18 February 2025  22:40:53.651414 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.cri_o : Create crio.conf] *****************************************
+Tuesday 18 February 2025  22:40:53.702740 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.cri_o : Create 00-crio-bridge.conflist] ***************************
+Tuesday 18 February 2025  22:40:53.756647 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.cri_o : Install cri-tools] ****************************************
+Tuesday 18 February 2025  22:40:53.807051 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.kubernetes : Disable swap] ****************************************
+Tuesday 18 February 2025  22:40:53.873209 
+changed: [10.10.1.19_1]
+
+TASK [grycap.kubernetes : Disable SWAP in fstab] *******************************
+Tuesday 18 February 2025  22:40:54.228405 
+changed: [10.10.1.19_1]
+
+TASK [grycap.kubernetes : Include "kubeadm" tasks] *****************************
+Tuesday 18 February 2025  22:40:54.721347 
+ok: [10.10.1.19_1]
+included: /etc/ansible/roles/grycap.kubernetes/tasks/kubeadm.yaml for 10.10.1.19_1
+
+TASK [grycap.kubernetes : Include cri-docker tasks] ****************************
+Tuesday 18 February 2025  22:40:54.805736 
+ok: [10.10.1.19_1]
+included: /etc/ansible/roles/grycap.kubernetes/tasks/cri-dockerd.yaml for 10.10.1.19_1
+
+TASK [grycap.kubernetes : Download cri-dockerd tarball] ************************
+Tuesday 18 February 2025  22:40:54.898578 
+changed: [10.10.1.19_1]
+
+TASK [grycap.kubernetes : Extract cri-dockerd tarball] *************************
+Tuesday 18 February 2025  22:40:56.176234 
+changed: [10.10.1.19_1]
+
+TASK [grycap.kubernetes : Copy cri-dockerd binary] *****************************
+Tuesday 18 February 2025  22:40:58.568752 
+changed: [10.10.1.19_1]
+
+TASK [grycap.kubernetes : Download cri-docker service and socket] **************
+Tuesday 18 February 2025  22:40:59.530836 
+changed: [10.10.1.19_1] => (item=cri-docker.service)
+changed: [10.10.1.19_1] => (item=cri-docker.socket)
+
+TASK [grycap.kubernetes : Enable cri-dockerd service] **************************
+Tuesday 18 February 2025  22:41:00.511988 
+changed: [10.10.1.19_1] => (item=cri-docker.service)
+changed: [10.10.1.19_1] => (item=cri-docker.socket)
+
+TASK [grycap.kubernetes : Check kube version] **********************************
+Tuesday 18 February 2025  22:41:03.064929 
+ok: [10.10.1.19_1]
+
+TASK [grycap.kubernetes : debug] ***********************************************
+Tuesday 18 February 2025  22:41:03.348555 
+ok: [10.10.1.19_1] => {
+    "changed": false,
+    "msg": "Kubeadm version installed = "
+}
+
+TASK [grycap.kubernetes : Create /etc/modules-load.d/containerd.conf] **********
+Tuesday 18 February 2025  22:41:03.428329 
+changed: [10.10.1.19_1]
+
+TASK [grycap.kubernetes : Make modprobes] **************************************
+Tuesday 18 February 2025  22:41:04.117534 
+changed: [10.10.1.19_1] => (item=overlay)
+changed: [10.10.1.19_1] => (item=br_netfilter)
+
+TASK [grycap.kubernetes : Create /etc/sysctl.d/99-kubernetes-cri.conf] *********
+Tuesday 18 February 2025  22:41:04.800247 
+changed: [10.10.1.19_1]
+
+TASK [grycap.kubernetes : Apply sysctl params] *********************************
+Tuesday 18 February 2025  22:41:05.625994 
+changed: [10.10.1.19_1]
+
+TASK [grycap.kubernetes : Include "Debian" Kubernetes recipe] ******************
+Tuesday 18 February 2025  22:41:05.928853 
+ok: [10.10.1.19_1]
+included: /etc/ansible/roles/grycap.kubernetes/tasks/Debian.yaml for 10.10.1.19_1
+
+TASK [grycap.kubernetes : fail] ************************************************
+Tuesday 18 February 2025  22:41:06.022740 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.kubernetes : Set kube_minor_version] ******************************
+Tuesday 18 February 2025  22:41:06.075126 
+ok: [10.10.1.19_1]
+
+TASK [grycap.kubernetes : Set kube_key_version] ********************************
+Tuesday 18 February 2025  22:41:06.157439 
+ok: [10.10.1.19_1]
+
+TASK [grycap.kubernetes : Set kube_key_version] ********************************
+Tuesday 18 February 2025  22:41:06.231181 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.kubernetes : Add repo key] ****************************************
+Tuesday 18 February 2025  22:41:06.291339 
+changed: [10.10.1.19_1]
+
+TASK [grycap.kubernetes : Add kubernetes repo] *********************************
+Tuesday 18 February 2025  22:41:06.931223 
+changed: [10.10.1.19_1]
+
+TASK [grycap.kubernetes : Install kubernetes packages] *************************
+Tuesday 18 February 2025  22:41:20.030071 
+changed: [10.10.1.19_1]
+
+TASK [grycap.kubernetes : Install kubernetes packages] *************************
+Tuesday 18 February 2025  22:41:42.517780 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.kubernetes : Hold "{{ item }}" package] ***************************
+Tuesday 18 February 2025  22:41:42.571433 
+changed: [10.10.1.19_1] => (item=kubeadm)
+changed: [10.10.1.19_1] => (item=kubelet)
+changed: [10.10.1.19_1] => (item=kubectl)
+
+TASK [grycap.kubernetes : force handlers] **************************************
+Tuesday 18 February 2025  22:41:43.800816 
+
+TASK [grycap.kubernetes : Include "wn" tasks] **********************************
+Tuesday 18 February 2025  22:41:43.845572 
+ok: [10.10.1.19_1]
+included: /etc/ansible/roles/grycap.kubernetes/tasks/wn.yaml for 10.10.1.19_1
+
+TASK [grycap.kubernetes : Edit /etc/sysctl.d/99-override_cilium_rp_filter.conf] ***
+Tuesday 18 February 2025  22:41:43.959429 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.kubernetes : Wait for Kube master] ********************************
+Tuesday 18 February 2025  22:41:44.010719 
+ok: [10.10.1.19_1 -> kubeserver]
+
+TASK [grycap.kubernetes : command] *********************************************
+Tuesday 18 February 2025  22:41:45.218210 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.kubernetes : set_fact] ********************************************
+Tuesday 18 February 2025  22:41:45.277504 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.kubernetes : Install k3s node] ************************************
+Tuesday 18 February 2025  22:41:45.328636 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.kubernetes : Copy config.toml.tmpl for NVidia support] ************
+Tuesday 18 February 2025  22:41:45.373968 
+skipping: [10.10.1.19_1]
+
+TASK [grycap.kubernetes : Add KUBELET_EXTRA_ARGS] ******************************
+Tuesday 18 February 2025  22:41:45.424683 
+skipping: [10.10.1.19_1] => (item=/etc/default) 
+
+TASK [grycap.kubernetes : Create kubeadm-config file] **************************
+Tuesday 18 February 2025  22:41:45.482694 
+changed: [10.10.1.19_1]
+
+TASK [grycap.kubernetes : Add node to kube cluster] ****************************
+Tuesday 18 February 2025  22:41:46.159491 
+changed: [10.10.1.19_1]
+
+PLAY RECAP *********************************************************************
+10.10.1.19_1               : ok=64   changed=29   unreachable=0    failed=0   
+10.10.1.19_1               : ok=64   changed=29   unreachable=0    failed=0   
+
+Task wn_wn finished successfully
+Process finished
+
+***************************************************************************
+VM 2:
+Contextualization agent output processed successfullyGenerate and copy the ssh key
+Sleeping 0 secs.
+Launch task: basic
+Waiting SSH access to VM: 10.10.1.22
+Testing SSH access to VM: 10.10.1.22:22
+Remote access to VM: 10.10.1.22 Open!
+Removing requiretty to VM: 10.10.1.22
+OUT: 
+Requiretty successfully removed
+Call Ansible
+
+PLAY [10.10.1.22_2] ************************************************************
+
+TASK [Avoid unattended upgrades] ***********************************************
+Tuesday 18 February 2025  22:37:21.451532 
+ok: [10.10.1.22_2]
+
+TASK [Wait for the VM to boot] *************************************************
+Tuesday 18 February 2025  22:37:21.916957 
+ok: [10.10.1.22_2]
+
+TASK [Check Python2 is installed] **********************************************
+Tuesday 18 February 2025  22:37:21.982389 
+fatal: [10.10.1.22_2]: FAILED! => {"changed": false, "msg": "non-zero return code", "rc": 127, "stderr": "Shared connection to 10.10.1.22 closed.\r\n", "stderr_lines": ["Shared connection to 10.10.1.22 closed."], "stdout": "bash: line 1: python2: command not found\r\n", "stdout_lines": ["bash: line 1: python2: command not found"]}
+...ignoring
+
+TASK [Check Python3 is installed] **********************************************
+Tuesday 18 February 2025  22:37:22.037587 
+ok: [10.10.1.22_2]
+
+TASK [Bootstrap with python Debian/Ubuntu] *************************************
+Tuesday 18 February 2025  22:37:22.124272 
+skipping: [10.10.1.22_2]
+
+TASK [Link correct python version in Ubuntu 14] ********************************
+Tuesday 18 February 2025  22:37:22.182910 
+skipping: [10.10.1.22_2]
+
+TASK [Bootstrap with python RedHat/CentOS] *************************************
+Tuesday 18 February 2025  22:37:22.242599 
+skipping: [10.10.1.22_2]
+
+TASK [RedHat/CentOS install python3-dnf] ***************************************
+Tuesday 18 February 2025  22:37:22.281769 
+fatal: [10.10.1.22_2]: FAILED! => {"ansible_facts": {"discovered_interpreter_python": "/usr/bin/python3"}, "changed": true, "cmd": ["sudo", "yum", "install", "-y", "python3", "python3-dnf"], "delta": "0:00:00.014239", "end": "2025-02-18 22:37:23.125317", "msg": "non-zero return code", "rc": 1, "start": "2025-02-18 22:37:23.111078", "stderr": "sudo: yum: command not found", "stderr_lines": ["sudo: yum: command not found"], "stdout": "", "stdout_lines": []}
+...ignoring
+
+TASK [Bootstrap with python SUSE] **********************************************
+Tuesday 18 February 2025  22:37:23.179044 
+skipping: [10.10.1.22_2]
+
+TASK [Link python 3 or 2 in case is needed] ************************************
+Tuesday 18 February 2025  22:37:23.219108 
+changed: [10.10.1.22_2]
+
+TASK [Install libselinux-python3 on RH systems] ********************************
+Tuesday 18 February 2025  22:37:23.308970 
+fatal: [10.10.1.22_2]: FAILED! => {"changed": true, "msg": "non-zero return code", "rc": 127, "stderr": "Shared connection to 10.10.1.22 closed.\r\n", "stderr_lines": ["Shared connection to 10.10.1.22 closed."], "stdout": "/usr/bin/python3\r\nbash: line 1: yum: command not found\r\n", "stdout_lines": ["/usr/bin/python3", "bash: line 1: yum: command not found"]}
+...ignoring
+
+TASK [Install libselinux-python on RH systems] *********************************
+Tuesday 18 February 2025  22:37:23.380624 
+fatal: [10.10.1.22_2]: FAILED! => {"changed": true, "msg": "non-zero return code", "rc": 2, "stderr": "Shared connection to 10.10.1.22 closed.\r\n", "stderr_lines": ["Shared connection to 10.10.1.22 closed."], "stdout": "ls: cannot access '/usr/bin/python2': No such file or directory\r\n", "stdout_lines": ["ls: cannot access '/usr/bin/python2': No such file or directory"]}
+...ignoring
+
+TASK [Set the hostname of the node] ********************************************
+Tuesday 18 February 2025  22:37:23.453058 
+changed: [10.10.1.22_2]
+
+TASK [Disable SELinux in REL systems] ******************************************
+Tuesday 18 February 2025  22:37:24.872036 
+An exception occurred during task execution. To see the full traceback, use -vvv. The error was: ModuleNotFoundError: No module named 'selinux'
+fatal: [10.10.1.22_2]: FAILED! => {"changed": false, "msg": "Failed to import the required Python library (libselinux-python) on wn-2.localdomain's Python /usr/bin/python3. Please read the module documentation and install it in the appropriate location. If the required library is installed, but Ansible is using the wrong Python interpreter, please consult the documentation on ansible_python_interpreter"}
+...ignoring
+
+TASK [Add the authorized_key to the nodes] *************************************
+Tuesday 18 February 2025  22:37:25.642665 
+changed: [10.10.1.22_2]
+
+TASK [Add the authorized_key to the nodes again] *******************************
+Tuesday 18 February 2025  22:37:26.281922 
+fatal: [10.10.1.22_2]: FAILED! => {"changed": false, "msg": "Destination /home/root/.ssh/authorized_keys does not exist !", "rc": 257}
+...ignoring
+
+TASK [Gather Facts] ************************************************************
+Tuesday 18 February 2025  22:37:26.689495 
+ok: [10.10.1.22_2]
+
+TASK [Ubuntu apt update] *******************************************************
+Tuesday 18 February 2025  22:37:29.180776 
+changed: [10.10.1.22_2]
+
+TASK [Ubuntu force apt update (avoid apt lock)] ********************************
+Tuesday 18 February 2025  22:37:58.487782 
+skipping: [10.10.1.22_2]
+
+PLAY RECAP *********************************************************************
+10.10.1.22_2               : ok=14   changed=7    unreachable=0    failed=0   
+10.10.1.22_2               : ok=14   changed=7    unreachable=0    failed=0   
+
+Task basic finished successfully
+Process finished
+Contextualization agent output processed successfullyGenerate and copy the ssh key
+Sleeping 0 secs.
+Launch task: main_wn
+Call Ansible
+
+PLAY [allnowindows] ************************************************************
+
+TASK [Gathering Facts] *********************************************************
+Tuesday 18 February 2025  22:38:06.211874 
+ok: [158.42.104.43_0]
+ok: [10.10.1.19_1]
+ok: [10.10.1.22_2]
+
+PLAY [10.10.1.22_2] ************************************************************
+
+TASK [include_tasks] ***********************************************************
+Tuesday 18 February 2025  22:38:08.057452 
+ok: [10.10.1.22_2]
+included: /var/tmp/.im/43d10bda-ee48-11ef-8802-66dee9cd23fd/utils/tasks/main.yml for 10.10.1.22_2
+
+TASK [Copy the original /etc/hosts] ********************************************
+Tuesday 18 February 2025  22:38:08.094345 
+changed: [10.10.1.22_2]
+
+TASK [Copy the /etc/hosts] *****************************************************
+Tuesday 18 February 2025  22:38:08.487906 
+changed: [10.10.1.22_2]
+
+TASK [Merge /etc/hosts] ********************************************************
+Tuesday 18 February 2025  22:38:09.432879 
+changed: [10.10.1.22_2]
+
+TASK [Copy the /etc/hosts in windows native] ***********************************
+Tuesday 18 February 2025  22:38:09.751636 
+skipping: [10.10.1.22_2]
+
+TASK [Set BEARER_TOKEN environment variable] ***********************************
+Tuesday 18 February 2025  22:38:09.783856 
+skipping: [10.10.1.22_2]
+
+TASK [debug] *******************************************************************
+Tuesday 18 February 2025  22:38:09.845382 
+ok: [10.10.1.22_2] => {
+    "changed": false,
+    "msg": "Install user requested apps"
+}
+
+PLAY RECAP *********************************************************************
+10.10.1.19_1               : ok=1    changed=0    unreachable=0    failed=0   
+10.10.1.19_1               : ok=1    changed=0    unreachable=0    failed=0   
+10.10.1.22_2               : ok=6    changed=3    unreachable=0    failed=0   
+10.10.1.22_2               : ok=6    changed=3    unreachable=0    failed=0   
+158.42.104.43_0            : ok=1    changed=0    unreachable=0    failed=0   
+158.42.104.43_0            : ok=1    changed=0    unreachable=0    failed=0   
+
+Task main_wn finished successfully
+Process finished
+Contextualization agent output processed successfullyGenerate and copy the ssh key
+Sleeping 0 secs.
+Launch task: wn_wn
+Call Ansible
+
+PLAY [allnowindows] ************************************************************
+
+PLAY [10.10.1.22_2] ************************************************************
+
+TASK [grycap.nfs : include_tasks] **********************************************
+Tuesday 18 February 2025  22:38:22.037348 
+ok: [10.10.1.22_2]
+included: /etc/ansible/roles/grycap.nfs/tasks/wn.yaml for 10.10.1.22_2
+
+TASK [grycap.nfs : update repositories cache and install NFS] ******************
+Tuesday 18 February 2025  22:38:22.085582 
+changed: [10.10.1.22_2]
+
+TASK [grycap.nfs : update repositories cache and install NFS] ******************
+Tuesday 18 February 2025  22:38:53.370906 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.nfs : Ensure rpcbind is running] **********************************
+Tuesday 18 February 2025  22:38:53.412979 
+ok: [10.10.1.22_2]
+
+TASK [grycap.nfs : Ensure rpcbind is stopped] **********************************
+Tuesday 18 February 2025  22:38:54.284912 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.nfs : Set FSTYPE to nfs] ******************************************
+Tuesday 18 February 2025  22:38:54.345185 
+ok: [10.10.1.22_2]
+
+TASK [grycap.nfs : Set FSTYPE to nfs4] *****************************************
+Tuesday 18 February 2025  22:38:54.456452 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.nfs : mount the shared directories] *******************************
+Tuesday 18 February 2025  22:38:54.508560 
+
+TASK [geerlingguy.ntp : Include OS-specific variables.] ************************
+Tuesday 18 February 2025  22:38:54.572277 
+ok: [10.10.1.22_2] => (item=/etc/ansible/roles/geerlingguy.ntp/vars/Debian.yml)
+
+TASK [geerlingguy.ntp : Set the ntp_driftfile variable.] ***********************
+Tuesday 18 February 2025  22:38:54.638022 
+ok: [10.10.1.22_2]
+
+TASK [geerlingguy.ntp : Set the ntp_package variable.] *************************
+Tuesday 18 February 2025  22:38:54.731433 
+ok: [10.10.1.22_2]
+
+TASK [geerlingguy.ntp : Set the ntp_config_file variable.] *********************
+Tuesday 18 February 2025  22:38:54.856509 
+ok: [10.10.1.22_2]
+
+TASK [geerlingguy.ntp : Set the ntp_daemon variable.] **************************
+Tuesday 18 February 2025  22:38:54.936956 
+ok: [10.10.1.22_2]
+
+TASK [geerlingguy.ntp : Ensure NTP package is installed.] **********************
+Tuesday 18 February 2025  22:38:55.010178 
+changed: [10.10.1.22_2]
+
+TASK [geerlingguy.ntp : Ensure tzdata package is installed (Linux).] ***********
+Tuesday 18 February 2025  22:39:12.186160 
+ok: [10.10.1.22_2]
+
+TASK [geerlingguy.ntp : Set timezone.] *****************************************
+Tuesday 18 February 2025  22:39:13.352393 
+ok: [10.10.1.22_2]
+
+TASK [geerlingguy.ntp : Populate service facts.] *******************************
+Tuesday 18 February 2025  22:39:14.042741 
+ok: [10.10.1.22_2]
+
+TASK [geerlingguy.ntp : Disable systemd-timesyncd if it's running but ntp is enabled.] ***
+Tuesday 18 February 2025  22:39:20.885141 
+ok: [10.10.1.22_2]
+
+TASK [geerlingguy.ntp : Ensure NTP is running and enabled as configured.] ******
+Tuesday 18 February 2025  22:39:21.491223 
+ok: [10.10.1.22_2]
+
+TASK [geerlingguy.ntp : Ensure NTP is stopped and disabled as configured.] *****
+Tuesday 18 February 2025  22:39:22.065894 
+skipping: [10.10.1.22_2]
+
+TASK [geerlingguy.ntp : Generate ntp configuration file.] **********************
+Tuesday 18 February 2025  22:39:22.135611 
+skipping: [10.10.1.22_2]
+
+TASK [NVIDIA.nvidia_driver : unload nouveau] ***********************************
+Tuesday 18 February 2025  22:39:22.231132 
+skipping: [10.10.1.22_2]
+
+TASK [NVIDIA.nvidia_driver : ubuntu install tasks (canonical repos)] ***********
+Tuesday 18 February 2025  22:39:22.280490 
+skipping: [10.10.1.22_2]
+
+TASK [NVIDIA.nvidia_driver : ubuntu install tasks (CUDA repo)] *****************
+Tuesday 18 February 2025  22:39:22.334633 
+skipping: [10.10.1.22_2]
+
+TASK [NVIDIA.nvidia_driver : redhat family install tasks] **********************
+Tuesday 18 February 2025  22:39:22.382815 
+skipping: [10.10.1.22_2]
+
+TASK [NVIDIA.nvidia_driver : create persistenced override dir] *****************
+Tuesday 18 February 2025  22:39:22.428967 
+skipping: [10.10.1.22_2]
+
+TASK [NVIDIA.nvidia_driver : configure persistenced service to turn on persistence mode] ***
+Tuesday 18 February 2025  22:39:22.477044 
+skipping: [10.10.1.22_2]
+
+TASK [NVIDIA.nvidia_driver : remove persistenced service override] *************
+Tuesday 18 February 2025  22:39:22.521544 
+skipping: [10.10.1.22_2]
+
+TASK [NVIDIA.nvidia_driver : enable persistenced] ******************************
+Tuesday 18 February 2025  22:39:22.567178 
+skipping: [10.10.1.22_2]
+
+TASK [NVIDIA.nvidia_driver : set module parameters] ****************************
+Tuesday 18 February 2025  22:39:22.612014 
+skipping: [10.10.1.22_2]
+
+TASK [NVIDIA.nvidia_driver : reboot after driver install] **********************
+Tuesday 18 February 2025  22:39:22.658470 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Include Docker tasks] ************************************
+Tuesday 18 February 2025  22:39:22.729384 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Include Containerd tasks] ********************************
+Tuesday 18 February 2025  22:39:22.777439 
+skipping: [10.10.1.22_2]
+
+TASK [NVIDIA.nvidia_driver : unload nouveau] ***********************************
+Tuesday 18 February 2025  22:39:22.840855 
+skipping: [10.10.1.22_2]
+
+TASK [NVIDIA.nvidia_driver : ubuntu install tasks (canonical repos)] ***********
+Tuesday 18 February 2025  22:39:22.908487 
+skipping: [10.10.1.22_2]
+
+TASK [NVIDIA.nvidia_driver : ubuntu install tasks (CUDA repo)] *****************
+Tuesday 18 February 2025  22:39:23.001372 
+skipping: [10.10.1.22_2]
+
+TASK [NVIDIA.nvidia_driver : redhat family install tasks] **********************
+Tuesday 18 February 2025  22:39:23.061679 
+skipping: [10.10.1.22_2]
+
+TASK [NVIDIA.nvidia_driver : create persistenced override dir] *****************
+Tuesday 18 February 2025  22:39:23.134370 
+skipping: [10.10.1.22_2]
+
+TASK [NVIDIA.nvidia_driver : configure persistenced service to turn on persistence mode] ***
+Tuesday 18 February 2025  22:39:23.218549 
+skipping: [10.10.1.22_2]
+
+TASK [NVIDIA.nvidia_driver : remove persistenced service override] *************
+Tuesday 18 February 2025  22:39:23.287016 
+skipping: [10.10.1.22_2]
+
+TASK [NVIDIA.nvidia_driver : enable persistenced] ******************************
+Tuesday 18 February 2025  22:39:23.358028 
+skipping: [10.10.1.22_2]
+
+TASK [NVIDIA.nvidia_driver : set module parameters] ****************************
+Tuesday 18 February 2025  22:39:23.429259 
+skipping: [10.10.1.22_2]
+
+TASK [NVIDIA.nvidia_driver : reboot after driver install] **********************
+Tuesday 18 February 2025  22:39:23.514079 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Include Docker tasks] ************************************
+Tuesday 18 February 2025  22:39:23.593117 
+ok: [10.10.1.22_2]
+included: /etc/ansible/roles/grycap.docker/tasks/docker.yml for 10.10.1.22_2
+
+TASK [grycap.docker : Check docker version] ************************************
+Tuesday 18 February 2025  22:39:23.709054 
+ok: [10.10.1.22_2]
+
+TASK [grycap.docker : debug] ***************************************************
+Tuesday 18 February 2025  22:39:24.211782 
+ok: [10.10.1.22_2] => {
+    "changed": false,
+    "msg": "Docker version installed = "
+}
+
+TASK [grycap.docker : Set docker to be installed] ******************************
+Tuesday 18 February 2025  22:39:24.294296 
+ok: [10.10.1.22_2]
+
+TASK [grycap.docker : Chek docker compatible versions] *************************
+Tuesday 18 February 2025  22:39:24.365683 
+
+TASK [grycap.docker : Include "Debian" tasks] **********************************
+Tuesday 18 February 2025  22:39:24.413564 
+ok: [10.10.1.22_2]
+included: /etc/ansible/roles/grycap.docker/tasks/Debian.yml for 10.10.1.22_2
+
+TASK [grycap.docker : Install dependencies in Deb systems] *********************
+Tuesday 18 February 2025  22:39:24.510937 
+changed: [10.10.1.22_2]
+
+TASK [grycap.docker : Install dependencies in Deb systems] *********************
+Tuesday 18 February 2025  22:39:40.665971 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Install dependencies in Deb systems] *********************
+Tuesday 18 February 2025  22:39:40.757347 
+changed: [10.10.1.22_2]
+
+TASK [grycap.docker : Add Docker repo key] *************************************
+Tuesday 18 February 2025  22:39:51.424358 
+changed: [10.10.1.22_2]
+
+TASK [grycap.docker : Add docker-ce  repo] *************************************
+Tuesday 18 February 2025  22:39:52.222384 
+changed: [10.10.1.22_2]
+
+TASK [grycap.docker : Add docker repo] *****************************************
+Tuesday 18 February 2025  22:40:06.183419 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Install docker latest] ***********************************
+Tuesday 18 February 2025  22:40:06.264651 
+changed: [10.10.1.22_2]
+
+TASK [grycap.docker : Install docker latest] ***********************************
+Tuesday 18 February 2025  22:40:41.446835 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Install CRIU] ********************************************
+Tuesday 18 February 2025  22:40:41.522795 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Install containerd.io] ***********************************
+Tuesday 18 February 2025  22:40:41.639889 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Install containerd.io] ***********************************
+Tuesday 18 February 2025  22:40:41.699210 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Delete initial /etc/containerd/config.toml file] *********
+Tuesday 18 February 2025  22:40:41.760909 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : set_fact] ************************************************
+Tuesday 18 February 2025  22:40:41.818973 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : set_fact] ************************************************
+Tuesday 18 February 2025  22:40:41.882061 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Download nvidia repo apt list] ***************************
+Tuesday 18 February 2025  22:40:41.953720 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Add nvidia-docker repo key] ******************************
+Tuesday 18 February 2025  22:40:42.013108 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Ubuntu apt update] ***************************************
+Tuesday 18 February 2025  22:40:42.074723 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Install nvidia-docker2 package] **************************
+Tuesday 18 February 2025  22:40:42.134398 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Assure that /etc/default/docker exists] ******************
+Tuesday 18 February 2025  22:40:42.210323 
+ok: [10.10.1.22_2]
+
+TASK [grycap.docker : Set DOCKER_OPTS] *****************************************
+Tuesday 18 February 2025  22:40:43.573313 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : set_fact] ************************************************
+Tuesday 18 February 2025  22:40:43.632595 
+ok: [10.10.1.22_2]
+
+TASK [grycap.docker : set_fact] ************************************************
+Tuesday 18 February 2025  22:40:43.715612 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Create /etc/docker dir] **********************************
+Tuesday 18 February 2025  22:40:43.777253 
+ok: [10.10.1.22_2]
+
+TASK [grycap.docker : stat] ****************************************************
+Tuesday 18 February 2025  22:40:44.363594 
+ok: [10.10.1.22_2]
+
+TASK [grycap.docker : Load values from daemon.json file] ***********************
+Tuesday 18 February 2025  22:40:44.699441 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Append more key/values in daemon.json] *******************
+Tuesday 18 February 2025  22:40:44.765927 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Set key/values] ******************************************
+Tuesday 18 February 2025  22:40:44.841640 
+ok: [10.10.1.22_2]
+
+TASK [grycap.docker : Set new values in daemon.json] ***************************
+Tuesday 18 February 2025  22:40:44.931563 
+changed: [10.10.1.22_2]
+
+TASK [grycap.docker : stat] ****************************************************
+Tuesday 18 February 2025  22:40:45.836374 
+ok: [10.10.1.22_2]
+
+TASK [grycap.docker : lineinfile] **********************************************
+Tuesday 18 February 2025  22:40:46.275465 
+changed: [10.10.1.22_2]
+
+TASK [grycap.docker : lineinfile] **********************************************
+Tuesday 18 February 2025  22:40:46.799342 
+changed: [10.10.1.22_2]
+
+TASK [grycap.docker : force all notified handlers to run at this point, not waiting for normal sync points] ***
+Tuesday 18 February 2025  22:40:47.161918 
+
+RUNNING HANDLER [grycap.docker : reload systemctl] *****************************
+changed: [10.10.1.22_2]
+
+RUNNING HANDLER [grycap.docker : restart docker] *******************************
+changed: [10.10.1.22_2]
+
+TASK [grycap.docker : start docker] ********************************************
+Tuesday 18 February 2025  22:40:49.654008 
+ok: [10.10.1.22_2]
+
+TASK [grycap.docker : enable docker service] ***********************************
+Tuesday 18 February 2025  22:40:50.199923 
+ok: [10.10.1.22_2]
+
+TASK [grycap.docker : set_fact] ************************************************
+Tuesday 18 February 2025  22:40:50.730050 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Set extra_args var] **************************************
+Tuesday 18 February 2025  22:40:50.782710 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Set extra_args var in py3.11] ****************************
+Tuesday 18 February 2025  22:40:50.836441 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : set_fact] ************************************************
+Tuesday 18 February 2025  22:40:50.890298 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Install pip and setuptools Py3] **************************
+Tuesday 18 February 2025  22:40:50.982097 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Install pip and setuptools] ******************************
+Tuesday 18 February 2025  22:40:51.042500 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Link pip] ************************************************
+Tuesday 18 February 2025  22:40:51.095565 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Remove python3-yaml and jsonschema] **********************
+Tuesday 18 February 2025  22:40:51.159976 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Install dependencies for docker management pip3 (pyyaml 5.3.1)] ***
+Tuesday 18 February 2025  22:40:51.215987 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Install dependencies for docker management pip3] *********
+Tuesday 18 February 2025  22:40:51.275978 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Remove docker-compose v1 bin] ****************************
+Tuesday 18 February 2025  22:40:51.333085 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Install websocket-client version 0.59.0 for docker management pip2] ***
+Tuesday 18 February 2025  22:40:51.386213 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Install requests version <2.32.0 for docker management] ***
+Tuesday 18 February 2025  22:40:51.442857 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Install requests version 2.15.1 for docker management pip2] ***
+Tuesday 18 February 2025  22:40:51.496986 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Install {{docker_package}} for docker management pip2] ***
+Tuesday 18 February 2025  22:40:51.558783 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Install docker compose bin] ******************************
+Tuesday 18 February 2025  22:40:51.613231 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.docker : Include Containerd tasks] ********************************
+Tuesday 18 February 2025  22:40:51.671660 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.cri_o : Set OS var] ***********************************************
+Tuesday 18 February 2025  22:40:51.742070 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.cri_o : Update apt cache] *****************************************
+Tuesday 18 February 2025  22:40:51.798767 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.cri_o : Install dependencies for cri-o] ***************************
+Tuesday 18 February 2025  22:40:51.847135 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.cri_o : Create keyrings folder] ***********************************
+Tuesday 18 February 2025  22:40:51.905547 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.cri_o : Add kubic/libcontainers repository key] *******************
+Tuesday 18 February 2025  22:40:51.957557 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.cri_o : Add kubic/libcontainers repository] ***********************
+Tuesday 18 February 2025  22:40:52.008880 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.cri_o : Add cri-o repository key] *********************************
+Tuesday 18 February 2025  22:40:52.062803 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.cri_o : Add cri-o repository] *************************************
+Tuesday 18 February 2025  22:40:52.111366 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.cri_o : Install cri-o and cri-o-runc] *****************************
+Tuesday 18 February 2025  22:40:52.165436 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.cri_o : Start and enable cri-o service] ***************************
+Tuesday 18 February 2025  22:40:52.217112 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.cri_o : Install CNI plugins for cri-o] ****************************
+Tuesday 18 February 2025  22:40:52.282316 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.cri_o : Create crio.conf] *****************************************
+Tuesday 18 February 2025  22:40:52.329967 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.cri_o : Create 00-crio-bridge.conflist] ***************************
+Tuesday 18 February 2025  22:40:52.380456 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.cri_o : Install cri-tools] ****************************************
+Tuesday 18 February 2025  22:40:52.468549 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.kubernetes : Disable swap] ****************************************
+Tuesday 18 February 2025  22:40:52.532533 
+changed: [10.10.1.22_2]
+
+TASK [grycap.kubernetes : Disable SWAP in fstab] *******************************
+Tuesday 18 February 2025  22:40:52.893394 
+changed: [10.10.1.22_2]
+
+TASK [grycap.kubernetes : Include "kubeadm" tasks] *****************************
+Tuesday 18 February 2025  22:40:53.354965 
+ok: [10.10.1.22_2]
+included: /etc/ansible/roles/grycap.kubernetes/tasks/kubeadm.yaml for 10.10.1.22_2
+
+TASK [grycap.kubernetes : Include cri-docker tasks] ****************************
+Tuesday 18 February 2025  22:40:53.420655 
+ok: [10.10.1.22_2]
+included: /etc/ansible/roles/grycap.kubernetes/tasks/cri-dockerd.yaml for 10.10.1.22_2
+
+TASK [grycap.kubernetes : Download cri-dockerd tarball] ************************
+Tuesday 18 February 2025  22:40:53.484415 
+changed: [10.10.1.22_2]
+
+TASK [grycap.kubernetes : Extract cri-dockerd tarball] *************************
+Tuesday 18 February 2025  22:40:54.900173 
+changed: [10.10.1.22_2]
+
+TASK [grycap.kubernetes : Copy cri-dockerd binary] *****************************
+Tuesday 18 February 2025  22:40:57.342602 
+changed: [10.10.1.22_2]
+
+TASK [grycap.kubernetes : Download cri-docker service and socket] **************
+Tuesday 18 February 2025  22:40:58.165650 
+changed: [10.10.1.22_2] => (item=cri-docker.service)
+changed: [10.10.1.22_2] => (item=cri-docker.socket)
+
+TASK [grycap.kubernetes : Enable cri-dockerd service] **************************
+Tuesday 18 February 2025  22:40:59.494611 
+changed: [10.10.1.22_2] => (item=cri-docker.service)
+changed: [10.10.1.22_2] => (item=cri-docker.socket)
+
+TASK [grycap.kubernetes : Check kube version] **********************************
+Tuesday 18 February 2025  22:41:02.014309 
+ok: [10.10.1.22_2]
+
+TASK [grycap.kubernetes : debug] ***********************************************
+Tuesday 18 February 2025  22:41:02.327903 
+ok: [10.10.1.22_2] => {
+    "changed": false,
+    "msg": "Kubeadm version installed = "
+}
+
+TASK [grycap.kubernetes : Create /etc/modules-load.d/containerd.conf] **********
+Tuesday 18 February 2025  22:41:02.452165 
+changed: [10.10.1.22_2]
+
+TASK [grycap.kubernetes : Make modprobes] **************************************
+Tuesday 18 February 2025  22:41:03.235576 
+changed: [10.10.1.22_2] => (item=overlay)
+changed: [10.10.1.22_2] => (item=br_netfilter)
+
+TASK [grycap.kubernetes : Create /etc/sysctl.d/99-kubernetes-cri.conf] *********
+Tuesday 18 February 2025  22:41:03.855720 
+changed: [10.10.1.22_2]
+
+TASK [grycap.kubernetes : Apply sysctl params] *********************************
+Tuesday 18 February 2025  22:41:04.582696 
+changed: [10.10.1.22_2]
+
+TASK [grycap.kubernetes : Include "Debian" Kubernetes recipe] ******************
+Tuesday 18 February 2025  22:41:04.939795 
+ok: [10.10.1.22_2]
+included: /etc/ansible/roles/grycap.kubernetes/tasks/Debian.yaml for 10.10.1.22_2
+
+TASK [grycap.kubernetes : fail] ************************************************
+Tuesday 18 February 2025  22:41:05.039214 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.kubernetes : Set kube_minor_version] ******************************
+Tuesday 18 February 2025  22:41:05.097913 
+ok: [10.10.1.22_2]
+
+TASK [grycap.kubernetes : Set kube_key_version] ********************************
+Tuesday 18 February 2025  22:41:05.177442 
+ok: [10.10.1.22_2]
+
+TASK [grycap.kubernetes : Set kube_key_version] ********************************
+Tuesday 18 February 2025  22:41:05.257837 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.kubernetes : Add repo key] ****************************************
+Tuesday 18 February 2025  22:41:05.326932 
+changed: [10.10.1.22_2]
+
+TASK [grycap.kubernetes : Add kubernetes repo] *********************************
+Tuesday 18 February 2025  22:41:06.039695 
+changed: [10.10.1.22_2]
+
+TASK [grycap.kubernetes : Install kubernetes packages] *************************
+Tuesday 18 February 2025  22:41:19.394296 
+changed: [10.10.1.22_2]
+
+TASK [grycap.kubernetes : Install kubernetes packages] *************************
+Tuesday 18 February 2025  22:41:43.207544 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.kubernetes : Hold "{{ item }}" package] ***************************
+Tuesday 18 February 2025  22:41:43.264017 
+changed: [10.10.1.22_2] => (item=kubeadm)
+changed: [10.10.1.22_2] => (item=kubelet)
+changed: [10.10.1.22_2] => (item=kubectl)
+
+TASK [grycap.kubernetes : force handlers] **************************************
+Tuesday 18 February 2025  22:41:44.421611 
+
+TASK [grycap.kubernetes : Include "wn" tasks] **********************************
+Tuesday 18 February 2025  22:41:44.523281 
+ok: [10.10.1.22_2]
+included: /etc/ansible/roles/grycap.kubernetes/tasks/wn.yaml for 10.10.1.22_2
+
+TASK [grycap.kubernetes : Edit /etc/sysctl.d/99-override_cilium_rp_filter.conf] ***
+Tuesday 18 February 2025  22:41:44.625148 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.kubernetes : Wait for Kube master] ********************************
+Tuesday 18 February 2025  22:41:44.692226 
+ok: [10.10.1.22_2 -> kubeserver]
+
+TASK [grycap.kubernetes : command] *********************************************
+Tuesday 18 February 2025  22:41:45.350098 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.kubernetes : set_fact] ********************************************
+Tuesday 18 February 2025  22:41:45.415125 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.kubernetes : Install k3s node] ************************************
+Tuesday 18 February 2025  22:41:45.469225 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.kubernetes : Copy config.toml.tmpl for NVidia support] ************
+Tuesday 18 February 2025  22:41:45.524490 
+skipping: [10.10.1.22_2]
+
+TASK [grycap.kubernetes : Add KUBELET_EXTRA_ARGS] ******************************
+Tuesday 18 February 2025  22:41:45.574823 
+skipping: [10.10.1.22_2] => (item=/etc/default) 
+
+TASK [grycap.kubernetes : Create kubeadm-config file] **************************
+Tuesday 18 February 2025  22:41:45.644756 
+changed: [10.10.1.22_2]
+
+TASK [grycap.kubernetes : Add node to kube cluster] ****************************
+Tuesday 18 February 2025  22:41:46.377674 
+changed: [10.10.1.22_2]
+
+PLAY RECAP *********************************************************************
+10.10.1.22_2               : ok=64   changed=29   unreachable=0    failed=0   
+10.10.1.22_2               : ok=64   changed=29   unreachable=0    failed=0   
+
+Task wn_wn finished successfully
+Process finished
+
+***************************************************************************
+

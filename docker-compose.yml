@@ -1,8 +1,8 @@
-version: '3'
+version: '3.8'
 services:
 
   mysql:
-    image: mysql-db:v2 # Imagen ya configurada con la base de datos de guacamole
+    image: galarconm/tfm:mysql-db-v3
     container_name: mysql-db
     environment:
       MYSQL_ROOT_PASSWORD: root_password
@@ -25,56 +25,39 @@ services:
       MYSQL_DATABASE: guacamole_db
       MYSQL_USER: guacamole_user
       MYSQL_PASSWORD: guacamole_password
-      GUACD_HOSTNAME: guacd # Nombre del servicio guacd
-      MYSQL_HOSTNAME: mysql  # Nombre del servicio mysql
+      GUACD_HOSTNAME: guacd
+      MYSQL_HOSTNAME: mysql
     depends_on:
       - guacd
       - mysql
-    #links:
-    #  - guacd:guacd
-    #  - mysql:mysql
   spyder:
-    image: spyder-vnc:v1
+    image: galarconm/tfm:spyder-rdp-v1
     container_name: spyder
     ports:
       - "5901:5901"
-  
+
   geany:
-    image: geany:v1
+    image: galarconm/tfm:geany-rdp-v2
     container_name: geany
     ports:
       - "5902:5902"
 
   jupyter:
-    image: jupyter-vnc:v1
+    image: galarconm/tfm:jupyter-rdp-v1
     container_name: jupyter
     ports:
       - "5903:5903"
-  
+
   frontend-jenkins:
-    image: frontend/jenkins:v1 # Jenkins frontend
+    image: galarconm/tfm:frontend-jenkins-v3
     container_name: frontend-jenkins
     ports:
-      - "8090:8080" # port 8090 is mapped to port 8080 of the container
+      - "8090:8080"
     volumes:
-      - jenkins_home:/var/jenkins_home # Mount the volume to the container
-  
-  keycloak:
-    image: keycloak:v1
-    container_name: keycloak
-    ports:
-      - "8081:8080"
-  
+      - jenkins_home:/var/jenkins_home
+
 volumes:
-  mysql_data:  # Name of the volume
-    driver: local  # Use the local driver (default)
-  jenkins_home:  # Name of the volume
-    driver: local  # Use the local driver (default)
-
-    # command to run docker-compose: docker-compose up -d
-
-  #remove container_name when the service is scaled
-
-
-    
-
+  mysql_data:
+    driver: local
+  jenkins_home:
+    driver: local
