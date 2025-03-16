@@ -13,6 +13,8 @@ RUN apt-get update && \
     dbus-x11 \
     geany \
     firefox-esr \
+    git \
+    xterm \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
    
 # Configurar xfce4 como el entorno de escritorio para xrdp
@@ -27,10 +29,6 @@ EXPOSE 3389
 # Copiar script de inicio
 COPY start_rdp.sh /usr/local/bin/start_rdp.sh
 RUN chmod +x /usr/local/bin/start_rdp.sh
-
-# Copiar script add_users.sh
-COPY add_users.sh /usr/local/bin/add_users.sh
-RUN chmod +x /usr/local/bin/add_users.sh
 
 # Comando para iniciar xrdp y el entorno de escritorio xfce4
 CMD service xrdp start && /usr/local/bin/start_rdp.sh
