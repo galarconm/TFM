@@ -1,7 +1,7 @@
-# Dockerfile for Spyder with RDP support
+# Dockerfile para Spyder con soporte RDP
 FROM python:3.9-slim
 
-# Install dependencies
+# Instalar dependencias
 RUN apt-get update && \
     apt-get install -y \
     python3-pyqt5 \
@@ -15,25 +15,25 @@ RUN apt-get update && \
     firefox-esr \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
          
-# Install Spyder
+# Instalar Spyder
 RUN pip install spyder
 
-# Set up xfce4 as the desktop environment for xrdp
+# Configurar xfce4 como el entorno de escritorio para xrdp
 RUN echo xfce4-session > /root/.xsession
 
-# Create a user account
+# Crear una cuenta de usuario
 RUN useradd -m myuser && yes mypassword | passwd myuser
 
-# Expose ports for RDP (3389)
+# Exponer puertos para RDP (3389)
 EXPOSE 3389
 
-# Copy startup script
+# Copiar script de inicio
 COPY start_rdp.sh /usr/local/bin/start_rdp.sh
 RUN chmod +x /usr/local/bin/start_rdp.sh
 
-# Copy add_users.sh script
+# Copiar script add_users.sh
 COPY add_users.sh /usr/local/bin/add_users.sh
 RUN chmod +x /usr/local/bin/add_users.sh
 
-# Command to start xrdp and Spyder
+# Comando para iniciar xrdp y Spyder
 CMD service xrdp start && /usr/local/bin/start_rdp.sh

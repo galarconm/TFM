@@ -1,15 +1,12 @@
-#Dockerfile for keycloak
-
+# Dockerfile para Keycloak
 FROM keycloak/keycloak:26.0
 
-# Set the environment variables
+# Establecer las variables de entorno
 ENV KC_BOOTSTRAP_ADMIN_USERNAME=admin \
     KC_BOOTSTRAP_ADMIN_PASSWORD=admin
-# ENV KC_BOOTSTRAP_ADMIN_PASSWORD=admin
 
-# Expose the ports
+# Exponer los puertos
 EXPOSE 8081
-#EXPOSE 8443
 
-# Start the keycloak server
+# Iniciar el servidor Keycloak
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start-dev"]

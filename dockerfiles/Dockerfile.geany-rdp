@@ -1,7 +1,7 @@
-# Use an official Ubuntu base image WEB OK
+# Usar una imagen base oficial de Ubuntu WEB OK
 FROM python:3.9-slim
 
-# Avoid warnings by switching to noninteractive for the build process
+# Evitar advertencias cambiando a no interactivo durante el proceso de construcción
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
@@ -15,22 +15,22 @@ RUN apt-get update && \
     firefox-esr \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
    
-# Set up xfce4 as the desktop environment for xrdp
+# Configurar xfce4 como el entorno de escritorio para xrdp
 RUN echo xfce4-session > /root/.xsession
 
-# Create a user account
+# Crear una cuenta de usuario
 #RUN useradd -m myuser && echo "myuser:mypassword" | chpasswd
 
-# Expose ports for RDP (3389)
+# Exponer puertos para RDP (3389)
 EXPOSE 3389
 
-# Copy startup script
+# Copiar script de inicio
 COPY start_rdp.sh /usr/local/bin/start_rdp.sh
 RUN chmod +x /usr/local/bin/start_rdp.sh
 
-# Copy add_users.sh script
-# COPY add_users.sh /usr/local/bin/add_users.sh
-# RUN chmod +x /usr/local/bin/add_users.sh
+# Copiar script add_users.sh
+COPY add_users.sh /usr/local/bin/add_users.sh
+RUN chmod +x /usr/local/bin/add_users.sh
 
-# Command to start xrdp and JupyterLab Desktop
+# Comando para iniciar xrdp y el entorno de escritorio xfce4
 CMD service xrdp start && /usr/local/bin/start_rdp.sh

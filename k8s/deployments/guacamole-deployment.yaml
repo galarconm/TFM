@@ -38,10 +38,10 @@ spec:
               value: http://192.168.49.2:31001/realms/guacamole/protocol/openid-connect/auth
             - name: OPENID_JWKS_ENDPOINT
               value: http://192.168.49.2:31001/realms/guacamole/protocol/openid-connect/certs
-            - name: OPENID_TOKEN_ENDPOINT
-              value: http://192.168.49.2:31001/realms/guacamole/protocol/openid-connect/token
             - name: OPENID_USERINFO_ENDPOINT
               value: http://192.168.49.2:31001/realms/guacamole/protocol/openid-connect/userinfo
+            - name: OPENID_LOGOUT_ENDPOINT
+              value: http://192.168.49.2:31001/realms/guacamole/protocol/openid-connect/logout
             - name: OPENID_LOGOUT_ENDPOINT
               value: http://192.168.49.2:31001/realms/guacamole/protocol/openid-connect/logout
             - name: extension-priority

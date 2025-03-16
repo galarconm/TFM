@@ -1,21 +1,21 @@
 #! /bin/bash
 
 if [ "$#" -ne 1 ]; then
-    echo "❌ Usage: $0 <user_file>"
+    echo "❌ Uso: $0 <archivo_de_usuarios>"
     exit 1
 fi
 
 USER_LIST=$1
 
-# Keycloak configuration
-KEYCLOAK_URL="http://158.42.104.43:31001"
+# Configuración de Keycloak
+KEYCLOAK_URL="http://192.168.49.2:31001"
 KEYCLOAK_USER="admin"
 KEYCLOAK_PASSWORD="admin"
 REALM="jenkins"  # Cambia esto al realm de Jenkins
 CLIENT_ID="jenkins"  # Cambia esto al client ID de Jenkins
 ROLE_NAME="students"  # Cambia esto al nombre del rol que deseas asignar
 
-# Get Keycloak admin access token
+# Obtener el token de acceso de administrador de Keycloak
 echo "🔑 Obteniendo token de acceso de Keycloak..."
 TOKEN=$(curl -s -X POST "$KEYCLOAK_URL/realms/master/protocol/openid-connect/token" \
     -H "Content-Type: application/x-www-form-urlencoded" \
@@ -30,7 +30,7 @@ if [ -z "$TOKEN" ] || [ "$TOKEN" == "null" ]; then
 fi
 echo "✅ Token de acceso obtenido correctamente."
 
-# Get the ID of the 'students' role
+# Obtener el ID del rol 'students'
 echo "🔍 Buscando el rol '$ROLE_NAME'..."
 ROLE_ID=$(curl -s -X GET "$KEYCLOAK_URL/admin/realms/$REALM/roles" \
     -H "Authorization: Bearer $TOKEN" | jq -r '.[] | select(.name=="'"$ROLE_NAME"'") | .id')
@@ -41,10 +41,10 @@ if [ -z "$ROLE_ID" ]; then
 fi
 echo "✅ Rol '$ROLE_NAME' encontrado (ID: $ROLE_ID)."
 
-# Add users and assign them the 'students' role
+# Agregar usuarios y asignarles el rol 'students'
 echo "👥 Procesando la lista de usuarios..."
 while IFS= read -r username || [ -n "$username" ]; do
-    # Create user
+    # Crear usuario
     echo "🛠️ Creando usuario: $username..."
     USER_ID=$(curl -s -D - -o /dev/null -X POST "$KEYCLOAK_URL/admin/realms/$REALM/users" \
         -H "Content-Type: application/json" \
@@ -67,7 +67,7 @@ while IFS= read -r username || [ -n "$username" ]; do
     fi
     echo "✅ Usuario $username creado correctamente (ID: $USER_ID)."
 
-    # Assign the 'students' role to the user
+    # Asignar el rol 'students' al usuario
     echo "🎓 Asignando el rol '$ROLE_NAME' al usuario $username..."
     curl -s -X POST "$KEYCLOAK_URL/admin/realms/$REALM/users/$USER_ID/role-mappings/realm" \
         -H "Authorization: Bearer $TOKEN" \

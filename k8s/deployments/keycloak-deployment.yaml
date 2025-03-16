@@ -22,18 +22,6 @@ spec:
             value: admin
           - name: KEYCLOAK_ADMIN_PASSWORD
             value: admin
-          # - name: DB_VENDOR
-          #   value: POSTGRES
-          # - name: DB_ADDR
-          #   value: postgres-svc
-          # - name: DB_PORT
-          #   value: "5432"
-          # - name: DB_DATABASE
-          #   value: keycloak_db
-          # - name: DB_USER
-          #   value: keycloak_user
-          # - name: DB_PASSWORD
-          #   value: keycloak_password
           - name: KC_DB
             value: postgres
           - name: KC_DB_URL
@@ -43,10 +31,4 @@ spec:
           - name: KC_DB_PASSWORD
             value: keycloak_password
           - name: KC_HOSTNAME
-            value: "192.168.1.23" # minikube ip
-
-#           ENV KC_DB=postgres
-# ENV KC_DB_URL=<DBURL>
-# ENV KC_DB_USERNAME=<DBUSERNAME>
-# ENV KC_DB_PASSWORD=<DBPASSWORD>
-# ENV KC_HOSTNAME=localhost
+            value: "192.168.49.2" # es la IP del host o nodo maestro.

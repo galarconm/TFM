@@ -1,21 +1,22 @@
 #! /bin/bash
 
+# Asegurarse de que el script se ejecute con exactamente un argumento
 if [ "$#" -ne 1 ]; then
-    echo "Usage: $0 <user_file>"
+    echo "Uso: $0 <archivo_de_usuarios>"
     exit 1
 fi
 
 USER_LIST=$1
 
-# Keycloak configuration
-KEYCLOAK_URL="http://158.42.104.43:31001"
+# Configuración de Keycloak
+KEYCLOAK_URL="http://192.168.49.2:31001"
 KEYCLOAK_USER="admin"
 KEYCLOAK_PASSWORD="admin"
 REALM="guacamole"
 CLIENT_ID="guacamole"
 GROUP_NAME="students"
 
-# Get Keycloak admin access token
+# Obtener el token de acceso de administrador de Keycloak
 TOKEN=$(curl -s -X POST "$KEYCLOAK_URL/realms/master/protocol/openid-connect/token" \
     -H "Content-Type: application/x-www-form-urlencoded" \
     -d "username=$KEYCLOAK_USER" \
@@ -24,22 +25,22 @@ TOKEN=$(curl -s -X POST "$KEYCLOAK_URL/realms/master/protocol/openid-connect/tok
     -d 'client_id=admin-cli' | jq -r '.access_token')
 
 if [ -z "$TOKEN" ] || [ "$TOKEN" == "null" ]; then
-  echo "Failed to get Keycloak token"
+  echo "Error al obtener el token de Keycloak"
   exit 1
 fi
 
-# Get the ID of the 'students' group
+# Obtener el ID del grupo 'students'
 GROUP_ID=$(curl -s -X GET "$KEYCLOAK_URL/admin/realms/$REALM/groups?search=$GROUP_NAME" \
     -H "Authorization: Bearer $TOKEN" | jq -r '.[] | select(.name=="students") | .id')
 
 if [ -z "$GROUP_ID" ]; then
-  echo "Group 'students' not found. Create the group in Keycloak first."
+  echo "Grupo 'students' no encontrado. Cree el grupo en Keycloak primero."
   exit 1
 fi
 
-# Add users and assign them to the 'students' group
+# Agregar usuarios y asignarlos al grupo 'students'
 while IFS= read -r username || [ -n "$username" ]; do
-    # Create user
+    # Crear usuario
     USER_ID=$(curl -s -D - -o /dev/null -X POST "$KEYCLOAK_URL/admin/realms/$REALM/users" \
         -H "Content-Type: application/json" \
         -H "Authorization: Bearer $TOKEN" \
@@ -56,15 +57,15 @@ while IFS= read -r username || [ -n "$username" ]; do
         }' | awk '/^Location:/ {print $2}' | awk -F'/' '{print $NF}' | tr -d '\r')
 
     if [ -z "$USER_ID" ]; then
-        echo "Failed to create user $username."
+        echo "Error al crear el usuario $username."
         continue
     fi
 
-    # Add user to the 'students' group
+    # Agregar usuario al grupo 'students'
     curl -s -X PUT "$KEYCLOAK_URL/admin/realms/$REALM/users/$USER_ID/groups/$GROUP_ID" \
         -H "Authorization: Bearer $TOKEN" \
         -H "Content-Type: application/json" \
         -d '{}'
 
-    echo "User $username created and added to group 'students'."
+    echo "Usuario $username creado y agregado al grupo 'students'."
 done < "$USER_LIST"

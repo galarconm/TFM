@@ -1,27 +1,27 @@
 #!/bin/bash
 
 if [ "$#" -ne 1 ]; then
-    echo "Usage: $0 <user_file>"
+    echo "Uso: $0 <archivo_de_usuarios>"
     exit 1
 fi
 
 USER_FILE=$1
 
-# Define the label selectors for each deployment
+# Definir los selectores de etiquetas para cada despliegue
 LABELS=("app=geany-dep-pod" "app=spyder-dep-pod" "app=jupyter-dep-pod")
 
 for LABEL in "${LABELS[@]}"; do
     PODS=$(kubectl get pods -l "$LABEL" -o jsonpath='{.items[*].metadata.name}')
     for POD in $PODS; do
         kubectl cp add_users.sh "$POD:/usr/local/bin/add_users.sh"
-        echo "Copying $USER_FILE to $POD pod..."
+        echo "Copiando $USER_FILE al pod $POD..."
         kubectl cp "$USER_FILE" "$POD:/usr/local/bin/$USER_FILE"
-        echo "Adding users to $POD pod..."
+        echo "Agregando usuarios al pod $POD..."
         kubectl exec "$POD" -- /usr/local/bin/add_users.sh /usr/local/bin/"$USER_FILE"
     done
 done
 
-#summary: The script copies the add_users.sh script and the user file to each pod with
-#the label app=geany-dep-pod, app=spyder-dep-pod, or app=jupyter-dep-pod. 
-#It then executes the add_users.sh script with the user file as an argument in each pod. 
-#This allows users to be added to multiple pods at once.
+# resumen: El script copia el script add_users.sh y el archivo de usuarios a cada pod con
+# la etiqueta app=geany-dep-pod, app=spyder-dep-pod, o app=jupyter-dep-pod.
+# Luego ejecuta el script add_users.sh con el archivo de usuarios como argumento en cada pod.
+# Esto permite agregar usuarios a múltiples pods a la vez.
