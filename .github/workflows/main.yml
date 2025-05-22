@@ -29,7 +29,7 @@ jobs:
           for file in $CHANGED; do
             base=$(basename "$file")        # Dockerfile.front
             name="${base#Dockerfile.}"      # front
-            tag="galarconm/$name:latest"
+            tag="galarconm/tfm:$name-latest"
 
             echo "➡️ Construyendo y subiendo $file como $tag"
 
