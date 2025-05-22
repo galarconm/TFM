@@ -23,12 +23,12 @@ jobs:
 
       - name: Build and push modified Dockerfiles
         run: |
-          # Obtener lista de Dockerfiles modificados
-          if [ -z "${{ github.event.before }}" ] || ! git cat-file -e ${{ github.event.before }}^{commit}; then
-            echo "⚠️ Commit anterior no encontrado, comparando con el historial completo."
-            CHANGED=$(git diff --name-only HEAD~1 | grep '^dockerfiles/Dockerfile' || true)
-          else
-            CHANGED=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^dockerfiles/Dockerfile' || true)
+          # Obtener lista de Dockerfiles modificados en el último commit
+          CHANGED=$(echo "${{ github.event.head_commit.modified }}" | tr ',' '\n' | grep '^dockerfiles/Dockerfile' || true)
+          
+          if [ -z "$CHANGED" ]; then
+            echo "⚠️ No se encontraron Dockerfiles modificados. Finalizando."
+            exit 0
           fi
           
           for file in $CHANGED; do
