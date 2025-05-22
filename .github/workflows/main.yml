@@ -21,6 +21,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Debug modified files
+        run: |
+          echo "Archivos modificados: ${{ github.event.head_commit.modified }}"
+                
       - name: Build and push modified Dockerfiles
         run: |
           # Obtener lista de Dockerfiles modificados en el último commit
