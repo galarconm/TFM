@@ -21,14 +21,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Debug modified files
-        run: |
-          echo "Archivos modificados: ${{ github.event.head_commit.modified }}"
-                
       - name: Build and push modified Dockerfiles
         run: |
-          # Obtener lista de Dockerfiles modificados en el último commit
-          CHANGED=$(echo "${{ github.event.head_commit.modified }}" | tr ',' '\n' | grep '^dockerfiles/Dockerfile' || true)
+          # Obtener lista de Dockerfiles modificados usando git diff
+          CHANGED=$(git diff --name-only HEAD~1 HEAD | grep '^dockerfiles/Dockerfile' || true)
           
           if [ -z "$CHANGED" ]; then
             echo "⚠️ No se encontraron Dockerfiles modificados. Finalizando."
