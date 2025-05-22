@@ -20,7 +20,7 @@ RUN apt-get update && \
 # Configurar xfce4 como el entorno de escritorio para xrdp
 RUN echo xfce4-session > /root/.xsession
 
-
+# Test github actions
 # Exponer puertos para RDP (3389)
 EXPOSE 3389
 
